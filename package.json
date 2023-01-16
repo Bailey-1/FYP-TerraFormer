@@ -1,0 +1,26 @@
+{
+  "name": "terraformwebapp",
+  "version": "1.0.0",
+  "description": "A web app to aid in the development of Terraform configurations.",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bailey-1/TerraformWebApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bailey-1/TerraformWebApp/issues"
+  },
+  "homepage": "https://github.com/Bailey-1/TerraformWebApp#readme",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
+    "eslint": "^8.32.0",
+    "prettier": "^2.8.3"
+  }
+}
