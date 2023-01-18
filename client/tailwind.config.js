@@ -2,7 +2,11 @@
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'terraform-purple': '#844fba',
+            },
+        },
     },
-    plugins: [],
+    plugins: [require('@tailwindcss/forms')],
 };
