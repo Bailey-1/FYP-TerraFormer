@@ -46,6 +46,29 @@ export const resources = {
             },
         ],
     },
+    azurerm_container_registry: {
+        name: 'azurerm_container_registry',
+        docs: 'https://site.com',
+        validation: function () {
+            return !!this.docs;
+        },
+        keys: [
+            {
+                name: 'resource group',
+                type: 'dropdown',
+                validation: (value: string): boolean => {
+                    return value.includes('a');
+                },
+            },
+            {
+                name: 'keyname2',
+                type: 'string',
+                validation: (value: string): boolean => {
+                    return value.includes('b');
+                },
+            },
+        ],
+    },
 };
 
 const TestComponent = ({

@@ -11,8 +11,8 @@ class azurerm_resource_group {
 class azurerm_storage_account {
     resource_group: azurerm_resource_group;
 
-    name: string;
-    account_tier: 'Standard' | 'Free';
+    name: string = '';
+    account_tier: 'Standard' | 'Free' = 'Standard';
     get resource_group_name() {
         return this.resource_group.name;
     }
@@ -22,8 +22,6 @@ class azurerm_storage_account {
     }
 
     constructor(rg: azurerm_resource_group) {
-        this.name = '';
-        this.account_tier = 'Standard';
         this.resource_group = rg;
     }
 
