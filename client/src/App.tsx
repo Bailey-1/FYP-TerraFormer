@@ -1,8 +1,9 @@
 import React from 'react';
-import Navbar from './features/navbar/navbar';
+import TestComponent, { resources } from './resources/TestComponent';
 
 function App() {
-    return <Navbar />;
+    // return <Navbar />;
+    return <TestComponent resource={resources['azurerm_resource_group']} />;
 }
 
 export default App;

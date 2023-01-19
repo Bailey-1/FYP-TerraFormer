@@ -46,3 +46,5 @@ sa.name = 'New storage account';
 sa.account_tier = 'Free';
 
 console.log(sa.output());
+
+export { azurerm_resource_group, azurerm_storage_account };
