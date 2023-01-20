@@ -17,6 +17,14 @@ export const resourceSlice = createSlice({
         addResource: (state, action: PayloadAction<any>) => {
             state.resources.push(action.payload);
         },
+        updateResourceKey: (
+            state,
+            action: PayloadAction<{ id: number; key: string; value: string }>,
+        ) => {
+            state.resources.find((x) => x.id === action.payload.id).keys[
+                action.payload.key
+            ] = action.payload.value;
+        },
         // decrement: (state) => {
         //     state.value -= 1;
         // },
@@ -27,7 +35,7 @@ export const resourceSlice = createSlice({
     },
 });
 
-export const { addResource } = resourceSlice.actions;
+export const { addResource, updateResourceKey } = resourceSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value;

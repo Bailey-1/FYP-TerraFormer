@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addResource } from './features/ResourceSlice';
 import { RootState } from './store/store';
 import { azurerm_resource_group } from './resources/test';
+import TestComponent from './resources/TestComponent';
 
 function App() {
     // return <Navbar />;
@@ -18,13 +19,13 @@ function App() {
                 onClick={() =>
                     dispatch(
                         addResource({
-                            name: 'azurerm_resource_group',
+                            id: resource.length,
+                            type: 'azurerm_resource_group',
                             keys: {
                                 a: 1,
                                 b: '2',
                                 c: true,
                             },
-                            valid: true,
                         }),
                     )
                 }
@@ -35,8 +36,8 @@ function App() {
             {/*<TestComponent resource={resources['azurerm_container_registry']} />*/}
 
             {resource.map((x, i) => (
-                // <TestComponent resource={x} key={i} />
-                <p key={i}>x.name</p>
+                <TestComponent resourceDetails={x} key={i} />
+                // <p key={i}>x.name</p>
             ))}
         </div>
     );
