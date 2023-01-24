@@ -28,6 +28,7 @@ const InputComponent = ({
 export const resources = {
     azurerm_resource_group: {
         name: 'azurerm_resource_group',
+        provider: 'azure',
         docs: 'https://site.com',
         validation: function () {
             return !!this.docs;
@@ -53,6 +54,7 @@ export const resources = {
     },
     azurerm_container_registry: {
         name: 'azurerm_container_registry',
+        provider: 'azure',
         docs: 'https://site.com',
         validation: function () {
             return !!this.docs;
@@ -76,6 +78,18 @@ export const resources = {
             },
         ],
     },
+    aws_test1: {
+        name: 'aws_test1',
+        provider: 'aws',
+        docs: 'todo add docs',
+        keys: [],
+    },
+    aws_test2: {
+        name: 'aws_test2',
+        provider: 'aws',
+        docs: 'todo add docs',
+        keys: [],
+    },
 };
 
 const TestComponent = ({
@@ -84,7 +98,7 @@ const TestComponent = ({
     resourceDetails: {
         id: number;
         type: string;
-        keys: { [key: string]: string };
+        keys: { name: string; value: string }[];
     };
 }) => {
     const resource = resources[resourceDetails.type as keyof typeof resources];
@@ -123,10 +137,14 @@ const TestComponent = ({
                 {resource.keys.map((x) => (
                     <InputComponent
                         resource={x}
-                        value={resourceDetails.keys[x.name]}
+                        value={
+                            resourceDetails.keys.find((y) => y.name === x.name)
+                                ?.value || ''
+                        }
                         onChange={(value) => {
                             updateKey(x.name, value);
                         }}
+                        key={x.name}
                     />
                 ))}
             </div>

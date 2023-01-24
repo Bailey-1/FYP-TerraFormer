@@ -2,7 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define a type for the slice state
 interface CounterState {
-    resources: any[];
+    resources: {
+        id: number;
+        type: string;
+        keys: { name: string; value: string }[];
+    }[];
 }
 
 // Define the initial state using that type
@@ -15,15 +19,34 @@ export const resourceSlice = createSlice({
     initialState,
     reducers: {
         addResource: (state, action: PayloadAction<any>) => {
+            console.log(action.payload);
             state.resources.push(action.payload);
         },
         updateResourceKey: (
             state,
             action: PayloadAction<{ id: number; key: string; value: string }>,
         ) => {
-            state.resources.find((x) => x.id === action.payload.id).keys[
-                action.payload.key
-            ] = action.payload.value;
+            const resource = state.resources.find(
+                (x) => x.id === action.payload.id,
+            );
+
+            if (!resource) {
+                console.error('Resource does not exist', action.payload);
+                return;
+            }
+
+            const existingEl = resource.keys.find(
+                (x) => x.name === action.payload.key,
+            );
+
+            if (existingEl) {
+                existingEl.value = action.payload.value;
+            } else {
+                resource.keys.push({
+                    name: action.payload.key,
+                    value: action.payload.value,
+                });
+            }
         },
         // decrement: (state) => {
         //     state.value -= 1;

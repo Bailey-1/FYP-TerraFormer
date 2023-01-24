@@ -3,10 +3,18 @@ import {
     CommandLineIcon,
     FaceSmileIcon,
 } from '@heroicons/react/24/outline';
+import ResourceList from '../ResourceList/ResourceList';
+import { useState } from 'react';
 
 const sidebarNavigation = [
-    { name: 'Resources', href: '#', icon: CloudIcon, current: true },
-    { name: 'Debug', href: '#', icon: CommandLineIcon, current: false },
+    { name: 'All', icon: CloudIcon },
+    { name: 'Azure', icon: CloudIcon },
+    { name: 'AWS', icon: CloudIcon },
+    { name: 'GCP', icon: CloudIcon },
+    {
+        name: 'Debug',
+        icon: CommandLineIcon,
+    },
 ];
 
 function classNames(...classes: string[]) {
@@ -14,6 +22,8 @@ function classNames(...classes: string[]) {
 }
 
 const Navbar = () => {
+    const [currentProvider, setCurrentProvider] = useState('all');
+
     return (
         <div className="flex h-full flex-col">
             {/* Top nav*/}
@@ -38,21 +48,25 @@ const Navbar = () => {
                 >
                     <div className="relative flex w-20 flex-col space-y-3 p-3">
                         {sidebarNavigation.map((item) => (
-                            <a
+                            <button
                                 key={item.name}
-                                href={item.href}
+                                // href={item.href}
                                 className={classNames(
-                                    item.current
+                                    currentProvider === item.name.toLowerCase()
                                         ? 'bg-gray-900 text-white'
                                         : 'text-gray-400 hover:bg-gray-700',
                                     'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg',
                                 )}
+                                onClick={() =>
+                                    setCurrentProvider(item.name.toLowerCase())
+                                }
                             >
-                                <item.icon
-                                    className="h-6 w-6"
-                                    aria-hidden="true"
-                                />
-                            </a>
+                                {/*<item.icon*/}
+                                {/*    className="h-6 w-6"*/}
+                                {/*    aria-hidden="true"*/}
+                                {/*/>*/}
+                                {item.name}
+                            </button>
                         ))}
                     </div>
                 </nav>
@@ -71,6 +85,7 @@ const Navbar = () => {
                     <aside>
                         <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-100">
                             <h1>Available resource list here</h1>
+                            <ResourceList filter={currentProvider} />
                         </div>
                     </aside>
                 </main>
