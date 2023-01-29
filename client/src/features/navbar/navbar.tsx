@@ -5,6 +5,7 @@ import {
 } from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
+import SelectedResources from '../SelectedResources/SelectedResources';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -27,15 +28,24 @@ const Navbar = () => {
     return (
         <div className="flex h-full flex-col">
             {/* Top nav*/}
-            <header className="relative flex h-16 flex-shrink-0 items-center bg-terraform-purple">
+            <header className="relative flex h-16 flex-shrink-0 items-center bg-terraform-purple justify-end">
                 {/* Logo area */}
-                <div className="absolute inset-y-0 left-0 md:static md:flex-shrink-0">
+                <div className="absolute inset-y-0 left-0 static flex-shrink-0">
                     <a
                         href="#"
-                        className="flex h-16 w-16 items-center justify-center md:w-20"
+                        className="flex h-16 w-16 items-center justify-center w-20"
                     >
                         <FaceSmileIcon className="h-8 w-auto text-white" />
                     </a>
+                </div>
+
+                <div className="p-2 m-2">
+                    <button className="p-2 px-4 m-2 bg-green-800 hover:bg-green-900 rounded-lg text-gray-100">
+                        Export to HCL
+                    </button>
+                    <button className="bg-gray-300 hover:bg-gray-400 rounded-full p-2 px-4 m-2 font-bold border-gray-900 border">
+                        ?
+                    </button>
                 </div>
             </header>
 
@@ -44,7 +54,7 @@ const Navbar = () => {
                 {/* Narrow sidebar*/}
                 <nav
                     aria-label="Sidebar"
-                    className="hidden md:block md:flex-shrink-0 md:overflow-y-auto md:bg-gray-800"
+                    className="block flex-shrink-0 overflow-y-auto bg-gray-800"
                 >
                     <div className="relative flex w-20 flex-col space-y-3 p-3">
                         {sidebarNavigation.map((item) => (
@@ -72,13 +82,14 @@ const Navbar = () => {
                 </nav>
 
                 {/* Main area */}
-                <main className="border-gray-200 min-w-0 flex-1 border-t lg:flex">
+                <main className="border-gray-200 min-w-0 flex-1 border-t flex">
                     {/* Primary column */}
                     <section
                         aria-labelledby="primary-heading"
-                        className="flex h-full min-w-0 overflow-y-auto lg:order-last flex-1 flex-col"
+                        className="flex h-full min-w-0 overflow-y-auto order-last flex-1 flex-col p-2"
                     >
                         <h1>Selected resource list here</h1>
+                        <SelectedResources />
                     </section>
 
                     {/* Available resources */}

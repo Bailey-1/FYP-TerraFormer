@@ -48,6 +48,14 @@ app.use('/api/jsonToHcl', (req, res) => {
                 staging_rg: {
                     name: 'Classrooms-Staging',
                     location: 'UK South',
+                    number: 12,
+                    float: 1.5,
+                    bool: true,
+                    object: {
+                        prop1: 1,
+                        prop2: 1,
+                        prop3: 1,
+                    },
                 },
             },
             azurerm_container_registry: {
