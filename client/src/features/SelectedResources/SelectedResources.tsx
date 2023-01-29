@@ -11,7 +11,7 @@ const SelectedResources = () => {
     return (
         <div>
             {resource.map((x) => (
-                <div key={x.id} className="bg-gray-300 m-2 p-2">
+                <div key={x.id} className="bg-gray-300 m-2 p-2 rounded-lg">
                     <h3 className="text-xl text-terraform-purple">{x.type}</h3>
                     {x.keys.map((x) => {
                         return (
