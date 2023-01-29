@@ -2,7 +2,13 @@ import { IResourceState } from '../../../interfaces/IResourceState';
 import resourceLookup from '../../../resources/ResourceLookup';
 import ResourceFormInput from './ResourceFormInput';
 
-const ResourceForm = ({ resource }: { resource: IResourceState }) => {
+const ResourceForm = ({
+    resource,
+    onDelete,
+}: {
+    resource: IResourceState;
+    onDelete: () => void;
+}) => {
     const globalResource = resourceLookup.find((x) => x.name === resource.type);
 
     if (!globalResource) {
@@ -21,6 +27,12 @@ const ResourceForm = ({ resource }: { resource: IResourceState }) => {
                     resourceState={resource}
                 />
             ))}
+            <button
+                onClick={onDelete}
+                className="bg-red-700 text-gray-200 p-2 px-4 rounded-lg hover:bg-red-800 border border-red-900"
+            >
+                Delete
+            </button>
         </div>
     );
 };

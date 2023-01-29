@@ -5,8 +5,11 @@ import { addResource } from '../ResourceSlice';
 import ResourceLookup from '../../resources/ResourceLookup';
 import resourceLookup from '../../resources/ResourceLookup';
 import { IResourceKey } from '../../interfaces/IResourceObject';
+import { useState } from 'react';
 
 const ResourceList = ({ filter }: { filter: string | null }) => {
+    const [currentId, setCurrentId] = useState(0);
+
     const dispatch = useDispatch();
 
     const resource = useSelector(
@@ -24,7 +27,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                         addResource={() => {
                             dispatch(
                                 addResource({
-                                    id: resource.length,
+                                    id: currentId,
                                     type: x.name,
                                     valid: false,
                                     keys:
@@ -39,6 +42,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                         }) || [],
                                 }),
                             );
+                            setCurrentId((prev) => prev + 1);
                         }}
                     />
                 ))}
