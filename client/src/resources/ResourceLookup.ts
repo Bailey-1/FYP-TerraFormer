@@ -1,5 +1,5 @@
-const ResourceLookup = {
-    azurerm_resource_group: {
+const ResourceLookup: IResourceObject[] = [
+    {
         name: 'azurerm_resource_group',
         provider: 'azure',
         docs: 'https://site.com',
@@ -25,7 +25,7 @@ const ResourceLookup = {
             },
         ],
     },
-    azurerm_container_registry: {
+    {
         name: 'azurerm_container_registry',
         provider: 'azure',
         docs: 'https://site.com',
@@ -51,18 +51,20 @@ const ResourceLookup = {
             },
         ],
     },
-    aws_test1: {
+    {
         name: 'aws_test1',
         provider: 'aws',
         docs: 'todo add docs',
+        validation: () => true,
         keys: [],
     },
-    aws_test2: {
+    {
         name: 'aws_test2',
         provider: 'aws',
         docs: 'todo add docs',
+        validation: () => true,
         keys: [],
     },
-};
+];
 
 export default ResourceLookup;

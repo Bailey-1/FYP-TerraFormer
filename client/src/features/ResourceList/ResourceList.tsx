@@ -35,20 +35,15 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                             addResource({
                                 id: resource.length,
                                 type: x.name,
-                                keys: [
-                                    // { name: 'a', value: '1' },
-                                    // { name: 'b', value: '2' },
-                                    // { name: 'c', value: '3' },
-                                    // Get an array of all the keys from the same resource type
-                                    ...ResourceLookup[
-                                        x.name as keyof typeof ResourceLookup
-                                    ].keys.map((key) => {
+                                keys:
+                                    ResourceLookup.find(
+                                        (y) => y.name === x.name,
+                                    )?.keys.map((key) => {
                                         return {
                                             name: key.name,
                                             value: key.value,
                                         };
-                                    }),
-                                ],
+                                    }) || [],
                             }),
                         );
                     }}

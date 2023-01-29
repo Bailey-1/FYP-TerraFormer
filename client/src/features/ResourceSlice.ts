@@ -1,12 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IResourceState } from '../interfaces/IResourceState';
 
 // Define a type for the slice state
 interface CounterState {
-    resources: {
-        id: number;
-        type: string;
-        keys: { name: string; value: string }[];
-    }[];
+    resources: IResourceState[];
 }
 
 // Define the initial state using that type
@@ -18,7 +15,7 @@ export const resourceSlice = createSlice({
     name: 'resources',
     initialState,
     reducers: {
-        addResource: (state, action: PayloadAction<any>) => {
+        addResource: (state, action: PayloadAction<IResourceState>) => {
             console.log(action.payload);
             state.resources.push(action.payload);
         },
