@@ -10,11 +10,11 @@ const SelectedResources = () => {
     );
 
     return (
-        <div>
+        <>
             {resource.map((x) => (
                 <ResourceForm key={x.id} resource={x} />
             ))}
-        </div>
+        </>
     );
 };
 

@@ -21,7 +21,12 @@ export const resourceSlice = createSlice({
         },
         updateResourceKey: (
             state,
-            action: PayloadAction<{ id: number; key: string; value: string }>,
+            action: PayloadAction<{
+                id: number;
+                key: string;
+                value: string;
+                valid: boolean;
+            }>,
         ) => {
             const resource = state.resources.find(
                 (x) => x.id === action.payload.id,
@@ -38,10 +43,13 @@ export const resourceSlice = createSlice({
 
             if (existingEl) {
                 existingEl.value = action.payload.value;
+                existingEl.valid = action.payload.valid;
             } else {
                 resource.keys.push({
                     name: action.payload.key,
                     value: action.payload.value,
+                    valid: false,
+                    // touched: false,
                 });
             }
         },
