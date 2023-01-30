@@ -12,7 +12,7 @@ const ResourceLookup: IResourceObject[] = [
         },
         keys: [
             {
-                name: 'keyname',
+                name: 'name',
                 type: 'string',
                 value: '',
                 validation: (value: string): boolean => {
@@ -21,9 +21,9 @@ const ResourceLookup: IResourceObject[] = [
                 validation_message: 'Must include the letter a',
             },
             {
-                name: 'keyname2',
-                type: 'string',
-                value: '',
+                name: 'location',
+                type: 'select',
+                options: k.azure.regions,
                 validation: (value: string): boolean => {
                     return value.includes('b');
                 },

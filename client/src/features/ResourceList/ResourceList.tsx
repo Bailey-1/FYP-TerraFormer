@@ -40,6 +40,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                                 valid: false,
                                             };
                                         }) || [],
+                                    instance_name: x.name,
                                 }),
                             );
                             setCurrentId((prev) => prev + 1);

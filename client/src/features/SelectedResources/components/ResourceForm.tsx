@@ -1,6 +1,7 @@
 import { IResourceState } from '../../../interfaces/IResourceState';
 import resourceLookup from '../../../resources/ResourceLookup';
 import ResourceFormInput from './ResourceFormInput';
+import InstanceNameInput from './InstanceNameInput';
 
 const ResourceForm = ({
     resource,
@@ -18,7 +19,8 @@ const ResourceForm = ({
     return (
         <div className="bg-gray-300 m-2 p-2 rounded-lg">
             <h3 className="text-xl text-terraform-purple">
-                {globalResource.display_name}
+                {globalResource.display_name} -{' '}
+                <InstanceNameInput resource={resource} />
             </h3>
             {resource.keys.map((x) => (
                 <ResourceFormInput
