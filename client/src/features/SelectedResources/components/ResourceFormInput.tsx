@@ -4,7 +4,6 @@ import {
 } from '../../../interfaces/IResourceState';
 import { useDispatch } from 'react-redux';
 import { updateResourceKey } from '../../ResourceSlice';
-import { IResourceKey } from '../../../interfaces/IResourceObject';
 import resourceLookup from '../../../resources/ResourceLookup';
 import { useState } from 'react';
 
@@ -24,7 +23,7 @@ const ResourceFormInput = ({
     )!;
 
     const globalKey = globalResource.keys.find(
-        (x: IResourceKey) => x.name === keyState.name,
+        (x: any) => x.name === keyState.name,
     )!;
 
     const updateKey = (name: string, value: string) => {

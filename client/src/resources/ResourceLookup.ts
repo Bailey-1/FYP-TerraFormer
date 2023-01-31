@@ -42,12 +42,12 @@ const ResourceLookup: IResourceObject[] = [
         keys: [
             {
                 name: 'resource group',
-                type: 'dropdown',
-                value: '',
+                type: 'select',
                 validation: (value: string): boolean => {
                     return value.includes('a');
                 },
-                validation_message: '',
+                options: ['1', '2'],
+                validation_message: 'Must include the letter b',
             },
             {
                 name: 'keyname2',

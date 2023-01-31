@@ -4,7 +4,6 @@ import { RootState } from '../../store/store';
 import { addResource } from '../ResourceSlice';
 import ResourceLookup from '../../resources/ResourceLookup';
 import resourceLookup from '../../resources/ResourceLookup';
-import { IResourceKey } from '../../interfaces/IResourceObject';
 import { useState } from 'react';
 
 const ResourceList = ({ filter }: { filter: string | null }) => {
@@ -33,7 +32,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                     keys:
                                         ResourceLookup.find(
                                             (y) => y.name === x.name,
-                                        )?.keys.map((key: IResourceKey) => {
+                                        )?.keys.map((key: any) => {
                                             return {
                                                 name: key.name,
                                                 value: key.value,
