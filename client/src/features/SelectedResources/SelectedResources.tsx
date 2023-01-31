@@ -16,13 +16,23 @@ const SelectedResources = () => {
 
     return (
         <>
-            {resource.map((x) => (
-                <ResourceForm
-                    key={x.id}
-                    resource={x}
-                    onDelete={() => onDelete(x.id)}
-                />
-            ))}
+            {resource.length ? (
+                resource.map((x) => (
+                    <ResourceForm
+                        key={x.id}
+                        resource={x}
+                        onDelete={() => onDelete(x.id)}
+                    />
+                ))
+            ) : (
+                <div className="flex h-screen">
+                    <div className="m-auto p-4 bg-gray-200 rounded-2xl">
+                        <p className="text-2xl text-terraform-purple content-center">
+                            Add a resource from the left column to begin!
+                        </p>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

@@ -29,6 +29,8 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                     id: currentId,
                                     type: x.name,
                                     valid: false,
+                                    instance_name: x.name,
+                                    instance_name_valid: false,
                                     keys:
                                         ResourceLookup.find(
                                             (y) => y.name === x.name,
@@ -39,7 +41,6 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                                 valid: false,
                                             };
                                         }) || [],
-                                    instance_name: x.name,
                                 }),
                             );
                             setCurrentId((prev) => prev + 1);

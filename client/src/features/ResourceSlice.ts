@@ -18,6 +18,15 @@ export const resourceSlice = createSlice({
         addResource: (state, action: PayloadAction<IResourceState>) => {
             console.log(action.payload);
             state.resources.push(action.payload);
+
+            // Loop through resources to check validity of the instance name
+            state.resources.forEach((r) => {
+                r.instance_name_valid = !(
+                    state.resources.filter(
+                        (x) => x.instance_name === r.instance_name,
+                    ).length > 1
+                );
+            });
         },
         updateResourceKey: (
             state,
@@ -84,6 +93,15 @@ export const resourceSlice = createSlice({
             if (resource) {
                 resource.instance_name = action.payload.name;
             }
+
+            // Loop through resources to check validity of the instance name
+            state.resources.forEach((r) => {
+                r.instance_name_valid = !(
+                    state.resources.filter(
+                        (x) => x.instance_name === r.instance_name,
+                    ).length > 1
+                );
+            });
         },
     },
 });

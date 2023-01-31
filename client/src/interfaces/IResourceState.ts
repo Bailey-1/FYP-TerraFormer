@@ -13,4 +13,5 @@ export interface IResourceState {
     keys: IResourceKeyState[];
     valid: boolean;
     instance_name: string;
+    instance_name_valid: boolean;
 }

@@ -38,20 +38,40 @@ const ResourceFormInput = ({
     };
 
     return (
-        <div className="m-1 p-1">
-            <label className="mr-2">{keyState.name}</label>
-            <input
-                value={keyState.value}
-                onChange={(e) => {
-                    updateKey(keyState.name, e.target.value);
-                }}
-                className={
-                    touched && !keyState.valid
-                        ? 'border border-2 border-red-600'
-                        : ''
-                }
-                onBlur={() => setTouched(true)}
-            />
+        <div className="m-2 p-2 bg-gray-100 rounded">
+            <div>
+                <label className="mr-2">{keyState.name}</label>
+            </div>
+            {globalKey.type === 'string' && (
+                <input
+                    value={keyState.value}
+                    onChange={(e) => {
+                        updateKey(keyState.name, e.target.value);
+                    }}
+                    className={
+                        touched && !keyState.valid
+                            ? 'border border-2 border-red-600'
+                            : 'border border-2 border-gray-600'
+                    }
+                    onBlur={() => setTouched(true)}
+                />
+            )}
+
+            {globalKey.type === 'select' && (
+                <select
+                    value={keyState.value}
+                    onChange={(e) => {
+                        updateKey(keyState.name, e.target.value);
+                    }}
+                >
+                    {globalKey.options.sort().map((x) => (
+                        <option key={x} value={x}>
+                            {x}
+                        </option>
+                    ))}
+                </select>
+            )}
+
             {touched && !keyState.valid && (
                 <p className="text-red-600">{globalKey.validation_message}</p>
             )}

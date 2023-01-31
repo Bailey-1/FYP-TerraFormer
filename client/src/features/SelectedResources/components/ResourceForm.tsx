@@ -18,8 +18,8 @@ const ResourceForm = ({
 
     return (
         <div className="bg-gray-300 m-2 p-2 rounded-lg">
-            <h3 className="text-xl text-terraform-purple">
-                {globalResource.display_name} -{' '}
+            <h3 className="p-2 text-xl text-terraform-purple flex">
+                {globalResource.display_name} -
                 <InstanceNameInput resource={resource} />
             </h3>
             {resource.keys.map((x) => (
