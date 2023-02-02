@@ -2,10 +2,12 @@ import {
     IResourceKeyState,
     IResourceState,
 } from '../../../interfaces/IResourceState';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateResourceKey } from '../../ResourceSlice';
 import resourceLookup from '../../../resources/ResourceLookup';
 import { useState } from 'react';
+import ResourceFormInputRef from './ResourceFormInputRef';
+import { RootState } from '../../../store/store';
 
 const ResourceFormInput = ({
     keyState,
@@ -32,10 +34,16 @@ const ResourceFormInput = ({
                 id: resourceState.id,
                 key: name,
                 value,
-                valid: globalKey?.validation(value) || false,
+                valid: !!globalKey.validation
+                    ? globalKey.validation(value)
+                    : true,
             }),
         );
     };
+
+    const allResources = useSelector(
+        (state: RootState) => state.resources.resources,
+    );
 
     return (
         <div className="m-2 p-2 bg-gray-100 rounded">
@@ -70,6 +78,17 @@ const ResourceFormInput = ({
                         </option>
                     ))}
                 </select>
+            )}
+
+            {globalKey.type === 'resource' && (
+                <ResourceFormInputRef
+                    keyState={keyState}
+                    globalKey={globalKey}
+                    resourceState={resourceState}
+                    options={allResources
+                        .filter((x) => x.type === globalKey.resource_type)
+                        .sort()}
+                />
             )}
 
             {touched && !keyState.valid && (

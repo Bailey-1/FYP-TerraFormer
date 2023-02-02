@@ -42,9 +42,10 @@ const ResourceLookup: IResourceObject[] = [
         keys: [
             {
                 name: 'resource group',
-                type: 'select',
+                type: 'resource',
+                resource_type: 'azurerm_resource_group',
                 validation: (value: string): boolean => {
-                    return value.includes('a');
+                    return !!value.length;
                 },
                 options: ['1', '2'],
                 validation_message: 'Must include the letter b',

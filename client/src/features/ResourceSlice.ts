@@ -62,13 +62,6 @@ export const resourceSlice = createSlice({
                 });
             }
         },
-        // decrement: (state) => {
-        //     state.value -= 1;
-        // },
-        // // Use the PayloadAction type to declare the contents of `action.payload`
-        // incrementByAmount: (state, action: PayloadAction<number>) => {
-        //     state.value += action.payload;
-        // },
         deleteResource: (
             state,
             action: PayloadAction<{
@@ -78,6 +71,15 @@ export const resourceSlice = createSlice({
             state.resources = state.resources.filter(
                 (x) => x.id !== action.payload.id,
             );
+
+            // Loop through resources to check validity of the instance name
+            state.resources.forEach((r) => {
+                r.instance_name_valid = !(
+                    state.resources.filter(
+                        (x) => x.instance_name === r.instance_name,
+                    ).length > 1
+                );
+            });
         },
         updateResourceInstanceName: (
             state,
