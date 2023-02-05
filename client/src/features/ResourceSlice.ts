@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IResourceState } from '../interfaces/IResourceState';
+import resourceLookup from '../resources/ResourceLookup';
+import { IResourceKeyResource } from '../interfaces/IResourceObject';
 
 // Define a type for the slice state
 interface CounterState {
@@ -68,6 +70,30 @@ export const resourceSlice = createSlice({
                 id: number;
             }>,
         ) => {
+            const resource = state.resources[action.payload.id];
+            const resourceType = resourceLookup.find(
+                (x) => x.name === resource.type,
+            )!;
+
+            state.resources.forEach((r) => {
+                const rtype = resourceLookup.find((x) => x.name === r.type);
+
+                if (rtype) {
+                    r.keys.forEach((k) => {
+                        const sameResourceTypeKey = rtype.keys.find(
+                            (x) =>
+                                x.name === k.name &&
+                                x.type === 'resource' &&
+                                x.resource_type === resourceType.name,
+                        ) as IResourceKeyResource;
+
+                        if (sameResourceTypeKey) {
+                            k.value = '';
+                        }
+                    });
+                }
+            });
+
             state.resources = state.resources.filter(
                 (x) => x.id !== action.payload.id,
             );

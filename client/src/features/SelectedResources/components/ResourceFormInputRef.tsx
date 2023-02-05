@@ -69,6 +69,7 @@ const ResourceFormInputRef = ({
             className="test"
             // ref={ref}
         >
+            <option value="">None</option>
             {options.map((x) => (
                 <OptionComponent
                     key={x.id}

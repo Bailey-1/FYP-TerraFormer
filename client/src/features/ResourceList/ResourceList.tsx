@@ -37,7 +37,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                         )?.keys.map((key: any) => {
                                             return {
                                                 name: key.name,
-                                                value: key.value,
+                                                value: '',
                                                 valid: false,
                                             };
                                         }) || [],
