@@ -70,7 +70,16 @@ export const resourceSlice = createSlice({
                 id: number;
             }>,
         ) => {
-            const resource = state.resources[action.payload.id];
+            const resource = state.resources.find(
+                (x) => x.id === action.payload.id,
+            );
+
+            if (!resource) {
+                throw new Error(
+                    `Resource is undefined. ID ${action.payload.id}`,
+                );
+            }
+
             const resourceType = resourceLookup.find(
                 (x) => x.name === resource.type,
             )!;
