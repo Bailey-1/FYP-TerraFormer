@@ -1,16 +1,18 @@
 // TODO: Make this resource collapsable to hide details
+import { IResourceObject } from '../../../interfaces/IResourceObject';
+
 const ResourceElement = ({
     resource,
     addResource,
 }: {
-    resource: { name: string; docs: string };
+    resource: IResourceObject;
     addResource: () => void;
 }) => {
     return (
         <div className="flex flex-row bg-gray-200 m-2 rounded-lg hover:bg-gray-300 border border-gray-300 hover:border-gray-400">
             <div className="p-2 m-2 grow">
                 <div className="flex justify-between">
-                    <h3 className="text-xl">{resource.name}</h3>
+                    <h3 className="text-xl">{resource.display_name}</h3>
                     <button
                         className="bg-green-600 p-2 px-4 text-gray-200 rounded-lg border border-green-900 hover:bg-green-700"
                         onClick={addResource}

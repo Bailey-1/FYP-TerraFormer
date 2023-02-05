@@ -1,33 +1,40 @@
-const ResourceLookup = {
-    azurerm_resource_group: {
+import k from '../const';
+import { IResourceObject } from '../interfaces/IResourceObject';
+
+const ResourceLookup: IResourceObject[] = [
+    {
         name: 'azurerm_resource_group',
-        provider: 'azure',
+        display_name: 'Azure Resource Group',
+        provider: k.providers.azure,
         docs: 'https://site.com',
         validation: function () {
             return !!this.docs;
         },
         keys: [
             {
-                name: 'keyname',
+                name: 'name',
                 type: 'string',
                 value: '',
                 validation: (value: string): boolean => {
                     return value.includes('a');
                 },
+                validation_message: 'Must include the letter a',
             },
             {
-                name: 'keyname2',
-                type: 'string',
-                value: '',
+                name: 'location',
+                type: 'select',
+                options: k.azure.regions,
                 validation: (value: string): boolean => {
                     return value.includes('b');
                 },
+                validation_message: 'Must include the letter b',
             },
         ],
     },
-    azurerm_container_registry: {
+    {
         name: 'azurerm_container_registry',
-        provider: 'azure',
+        display_name: 'Azure Container Registry',
+        provider: k.providers.azure,
         docs: 'https://site.com',
         validation: function () {
             return !!this.docs;
@@ -35,11 +42,13 @@ const ResourceLookup = {
         keys: [
             {
                 name: 'resource group',
-                type: 'dropdown',
-                value: '',
+                type: 'resource',
+                resource_type: 'azurerm_resource_group',
                 validation: (value: string): boolean => {
-                    return value.includes('a');
+                    return !!value.length;
                 },
+                options: ['1', '2'],
+                validation_message: 'Must include the letter b',
             },
             {
                 name: 'keyname2',
@@ -48,21 +57,26 @@ const ResourceLookup = {
                 validation: (value: string): boolean => {
                     return value.includes('b');
                 },
+                validation_message: '',
             },
         ],
     },
-    aws_test1: {
+    {
         name: 'aws_test1',
-        provider: 'aws',
+        display_name: 'AWS Test 1',
+        provider: k.providers.aws,
         docs: 'todo add docs',
+        validation: () => true,
         keys: [],
     },
-    aws_test2: {
+    {
         name: 'aws_test2',
-        provider: 'aws',
+        display_name: 'AWS Test 2',
+        provider: k.providers.aws,
         docs: 'todo add docs',
+        validation: () => true,
         keys: [],
     },
-};
+];
 
 export default ResourceLookup;

@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import ResourceForm from './components/ResourceForm';
+import { deleteResource } from '../ResourceSlice';
 
 const SelectedResources = () => {
     const dispatch = useDispatch();
@@ -8,22 +10,30 @@ const SelectedResources = () => {
         (state: RootState) => state.resources.resources,
     );
 
+    const onDelete = (id: number) => {
+        dispatch(deleteResource({ id }));
+    };
+
     return (
-        <div>
-            {resource.map((x) => (
-                <div key={x.id} className="bg-gray-300 m-2 p-2">
-                    <h3 className="text-xl text-terraform-purple">{x.type}</h3>
-                    {x.keys.map((x) => {
-                        return (
-                            <div key={x.name} className="m-1 p-1">
-                                <label className="mr-2">{x.name}</label>
-                                <input value={x.value} />
-                            </div>
-                        );
-                    })}
+        <>
+            {resource.length ? (
+                resource.map((x) => (
+                    <ResourceForm
+                        key={x.id}
+                        resource={x}
+                        onDelete={() => onDelete(x.id)}
+                    />
+                ))
+            ) : (
+                <div className="flex h-screen">
+                    <div className="m-auto p-4 bg-gray-200 rounded-2xl">
+                        <p className="text-2xl text-terraform-purple content-center">
+                            Add a resource from the left column to begin!
+                        </p>
+                    </div>
                 </div>
-            ))}
-        </div>
+            )}
+        </>
     );
 };
 
