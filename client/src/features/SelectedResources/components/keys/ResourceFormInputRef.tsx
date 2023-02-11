@@ -1,10 +1,10 @@
 import {
     IResourceKeyState,
     IResourceState,
-} from '../../../interfaces/IResourceState';
+} from '../../../../interfaces/IResourceState';
 import { useDispatch } from 'react-redux';
-import { IResourceKeyResource } from '../../../interfaces/IResourceObject';
-import { updateResourceKey } from '../../ResourceSlice';
+import { IResourceKeyResource } from '../../../../interfaces/IResourceObject';
+import { updateResourceKey } from '../../../ResourceSlice';
 import { useState } from 'react';
 
 const OptionComponent = ({

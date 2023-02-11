@@ -5,9 +5,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { updateResourceKey } from '../../ResourceSlice';
 import resourceLookup from '../../../resources/ResourceLookup';
-import { useState } from 'react';
-import ResourceFormInputRef from './ResourceFormInputRef';
+import ResourceFormInputRef from './keys/ResourceFormInputRef';
 import { RootState } from '../../../store/store';
+import ResourceFormSelectKey from './keys/ResourceFormSelectKey';
+import ResourceFormInputKey from './keys/ResourceFormInputKey';
 
 const ResourceFormInput = ({
     keyState,
@@ -17,8 +18,6 @@ const ResourceFormInput = ({
     resourceState: IResourceState;
 }) => {
     const dispatch = useDispatch();
-
-    const [touched, setTouched] = useState(false);
 
     const globalResource = resourceLookup.find(
         (x) => x.name === resourceState.type,
@@ -51,33 +50,19 @@ const ResourceFormInput = ({
                 <label className="mr-2">{keyState.name}</label>
             </div>
             {globalKey.type === 'string' && (
-                <input
-                    value={keyState.value}
-                    onChange={(e) => {
-                        updateKey(keyState.name, e.target.value);
-                    }}
-                    className={
-                        touched && !keyState.valid
-                            ? 'border border-2 border-red-600'
-                            : 'border border-2 border-gray-600'
-                    }
-                    onBlur={() => setTouched(true)}
+                <ResourceFormInputKey
+                    globalKey={globalKey}
+                    keyState={keyState}
+                    updateKey={updateKey}
                 />
             )}
 
             {globalKey.type === 'select' && (
-                <select
-                    value={keyState.value}
-                    onChange={(e) => {
-                        updateKey(keyState.name, e.target.value);
-                    }}
-                >
-                    {globalKey.options.sort().map((x) => (
-                        <option key={x} value={x}>
-                            {x}
-                        </option>
-                    ))}
-                </select>
+                <ResourceFormSelectKey
+                    keyState={keyState}
+                    globalKey={globalKey}
+                    updateKey={updateKey}
+                />
             )}
 
             {globalKey.type === 'resource' && (
@@ -89,10 +74,6 @@ const ResourceFormInput = ({
                         .filter((x) => x.type === globalKey.resource_type)
                         .sort()}
                 />
-            )}
-
-            {touched && !keyState.valid && (
-                <p className="text-red-600">{globalKey.validation_message}</p>
             )}
         </div>
     );
