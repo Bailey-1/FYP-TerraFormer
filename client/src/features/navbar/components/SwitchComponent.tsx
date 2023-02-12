@@ -7,7 +7,9 @@ const SwitchComponent = () => {
     return (
         <Switch.Group>
             <div className="flex items-center">
-                <Switch.Label className="mr-4">Extra Detail</Switch.Label>
+                <Switch.Label className="mr-4 text-gray-200">
+                    Additional Detail
+                </Switch.Label>
                 <Switch
                     checked={enabled}
                     onChange={setEnabled}

@@ -11,15 +11,15 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import './index.css';
-import ColorSelectorNode from './components/ColorSelectorNode';
 import ResourceNode from './components/ResourceNode';
+import DataNode from './components/DataNode';
 
 const initBgColor = '#1A192B';
 
 const connectionLineStyle = { stroke: '#fff' };
 const nodeTypes = {
-    selectorNode: ColorSelectorNode,
     resourceNode: ResourceNode,
+    dataNode: DataNode,
 };
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
@@ -87,6 +87,12 @@ const ReactFlowComponent = () => {
                 data: null,
                 position: { x: 300, y: 50 },
             },
+            {
+                id: '6',
+                type: 'dataNode',
+                data: null,
+                position: { x: 400, y: 50 },
+            },
         ]);
 
         setEdges([
@@ -137,7 +143,7 @@ const ReactFlowComponent = () => {
             fitView
             attributionPosition="bottom-left"
         >
-            <MiniMap />
+            <MiniMap zoomable pannable />
             <Controls />
         </ReactFlow>
     );

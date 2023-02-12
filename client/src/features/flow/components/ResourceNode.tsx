@@ -1,89 +1,45 @@
-import { Handle, Position } from 'reactflow';
 import React from 'react';
+import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
+import ResourceNodeKeySelect from './keys/ResourceNodeKeySelect';
+import { Disclosure } from '@headlessui/react';
+import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
 
-const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
+const PillButton = ({ children }: { children: string }) => {
     return (
-        <div className="flex p-1 relative grid grid-cols-3">
-            <Handle
-                type="target"
-                position={Position.Left}
-                id={`${pos}-b`}
-                style={{
-                    background: '#555',
-                    width: '15px',
-                    backgroundColor: 'lightblue',
-                    height: '15px',
-                    borderRadius: '10px',
-                    left: '-15px',
-                }}
-            />
-            <div className="col-span-1">
-                <p>Key Name:</p>
-            </div>
-            <div className="col-span-2">
-                <input
-                    type="text"
-                    style={{ padding: '0px' }}
-                    className="nodrag"
-                />
-            </div>
-            <Handle
-                type="source"
-                position={Position.Right}
-                id={`${pos}-b`}
-                style={{
-                    background: '#555',
-                    width: '15px',
-                    backgroundColor: 'pink',
-                    height: '15px',
-                    borderRadius: '10px',
-                    right: '-15px',
-                }}
-            />
-        </div>
+        <button className="text-xs bg-orange-300 rounded-full p-1 px-2 m-1 flex">
+            <div>{children}</div>
+            <PlusCircleIcon className="ml-1 h-4 w-4 text-gray-700" />
+        </button>
     );
 };
 
-const ResourceNodeKeySelect = ({ pos }: { pos: number }) => {
+const DisclosureComponent = () => {
     return (
-        <div className="flex p-1 relative grid grid-cols-3">
-            <Handle
-                type="target"
-                position={Position.Left}
-                id={`${pos}-b`}
-                style={{
-                    background: '#555',
-                    width: '15px',
-                    backgroundColor: 'lightblue',
-                    height: '15px',
-                    borderRadius: '10px',
-                    left: '-15px',
-                }}
-            />
-            <div className="col-span-1">
-                <p>Key Name:</p>
-            </div>
-            <div className="col-span-2">
-                <select style={{ padding: '0px' }} className="nodrag w-full">
-                    <option value="option-1">Option 1</option>
-                    <option value="option-2">Option 2</option>
-                    <option value="option-3">Option 3</option>
-                </select>
-            </div>
-
-            <Handle
-                type="source"
-                position={Position.Right}
-                id={`${pos}-b`}
-                style={{
-                    background: '#555',
-                    width: '15px',
-                    backgroundColor: 'pink',
-                    height: '15px',
-                    borderRadius: '10px',
-                    right: '-15px',
-                }}
-            />
+        <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                            <span>What is your refund policy?</span>
+                            <ChevronUpIcon
+                                className={`${
+                                    open ? 'rotate-180 transform' : ''
+                                } h-5 w-5 text-purple-500`}
+                            />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500 flex flex-wrap justify-center">
+                            <PillButton>Example Button</PillButton>
+                            <PillButton>Button</PillButton>
+                            <PillButton>Button 2</PillButton>
+                            <PillButton>Another Button</PillButton>
+                            <PillButton>Button 3</PillButton>
+                            <PillButton>Another Button</PillButton>
+                            <PillButton>Btn 3</PillButton>
+                        </Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
         </div>
     );
 };
@@ -97,6 +53,7 @@ const ResourceNode = () => {
             <ResourceNodeKeyInput pos={2} />
             <ResourceNodeKeySelect pos={3} />
             <ResourceNodeKeySelect pos={4} />
+            <DisclosureComponent />
         </div>
     );
 };
