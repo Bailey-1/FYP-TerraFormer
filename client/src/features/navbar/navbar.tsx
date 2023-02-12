@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
-import SelectedResources from '../SelectedResources/SelectedResources';
+import ReactFlowComponent from '../flow/ReactFlowComponent';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -89,7 +89,8 @@ const Navbar = () => {
                         className="flex h-full min-w-0 overflow-y-auto order-last flex-1 flex-col p-2"
                     >
                         {/*<h1>Selected resource list here</h1>*/}
-                        <SelectedResources />
+                        {/*<SelectedResources />*/}
+                        <ReactFlowComponent />
                     </section>
 
                     {/* Available resources */}
