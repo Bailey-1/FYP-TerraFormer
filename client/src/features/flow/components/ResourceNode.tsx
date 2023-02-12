@@ -3,7 +3,7 @@ import React from 'react';
 
 const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
     return (
-        <div className="flex p-1 relative">
+        <div className="flex p-1 relative grid grid-cols-3">
             <Handle
                 type="target"
                 position={Position.Left}
@@ -17,8 +17,16 @@ const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
                     left: '-15px',
                 }}
             />
-            <p>Key Name:</p>
-            <input type="text" style={{ padding: '0px' }} className="nodrag" />
+            <div className="col-span-1">
+                <p>Key Name:</p>
+            </div>
+            <div className="col-span-2">
+                <input
+                    type="text"
+                    style={{ padding: '0px' }}
+                    className="nodrag"
+                />
+            </div>
             <Handle
                 type="source"
                 position={Position.Right}
@@ -38,7 +46,7 @@ const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
 
 const ResourceNodeKeySelect = ({ pos }: { pos: number }) => {
     return (
-        <div className="flex p-1 relative">
+        <div className="flex p-1 relative grid grid-cols-3">
             <Handle
                 type="target"
                 position={Position.Left}
@@ -52,12 +60,17 @@ const ResourceNodeKeySelect = ({ pos }: { pos: number }) => {
                     left: '-15px',
                 }}
             />
-            <p>Key Name:</p>
-            <select style={{ padding: '0px' }} className="nodrag">
-                <option value="option-1">Option 1</option>
-                <option value="option-2">Option 2</option>
-                <option value="option-3">Option 3</option>
-            </select>
+            <div className="col-span-1">
+                <p>Key Name:</p>
+            </div>
+            <div className="col-span-2">
+                <select style={{ padding: '0px' }} className="nodrag w-full">
+                    <option value="option-1">Option 1</option>
+                    <option value="option-2">Option 2</option>
+                    <option value="option-3">Option 3</option>
+                </select>
+            </div>
+
             <Handle
                 type="source"
                 position={Position.Right}

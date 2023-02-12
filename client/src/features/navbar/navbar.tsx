@@ -6,6 +6,7 @@ import {
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
 import ReactFlowComponent from '../flow/ReactFlowComponent';
+import SwitchComponent from './components/SwitchComponent';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -39,7 +40,10 @@ const Navbar = () => {
                     </a>
                 </div>
 
-                <div className="p-2 m-2">
+                <div className="p-2 m-2 flex items-center">
+                    <div className="mr-2">
+                        <SwitchComponent />
+                    </div>
                     <button className="p-2 px-4 m-2 bg-green-800 hover:bg-green-900 rounded-lg text-gray-100">
                         Export to HCL
                     </button>
