@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
     addEdge,
+    Background,
     Connection,
     Controls,
     MiniMap,
     Position,
+    ReactFlowProvider,
     useEdgesState,
     useNodesState,
 } from 'reactflow';
@@ -130,22 +132,25 @@ const ReactFlowComponent = () => {
         [],
     );
     return (
-        <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            style={{ background: bgColor }}
-            nodeTypes={nodeTypes}
-            connectionLineStyle={connectionLineStyle}
-            defaultViewport={defaultViewport}
-            fitView
-            attributionPosition="bottom-left"
-        >
-            <MiniMap zoomable pannable />
-            <Controls />
-        </ReactFlow>
+        <ReactFlowProvider>
+            <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                // style={{ background: bgColor }}
+                nodeTypes={nodeTypes}
+                connectionLineStyle={connectionLineStyle}
+                defaultViewport={defaultViewport}
+                fitView
+                attributionPosition="bottom-left"
+            >
+                <MiniMap zoomable pannable />
+                <Controls />
+                <Background color="#aaa" gap={16} size={2} />
+            </ReactFlow>
+        </ReactFlowProvider>
     );
 };
 
