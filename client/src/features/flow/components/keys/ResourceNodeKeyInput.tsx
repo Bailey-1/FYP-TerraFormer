@@ -1,13 +1,23 @@
 import { Handle, Position } from 'reactflow';
 import React from 'react';
+import {
+    IResourceKeyState,
+    IResourceState,
+} from '../../../../interfaces/IResourceState';
 
-const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
+const ResourceNodeKeyInput = ({
+    keyState,
+    resourceState,
+}: {
+    keyState: IResourceKeyState;
+    resourceState: IResourceState;
+}) => {
     return (
         <div className="flex p-1 relative grid grid-cols-3">
             <Handle
                 type="target"
                 position={Position.Left}
-                id={`${pos}-b`}
+                id={`${keyState.name}-b`}
                 style={{
                     background: '#555',
                     width: '15px',
@@ -18,7 +28,7 @@ const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
                 }}
             />
             <div className="col-span-1">
-                <p>Key Name:</p>
+                <p>{keyState.name}</p>
             </div>
             <div className="col-span-2">
                 <input
@@ -30,7 +40,7 @@ const ResourceNodeKeyInput = ({ pos }: { pos: number }) => {
             <Handle
                 type="source"
                 position={Position.Right}
-                id={`${pos}-b`}
+                id={`${keyState.name}-b`}
                 style={{
                     background: '#555',
                     width: '15px',

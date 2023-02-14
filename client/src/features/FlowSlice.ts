@@ -17,20 +17,7 @@ interface CounterState {
 
 // Define the initial state using that type
 const initialState: CounterState = {
-    nodes: [
-        {
-            id: Math.random().toString(),
-            position: { x: 100, y: 50 },
-            data: {},
-            type: 'resourceNode',
-        },
-        {
-            id: Math.random().toString(),
-            position: { x: 100, y: 250 },
-            data: {},
-            type: 'resourceNode',
-        },
-    ],
+    nodes: [],
     edges: [],
 };
 
@@ -50,14 +37,14 @@ export const flowSlice = createSlice({
             state.nodes = applyNodeChanges(action.payload, state.nodes);
         },
         onConnect: (state, action: PayloadAction<Connection>) => {
-            state.edges = addEdge(action.payload, state.edges);
+            // Check node is different from self
+            if (action.payload.source !== action.payload.target) {
+                state.edges = addEdge(action.payload, state.edges);
+            }
         },
     },
 });
 
 export const { addNode, onNodesChange, onConnect } = flowSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-// export const selectCount = (state: RootState) => state.counter.value;
 
 export default flowSlice;

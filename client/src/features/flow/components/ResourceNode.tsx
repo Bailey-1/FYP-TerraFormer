@@ -1,9 +1,10 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { useNodeId, useUpdateNodeInternals } from 'reactflow';
+import { IResourceState } from '../../../interfaces/IResourceState';
 
 const PillButton = ({
     children,
@@ -53,15 +54,17 @@ const DisclosureComponent = ({
     );
 };
 
-const ResourceNode = (data: any) => {
-    console.log(`data: ${JSON.stringify(data)}`);
+const ResourceNode = ({
+    data,
+}: {
+    data: { resourceState: IResourceState };
+}) => {
+    console.log(`data.resourceState: ${JSON.stringify(data.resourceState)}`);
     const nodeId = useNodeId();
     const updateNodeInternals = useUpdateNodeInternals();
 
-    const [keys, setKeys] = useState<string[]>([]);
-
     const onClick = (val: string) => {
-        setKeys((prevState) => [...prevState, val]);
+        // setKeys((prevState) => [...prevState, val]);
 
         if (nodeId) {
             updateNodeInternals(nodeId);
@@ -71,6 +74,7 @@ const ResourceNode = (data: any) => {
     return (
         <div className="bg-gray-300 p-2 rounded border border-black">
             <h1 className="text-xl">Resource Name</h1>
+            <h2 className="text-base">{data.resourceState.type}</h2>
             <p>NodeID: {nodeId}</p>
 
             {/*<ResourceNodeKeyInput pos={1} />*/}
@@ -78,8 +82,14 @@ const ResourceNode = (data: any) => {
             {/*<ResourceNodeKeySelect pos={3} />*/}
             {/*<ResourceNodeKeySelect pos={4} />*/}
 
-            {keys.reverse().map((x, i) => {
-                return <ResourceNodeKeyInput pos={i} key={i} />;
+            {data.resourceState.keys.map((x, i) => {
+                return (
+                    <ResourceNodeKeyInput
+                        key={x.name}
+                        keyState={x}
+                        resourceState={data.resourceState}
+                    />
+                );
             })}
 
             <DisclosureComponent onClick={onClick} />
