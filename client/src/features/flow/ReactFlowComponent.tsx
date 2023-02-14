@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import ReactFlow, {
     Background,
     Connection,
     Controls,
+    Edge,
+    EdgeChange,
     MiniMap,
     NodeChange,
     ReactFlowProvider,
@@ -14,7 +16,12 @@ import ResourceNode from './components/ResourceNode';
 import DataNode from './components/DataNode';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { onConnect, onNodesChange } from '../FlowSlice';
+import {
+    onConnect,
+    onEdgesChange,
+    onEdgesUpdate,
+    onNodesChange,
+} from '../FlowSlice';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
@@ -34,9 +41,47 @@ const ReactFlowComponent = () => {
         dispatch(onNodesChange(changes));
     };
 
+    const edgeChange = (changes: EdgeChange[]) => {
+        dispatch(onEdgesChange(changes));
+    };
+
     const edgeConnect = (changes: Connection) => {
         dispatch(onConnect(changes));
     };
+
+    const edgeUpdateSuccessful = useRef(true);
+
+    const onEdgeUpdateStart = useCallback(() => {
+        edgeUpdateSuccessful.current = false;
+    }, []);
+
+    const edgeUpdate = useCallback(
+        (oldEdge: Edge, newConnection: Connection) => {
+            edgeUpdateSuccessful.current = true;
+            dispatch(
+                onEdgesUpdate({
+                    oldEdge,
+                    newConnection,
+                }),
+            );
+        },
+        [],
+    );
+
+    const onEdgeUpdateEnd = useCallback((_: any, edge: Edge) => {
+        if (!edgeUpdateSuccessful.current) {
+            dispatch(
+                onEdgesChange([
+                    {
+                        id: edge.id,
+                        type: 'remove',
+                    },
+                ]),
+            );
+        }
+
+        edgeUpdateSuccessful.current = true;
+    }, []);
 
     return (
         <ReactFlowProvider>
@@ -44,7 +89,10 @@ const ReactFlowComponent = () => {
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={nodeChange}
-                // onEdgesChange={onEdgesChange}
+                onEdgesChange={edgeChange}
+                onEdgeUpdate={edgeUpdate}
+                onEdgeUpdateStart={onEdgeUpdateStart}
+                onEdgeUpdateEnd={onEdgeUpdateEnd}
                 onConnect={edgeConnect}
                 nodeTypes={nodeTypes}
                 connectionLineStyle={connectionLineStyle}

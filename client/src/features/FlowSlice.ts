@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
     addEdge,
+    applyEdgeChanges,
     applyNodeChanges,
     Connection,
     Edge,
+    EdgeChange,
     Node,
     NodeChange,
+    updateEdge,
 } from 'reactflow';
 import {
     IResourceKeyState,
@@ -77,10 +80,32 @@ export const flowSlice = createSlice({
                 });
             }
         },
+        onEdgesChange: (state, action: PayloadAction<EdgeChange[]>) => {
+            state.edges = applyEdgeChanges(action.payload, state.edges);
+        },
+        onEdgesUpdate: (
+            state,
+            action: PayloadAction<{
+                oldEdge: Edge;
+                newConnection: Connection;
+            }>,
+        ) => {
+            state.edges = updateEdge(
+                action.payload.oldEdge,
+                action.payload.newConnection,
+                state.edges,
+            );
+        },
     },
 });
 
-export const { addNode, onNodesChange, onConnect, updateNodeKey } =
-    flowSlice.actions;
+export const {
+    addNode,
+    onNodesChange,
+    onConnect,
+    updateNodeKey,
+    onEdgesChange,
+    onEdgesUpdate,
+} = flowSlice.actions;
 
 export default flowSlice;
