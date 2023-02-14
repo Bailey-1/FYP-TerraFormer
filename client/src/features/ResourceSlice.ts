@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IResourceState } from '../interfaces/IResourceState';
+import { INodeState, IResourceState } from '../interfaces/IResourceState';
 import resourceLookup from '../resources/ResourceLookup';
 import { IResourceKeyResource } from '../interfaces/IResourceObject';
 
 // Define a type for the slice state
 interface CounterState {
-    resources: IResourceState[];
+    resources: INodeState[];
 }
 
 // Define the initial state using that type
@@ -19,13 +19,19 @@ export const resourceSlice = createSlice({
     reducers: {
         addResource: (state, action: PayloadAction<IResourceState>) => {
             console.log(action.payload);
-            state.resources.push(action.payload);
+            state.resources.push({
+                id: Math.random().toString(),
+                position: { x: 100, y: 50 },
+                data: { state: action.payload },
+            });
 
             // Loop through resources to check validity of the instance name
             state.resources.forEach((r) => {
-                r.instance_name_valid = !(
+                r.data.state.instance_name_valid = !(
                     state.resources.filter(
-                        (x) => x.instance_name === r.instance_name,
+                        (x) =>
+                            x.data.state.instance_name ===
+                            r.data.state.instance_name,
                     ).length > 1
                 );
             });
@@ -40,7 +46,7 @@ export const resourceSlice = createSlice({
             }>,
         ) => {
             const resource = state.resources.find(
-                (x) => x.id === action.payload.id,
+                (x) => x.data.state.id === action.payload.id,
             );
 
             if (!resource) {
@@ -48,7 +54,7 @@ export const resourceSlice = createSlice({
                 return;
             }
 
-            const existingEl = resource.keys.find(
+            const existingEl = resource.data.state.keys.find(
                 (x) => x.name === action.payload.key,
             );
 
@@ -56,7 +62,7 @@ export const resourceSlice = createSlice({
                 existingEl.value = action.payload.value;
                 existingEl.valid = action.payload.valid;
             } else {
-                resource.keys.push({
+                resource.data.state.keys.push({
                     name: action.payload.key,
                     value: action.payload.value,
                     valid: false,
@@ -71,7 +77,7 @@ export const resourceSlice = createSlice({
             }>,
         ) => {
             const resource = state.resources.find(
-                (x) => x.id === action.payload.id,
+                (x) => x.data.state.id === action.payload.id,
             );
 
             if (!resource) {
@@ -81,14 +87,16 @@ export const resourceSlice = createSlice({
             }
 
             const resourceType = resourceLookup.find(
-                (x) => x.name === resource.type,
+                (x) => x.name === resource.data.state.type,
             )!;
 
             state.resources.forEach((r) => {
-                const rtype = resourceLookup.find((x) => x.name === r.type);
+                const rtype = resourceLookup.find(
+                    (x) => x.name === r.data.state.type,
+                );
 
                 if (rtype) {
-                    r.keys.forEach((k) => {
+                    r.data.state.keys.forEach((k) => {
                         const sameResourceTypeKey = rtype.keys.find(
                             (x) =>
                                 x.name === k.name &&
@@ -104,14 +112,16 @@ export const resourceSlice = createSlice({
             });
 
             state.resources = state.resources.filter(
-                (x) => x.id !== action.payload.id,
+                (x) => x.data.state.id !== action.payload.id,
             );
 
             // Loop through resources to check validity of the instance name
             state.resources.forEach((r) => {
-                r.instance_name_valid = !(
+                r.data.state.instance_name_valid = !(
                     state.resources.filter(
-                        (x) => x.instance_name === r.instance_name,
+                        (x) =>
+                            x.data.state.instance_name ===
+                            r.data.state.instance_name,
                     ).length > 1
                 );
             });
@@ -124,18 +134,20 @@ export const resourceSlice = createSlice({
             }>,
         ) => {
             const resource = state.resources.find(
-                (x) => x.id === action.payload.id,
+                (x) => x.data.state.id === action.payload.id,
             );
 
             if (resource) {
-                resource.instance_name = action.payload.name;
+                resource.data.state.instance_name = action.payload.name;
             }
 
             // Loop through resources to check validity of the instance name
             state.resources.forEach((r) => {
-                r.instance_name_valid = !(
+                r.data.state.instance_name_valid = !(
                     state.resources.filter(
-                        (x) => x.instance_name === r.instance_name,
+                        (x) =>
+                            x.data.state.instance_name ===
+                            r.data.state.instance_name,
                     ).length > 1
                 );
             });

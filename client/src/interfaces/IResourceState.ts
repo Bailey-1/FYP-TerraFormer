@@ -15,3 +15,9 @@ export interface IResourceState {
     instance_name: string;
     instance_name_valid: boolean;
 }
+
+export interface INodeState {
+    id: string;
+    position: { x: number; y: number };
+    data: { state: IResourceState };
+}

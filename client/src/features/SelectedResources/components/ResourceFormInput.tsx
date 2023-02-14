@@ -71,6 +71,7 @@ const ResourceFormInput = ({
                     globalKey={globalKey}
                     resourceState={resourceState}
                     options={allResources
+                        .map((x) => x.data.state)
                         .filter((x) => x.type === globalKey.resource_type)
                         .sort()}
                 />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
@@ -53,7 +53,8 @@ const DisclosureComponent = ({
     );
 };
 
-const ResourceNode = () => {
+const ResourceNode = (data: any) => {
+    console.log(`data: ${JSON.stringify(data)}`);
     const nodeId = useNodeId();
     const updateNodeInternals = useUpdateNodeInternals();
 
@@ -86,4 +87,4 @@ const ResourceNode = () => {
     );
 };
 
-export default ResourceNode;
+export default memo(ResourceNode);

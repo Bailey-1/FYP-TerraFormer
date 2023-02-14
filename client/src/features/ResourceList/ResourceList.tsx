@@ -1,10 +1,10 @@
 import ResourceElement from './components/ResourceElement';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { addResource } from '../ResourceSlice';
 import ResourceLookup from '../../resources/ResourceLookup';
 import resourceLookup from '../../resources/ResourceLookup';
 import { useState } from 'react';
+import { addNode } from '../FlowSlice';
 
 const ResourceList = ({ filter }: { filter: string | null }) => {
     const [currentId, setCurrentId] = useState(0);
@@ -25,7 +25,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                         key={x.name}
                         addResource={() => {
                             dispatch(
-                                addResource({
+                                addNode({
                                     id: currentId,
                                     type: x.name,
                                     valid: false,
