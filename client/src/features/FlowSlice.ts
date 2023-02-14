@@ -9,11 +9,10 @@ import {
     Node,
     NodeChange,
     updateEdge,
+    XYPosition,
 } from 'reactflow';
-import {
-    IResourceKeyState,
-    IResourceState,
-} from '../interfaces/IResourceState';
+import { IResourceKeyState } from '../interfaces/IResourceState';
+import ResourceLookup from '../resources/ResourceLookup';
 
 // Define a type for the slice state
 interface CounterState {
@@ -31,11 +30,33 @@ export const flowSlice = createSlice({
     name: 'nodes',
     initialState,
     reducers: {
-        addNode: (state, action: PayloadAction<IResourceState>) => {
+        addNode: (
+            state,
+            action: PayloadAction<{ name: string; position: XYPosition }>,
+        ) => {
             state.nodes.push({
                 id: Math.random().toString(),
-                position: { x: 100, y: 50 },
-                data: { resourceState: action.payload },
+                position: action.payload.position,
+                data: {
+                    resourceState: {
+                        id: Math.random().toString(),
+                        type: action.payload.name,
+                        valid: false,
+                        instance_name: action.payload.name,
+                        instance_name_valid: false,
+                        keys:
+                            ResourceLookup.find(
+                                (y) => y.name === action.payload.name,
+                            )?.keys.map((key: any) => {
+                                return {
+                                    id: Math.random().toString(),
+                                    name: key.name,
+                                    value: '',
+                                    valid: false,
+                                };
+                            }) || [],
+                    },
+                },
                 type: 'resourceNode',
             });
         },

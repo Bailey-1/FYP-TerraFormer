@@ -7,6 +7,7 @@ import { useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { IResourceState } from '../../../interfaces/IResourceState';
 import { useDispatch } from 'react-redux';
 import { updateNodeKey } from '../../FlowSlice';
+import resourceLookup from '../../../resources/ResourceLookup';
 
 const PillButton = ({
     children,
@@ -67,6 +68,10 @@ const ResourceNode = ({
     const nodeId = useNodeId();
     const updateNodeInternals = useUpdateNodeInternals();
 
+    const globalResource = resourceLookup.find(
+        (x) => x.name === data.resourceState.type,
+    );
+
     const onClick = (val: string) => {
         // setKeys((prevState) => [...prevState, val]);
 
@@ -85,16 +90,15 @@ const ResourceNode = ({
         );
     };
 
+    if (!globalResource) {
+        return <p>Error: globalResource is not defined {globalResource}</p>;
+    }
+
     return (
         <div className="bg-gray-300 p-2 rounded border border-black">
-            <h1 className="text-xl">Resource Name</h1>
+            <h1 className="text-xl">{globalResource.display_name}</h1>
             <h2 className="text-base">{data.resourceState.type}</h2>
             <p>NodeID: {nodeId}</p>
-
-            {/*<ResourceNodeKeyInput pos={1} />*/}
-            {/*<ResourceNodeKeyInput pos={2} />*/}
-            {/*<ResourceNodeKeySelect pos={3} />*/}
-            {/*<ResourceNodeKeySelect pos={4} />*/}
 
             {data.resourceState.keys.map((x, i) => {
                 return (
