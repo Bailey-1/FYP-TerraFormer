@@ -1,4 +1,5 @@
 export interface IResourceKeyState {
+    id: string;
     name: string;
     // type: 'string';
     value: string;

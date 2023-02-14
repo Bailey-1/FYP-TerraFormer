@@ -66,6 +66,7 @@ export const resourceSlice = createSlice({
                     name: action.payload.key,
                     value: action.payload.value,
                     valid: false,
+                    id: Math.random().toString(),
                     // touched: false,
                 });
             }

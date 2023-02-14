@@ -7,7 +7,10 @@ import {
     Node,
     NodeChange,
 } from 'reactflow';
-import { IResourceState } from '../interfaces/IResourceState';
+import {
+    IResourceKeyState,
+    IResourceState,
+} from '../interfaces/IResourceState';
 
 // Define a type for the slice state
 interface CounterState {
@@ -42,9 +45,42 @@ export const flowSlice = createSlice({
                 state.edges = addEdge(action.payload, state.edges);
             }
         },
+        updateNodeKey: (
+            state,
+            action: PayloadAction<{
+                nodeId: string;
+                key: string;
+                value: string;
+            }>,
+        ) => {
+            const node = state.nodes.find(
+                (x) => x.id === action.payload.nodeId,
+            );
+
+            if (!node) {
+                console.error('Resource does not exist', action.payload);
+                return;
+            }
+
+            const existingEl = node.data.resourceState.keys.find(
+                (x: IResourceKeyState) => x.name === action.payload.key,
+            );
+
+            if (existingEl) {
+                existingEl.value = action.payload.value;
+            } else {
+                node.data.resourceState.keys.push({
+                    id: Math.random().toString(),
+                    name: action.payload.key,
+                    value: action.payload.value,
+                    valid: true,
+                });
+            }
+        },
     },
 });
 
-export const { addNode, onNodesChange, onConnect } = flowSlice.actions;
+export const { addNode, onNodesChange, onConnect, updateNodeKey } =
+    flowSlice.actions;
 
 export default flowSlice;

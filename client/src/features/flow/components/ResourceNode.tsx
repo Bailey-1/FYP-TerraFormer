@@ -5,6 +5,8 @@ import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { IResourceState } from '../../../interfaces/IResourceState';
+import { useDispatch } from 'react-redux';
+import { updateNodeKey } from '../../FlowSlice';
 
 const PillButton = ({
     children,
@@ -55,11 +57,13 @@ const DisclosureComponent = ({
 };
 
 const ResourceNode = ({
+    id,
     data,
 }: {
+    id: string;
     data: { resourceState: IResourceState };
 }) => {
-    console.log(`data.resourceState: ${JSON.stringify(data.resourceState)}`);
+    const dispatch = useDispatch();
     const nodeId = useNodeId();
     const updateNodeInternals = useUpdateNodeInternals();
 
@@ -69,6 +73,16 @@ const ResourceNode = ({
         if (nodeId) {
             updateNodeInternals(nodeId);
         }
+    };
+
+    const updateKey = (name: string, value: string) => {
+        dispatch(
+            updateNodeKey({
+                nodeId: nodeId || '',
+                key: name,
+                value,
+            }),
+        );
     };
 
     return (
@@ -88,6 +102,7 @@ const ResourceNode = ({
                         key={x.name}
                         keyState={x}
                         resourceState={data.resourceState}
+                        onChange={updateKey}
                     />
                 );
             })}

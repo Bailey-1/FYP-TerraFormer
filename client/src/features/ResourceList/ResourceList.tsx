@@ -36,6 +36,7 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                                             (y) => y.name === x.name,
                                         )?.keys.map((key: any) => {
                                             return {
+                                                id: Math.random().toString(),
                                                 name: key.name,
                                                 value: '',
                                                 valid: false,
