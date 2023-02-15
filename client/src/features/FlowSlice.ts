@@ -37,6 +37,7 @@ export const flowSlice = createSlice({
             state.nodes.push({
                 id: Math.random().toString(),
                 position: action.payload.position,
+                selectable: true,
                 data: {
                     resourceState: {
                         id: Math.random().toString(),

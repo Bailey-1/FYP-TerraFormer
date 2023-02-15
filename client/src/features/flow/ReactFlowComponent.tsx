@@ -11,7 +11,6 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import './index.css';
 import ResourceNode from './components/ResourceNode';
 import DataNode from './components/DataNode';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +23,7 @@ import {
     onNodesChange,
 } from '../FlowSlice';
 import resourceLookup from '../../resources/ResourceLookup';
+import Sidebar from '../sidebar/Sidebar';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
@@ -127,36 +127,44 @@ const ReactFlowComponent = () => {
     );
 
     return (
-        <ReactFlowProvider>
-            <div
-                className="reactflow-wrapper flex-grow h-full"
-                ref={reactFlowWrapper}
-            >
-                <ReactFlow
-                    nodes={nodes}
-                    edges={edges}
-                    onNodesChange={nodeChange}
-                    onEdgesChange={edgeChange}
-                    onEdgeUpdate={edgeUpdate}
-                    onEdgeUpdateStart={onEdgeUpdateStart}
-                    onEdgeUpdateEnd={onEdgeUpdateEnd}
-                    onDragOver={onDragOver}
-                    onDrop={onDrop}
-                    onConnect={edgeConnect}
-                    nodeTypes={nodeTypes}
-                    connectionLineStyle={connectionLineStyle}
-                    defaultViewport={defaultViewport}
-                    onInit={setReactFlowInstance}
-                    fitView
-                    attributionPosition="bottom-left"
-                    defaultEdgeOptions={{ style: { stroke: 'black' } }}
+        <div className="h-full flex">
+            <ReactFlowProvider>
+                <div
+                    className="reactflow-wrapper flex-grow h-full"
+                    ref={reactFlowWrapper}
                 >
-                    <MiniMap zoomable pannable />
-                    <Controls />
-                    <Background color="#aaa" gap={16} size={2} />
-                </ReactFlow>
-            </div>
-        </ReactFlowProvider>
+                    <ReactFlow
+                        nodes={nodes}
+                        edges={edges}
+                        onNodesChange={nodeChange}
+                        onEdgesChange={edgeChange}
+                        onEdgeUpdate={edgeUpdate}
+                        onEdgeUpdateStart={onEdgeUpdateStart}
+                        onEdgeUpdateEnd={onEdgeUpdateEnd}
+                        onDragOver={onDragOver}
+                        onDrop={onDrop}
+                        onConnect={edgeConnect}
+                        nodeTypes={nodeTypes}
+                        connectionLineStyle={connectionLineStyle}
+                        defaultViewport={defaultViewport}
+                        onInit={setReactFlowInstance}
+                        fitView
+                        attributionPosition="bottom-left"
+                        defaultEdgeOptions={{ style: { stroke: 'black' } }}
+                    >
+                        <MiniMap zoomable pannable />
+                        <Controls />
+                        <Background
+                            className="bg-gray-800"
+                            color="#38bdf8"
+                            gap={25}
+                            size={2}
+                        />
+                    </ReactFlow>
+                </div>
+            </ReactFlowProvider>
+            <Sidebar />
+        </div>
     );
 };
 

@@ -60,9 +60,11 @@ const DisclosureComponent = ({
 const ResourceNode = ({
     id,
     data,
+    selected,
 }: {
     id: string;
     data: { resourceState: IResourceState };
+    selected: boolean;
 }) => {
     const dispatch = useDispatch();
     const nodeId = useNodeId();
@@ -95,7 +97,11 @@ const ResourceNode = ({
     }
 
     return (
-        <div className="bg-gray-300 p-2 rounded border border-black">
+        <div
+            className={`bg-gray-300 p-2 rounded border border-gray-400 ${
+                selected && 'border-gray-800'
+            }`}
+        >
             <h1 className="text-xl">{globalResource.display_name}</h1>
             <h2 className="text-base">{data.resourceState.type}</h2>
             <p>NodeID: {nodeId}</p>
