@@ -8,8 +8,20 @@ const ResourceElement = ({
     resource: IResourceObject;
     addResource: () => void;
 }) => {
+    const onDragStart = (
+        event: React.DragEvent<HTMLDivElement>,
+        nodeType: string,
+    ) => {
+        event.dataTransfer.setData('application/reactflow', nodeType);
+        event.dataTransfer.effectAllowed = 'move';
+    };
+
     return (
-        <div className="flex flex-row bg-gray-200 m-2 rounded-lg hover:bg-gray-300 border border-gray-300 hover:border-gray-400">
+        <div
+            className="flex flex-row bg-gray-200 m-2 rounded-lg hover:bg-gray-300 border border-gray-300 hover:border-gray-400 cursor-grab"
+            onDragStart={(event) => onDragStart(event, resource.name)}
+            draggable
+        >
             <div className="p-2 m-2 grow">
                 <div className="flex justify-between">
                     <h3 className="text-xl">{resource.display_name}</h3>
@@ -28,12 +40,6 @@ const ResourceElement = ({
                     Description of the resource.
                 </p>
             </div>
-            {/*<button*/}
-            {/*    className="bg-green-600 p-3 m-2 px-4 text-2xl font-bold text-gray-200 rounded-lg border border-green-900 hover:bg-green-700"*/}
-            {/*    onClick={addResource}*/}
-            {/*>*/}
-            {/*    +*/}
-            {/*</button>*/}
         </div>
     );
 };

@@ -5,7 +5,8 @@ import {
 } from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
-import SelectedResources from '../SelectedResources/SelectedResources';
+import ReactFlowComponent from '../flow/ReactFlowComponent';
+import SwitchComponent from './components/SwitchComponent';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -39,7 +40,10 @@ const Navbar = () => {
                     </a>
                 </div>
 
-                <div className="p-2 m-2">
+                <div className="p-2 m-2 flex items-center">
+                    <div className="mr-2">
+                        <SwitchComponent />
+                    </div>
                     <button className="p-2 px-4 m-2 bg-green-800 hover:bg-green-900 rounded-lg text-gray-100">
                         Export to HCL
                     </button>
@@ -89,7 +93,8 @@ const Navbar = () => {
                         className="flex h-full min-w-0 overflow-y-auto order-last flex-1 flex-col p-2"
                     >
                         {/*<h1>Selected resource list here</h1>*/}
-                        <SelectedResources />
+                        {/*<SelectedResources />*/}
+                        <ReactFlowComponent />
                     </section>
 
                     {/* Available resources */}

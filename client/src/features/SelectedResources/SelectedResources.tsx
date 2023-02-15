@@ -19,9 +19,9 @@ const SelectedResources = () => {
             {resource.length ? (
                 resource.map((x) => (
                     <ResourceForm
-                        key={x.id}
-                        resource={x}
-                        onDelete={() => onDelete(x.id)}
+                        key={x.data.state.id}
+                        resource={x.data.state}
+                        onDelete={() => onDelete(x.data.state.id)}
                     />
                 ))
             ) : (
