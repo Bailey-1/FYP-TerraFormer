@@ -86,11 +86,11 @@ const Navbar = () => {
                 </nav>
 
                 {/* Main area */}
-                <main className="border-gray-200 min-w-0 flex-1 border-t flex">
+                <main className="min-w-0 flex-1 flex">
                     {/* Primary column */}
                     <section
                         aria-labelledby="primary-heading"
-                        className="flex h-full min-w-0 overflow-y-auto order-last flex-1 flex-col p-2"
+                        className="flex h-full min-w-0 overflow-y-auto order-last flex-1 flex-col"
                     >
                         {/*<h1>Selected resource list here</h1>*/}
                         {/*<SelectedResources />*/}
@@ -99,7 +99,7 @@ const Navbar = () => {
 
                     {/* Available resources */}
                     <aside>
-                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-100">
+                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700">
                             {/*<h1>Available resource list here</h1>*/}
                             <ResourceList filter={currentProvider} />
                         </div>

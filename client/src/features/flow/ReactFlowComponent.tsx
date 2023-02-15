@@ -155,7 +155,7 @@ const ReactFlowComponent = () => {
                         <MiniMap zoomable pannable />
                         <Controls />
                         <Background
-                            className="bg-gray-800"
+                            className="bg-gray-700"
                             color="#38bdf8"
                             gap={25}
                             size={2}

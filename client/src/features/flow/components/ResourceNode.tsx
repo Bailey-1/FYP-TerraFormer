@@ -98,12 +98,16 @@ const ResourceNode = ({
 
     return (
         <div
-            className={`bg-gray-300 p-2 rounded border border-gray-400 ${
-                selected && 'border-gray-800'
+            className={`bg-gray-800 p-2 rounded border  ${
+                selected ? 'border-gray-400' : 'border-gray-800'
             }`}
         >
-            <h1 className="text-xl">{globalResource.display_name}</h1>
-            <h2 className="text-base">{data.resourceState.type}</h2>
+            <h1 className="text-xl text-blue-500">
+                {globalResource.display_name}
+            </h1>
+            <h2 className="text-base text-gray-500">
+                {data.resourceState.type}
+            </h2>
             <p>NodeID: {nodeId}</p>
 
             {data.resourceState.keys.map((x, i) => {
