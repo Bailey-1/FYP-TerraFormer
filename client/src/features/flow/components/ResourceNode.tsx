@@ -39,7 +39,7 @@ const DisclosureComponent = ({
     onClick: (val: string) => void;
 }) => {
     return (
-        <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
+        <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
             <Disclosure>
                 {({ open }) => (
                     <>
@@ -144,7 +144,7 @@ const ResourceNode = ({
                 <h1 className="text-xl text-blue-500">
                     {globalResource.display_name}
                 </h1>
-                <button className="h-8">
+                <button className="h-8 nodrag">
                     <XMarkIcon
                         className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
                         onClick={() => removeNode()}

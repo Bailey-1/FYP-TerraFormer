@@ -26,9 +26,6 @@ const ResourceFormInputKey = ({
             }
             onBlur={() => setTouched(true)}
         />
-        // {touched && !keyState.valid && (
-        //     <p className="text-red-600">{globalKey.validation_message}</p>
-        // )}
     );
 };
 

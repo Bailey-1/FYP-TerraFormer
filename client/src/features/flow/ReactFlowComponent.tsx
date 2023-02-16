@@ -10,6 +10,7 @@ import ReactFlow, {
     ReactFlowProvider,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+import './reactflow.css';
 
 import ResourceNode from './components/ResourceNode';
 import DataNode from './components/DataNode';

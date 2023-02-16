@@ -1,6 +1,6 @@
 import { IResourceKeyState } from '../../../../interfaces/IResourceState';
 import { IResourceKeyResource } from '../../../../interfaces/IResourceObject';
-import { Connection, Handle, Position, useNodeId } from 'reactflow';
+import { Handle, Position, useNodeId } from 'reactflow';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import React from 'react';
@@ -19,7 +19,10 @@ const ResourceNodeKeyResource = ({
     // Find any edges which link to this input
     const edgeData = useSelector((state: RootState) =>
         state.flow.edges.find(
-            (x) => x.target === nodeId && x.targetHandle === keyState.id,
+            (x) =>
+                x.target === nodeId &&
+                x.targetHandle ===
+                    `${globalKey.resource_type}---${globalKey.resource_property}`,
         ),
     );
 
@@ -42,19 +45,18 @@ const ResourceNodeKeyResource = ({
                 type="target"
                 position={Position.Left}
                 id={`${globalKey.resource_type}---${globalKey.resource_property}`}
+                className="bg-blue-300"
                 style={{
-                    background: '#555',
                     width: '15px',
-                    backgroundColor: 'lightblue',
                     height: '15px',
                     borderRadius: '10px',
                     left: '-15px',
                 }}
-                isValidConnection={(connection: Connection) => {
-                    debugger;
-                    console.log(connection);
-                    return true;
-                }}
+                // isValidConnection={(connection: Connection) => {
+                //     debugger;
+                //     console.log(connection);
+                //     return true;
+                // }}
             />
             <p>
                 {globalKey.resource_type} {globalKey.resource_property}
