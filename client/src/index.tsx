@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 import App from './App';
@@ -9,10 +9,13 @@ import { BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
 );
+
 root.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>,
+    <StrictMode>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </Provider>
+    </StrictMode>,
 );

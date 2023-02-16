@@ -150,13 +150,15 @@ const ReactFlowComponent = () => {
                         onInit={setReactFlowInstance}
                         fitView
                         attributionPosition="bottom-left"
-                        defaultEdgeOptions={{ style: { stroke: 'black' } }}
+                        defaultEdgeOptions={{
+                            style: { stroke: '#844fba', strokeWidth: '2px' },
+                        }}
                     >
                         <MiniMap zoomable pannable />
                         <Controls />
                         <Background
                             className="bg-gray-700"
-                            color="#38bdf8"
+                            color="#844fba"
                             gap={25}
                             size={2}
                         />

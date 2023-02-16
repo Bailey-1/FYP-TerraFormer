@@ -32,8 +32,7 @@ const ResourceNodeKeyInput = ({
             <div className="col-span-2">
                 <input
                     type="text"
-                    style={{ padding: '0px' }}
-                    className="nodrag"
+                    className="nodrag p-0 text-gray-800"
                     value={keyState.value}
                     onChange={(e) => onChange(keyState.name, e.target.value)}
                 />

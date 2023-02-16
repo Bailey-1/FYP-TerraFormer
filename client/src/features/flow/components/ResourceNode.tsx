@@ -2,7 +2,13 @@ import React, { memo } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
-import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
+import {
+    Connection,
+    Handle,
+    Position,
+    useNodeId,
+    useUpdateNodeInternals,
+} from 'reactflow';
 import { IResourceState } from '../../../interfaces/IResourceState';
 import { useDispatch } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../FlowSlice';
@@ -109,7 +115,7 @@ const ResourceNode = ({
 
     return (
         <div
-            className={`bg-gray-800 p-2 rounded border  ${
+            className={`bg-gray-800 p-2 rounded border text-gray-300 ${
                 selected ? 'border-gray-400' : 'border-gray-800'
             }`}
         >
@@ -125,6 +131,13 @@ const ResourceNode = ({
                     height: '15px',
                     borderRadius: '10px',
                     right: '-15px',
+                }}
+                isValidConnection={(connection: Connection) => {
+                    return (
+                        connection.targetHandle?.includes(
+                            globalResource.name,
+                        ) || false
+                    );
                 }}
             />
             <div className="flex justify-between">
