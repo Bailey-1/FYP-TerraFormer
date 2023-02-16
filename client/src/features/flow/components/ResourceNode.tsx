@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
-import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
-import { useNodeId, useUpdateNodeInternals } from 'reactflow';
+import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { IResourceState } from '../../../interfaces/IResourceState';
 import { useDispatch } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../FlowSlice';
 import resourceLookup from '../../../resources/ResourceLookup';
+import ResourceKeyDecider from './ResourceKeyDecider';
 
 const PillButton = ({
     children,
@@ -113,6 +113,20 @@ const ResourceNode = ({
                 selected ? 'border-gray-400' : 'border-gray-800'
             }`}
         >
+            {/* Completed resource node */}
+            <Handle
+                type="source"
+                position={Position.Right}
+                id={id}
+                style={{
+                    background: '#555',
+                    width: '15px',
+                    backgroundColor: 'pink',
+                    height: '15px',
+                    borderRadius: '10px',
+                    right: '-15px',
+                }}
+            />
             <div className="flex justify-between">
                 <h1 className="text-xl text-blue-500">
                     {globalResource.display_name}
@@ -131,10 +145,12 @@ const ResourceNode = ({
 
             {data.resourceState.keys.map((x, i) => {
                 return (
-                    <ResourceNodeKeyInput
-                        key={x.name}
+                    <ResourceKeyDecider
+                        key={x.id}
                         keyState={x}
-                        resourceState={data.resourceState}
+                        globalKey={globalResource.keys.find(
+                            (gk) => gk.name === x.name,
+                        )}
                         onChange={updateKey}
                     />
                 );

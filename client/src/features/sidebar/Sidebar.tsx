@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const Sidebar = () => {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     if (!open) {
         return null;

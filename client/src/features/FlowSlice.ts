@@ -62,6 +62,16 @@ export const flowSlice = createSlice({
             });
         },
         onNodesChange: (state, action: PayloadAction<NodeChange[]>) => {
+            action.payload.forEach((payload) => {
+                // Remove edges from redux when linked node is deleted
+                if (payload.type === 'remove') {
+                    state.edges = state.edges.filter(
+                        (x) =>
+                            x.source !== payload.id && x.target !== payload.id,
+                    );
+                }
+            });
+
             state.nodes = applyNodeChanges(action.payload, state.nodes);
         },
         onConnect: (state, action: PayloadAction<Connection>) => {
