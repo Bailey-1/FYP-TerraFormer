@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import { Disclosure } from '@headlessui/react';
-import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { IResourceState } from '../../../interfaces/IResourceState';
 import { useDispatch } from 'react-redux';
-import { updateNodeKey } from '../../FlowSlice';
+import { onNodesChange, updateNodeKey } from '../../FlowSlice';
 import resourceLookup from '../../../resources/ResourceLookup';
 
 const PillButton = ({
@@ -92,6 +92,17 @@ const ResourceNode = ({
         );
     };
 
+    const removeNode = () => {
+        dispatch(
+            onNodesChange([
+                {
+                    id: nodeId || '',
+                    type: 'remove',
+                },
+            ]),
+        );
+    };
+
     if (!globalResource) {
         return <p>Error: globalResource is not defined {globalResource}</p>;
     }
@@ -102,9 +113,17 @@ const ResourceNode = ({
                 selected ? 'border-gray-400' : 'border-gray-800'
             }`}
         >
-            <h1 className="text-xl text-blue-500">
-                {globalResource.display_name}
-            </h1>
+            <div className="flex justify-between">
+                <h1 className="text-xl text-blue-500">
+                    {globalResource.display_name}
+                </h1>
+                <button className="h-8">
+                    <XMarkIcon
+                        className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
+                        onClick={() => removeNode()}
+                    />
+                </button>
+            </div>
             <h2 className="text-base text-gray-500">
                 {data.resourceState.type}
             </h2>

@@ -21,7 +21,7 @@ export interface IResourceKeyResource {
     name: string;
     type: 'resource';
     resource_type: string;
-    options: string[];
+    resource_property: string; // The Attribute of the linked resource being referenced. E.g. name for resource groups, ID for service plans
     validation?: (value: string) => boolean;
     validation_message: string;
 }

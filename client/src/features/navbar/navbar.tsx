@@ -1,8 +1,4 @@
-import {
-    CloudIcon,
-    CommandLineIcon,
-    FaceSmileIcon,
-} from '@heroicons/react/24/outline';
+import { CloudIcon, CommandLineIcon } from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
 import ReactFlowComponent from '../flow/ReactFlowComponent';
@@ -34,9 +30,10 @@ const Navbar = () => {
                 <div className="absolute inset-y-0 left-0 static flex-shrink-0">
                     <a
                         href="#"
-                        className="flex h-16 w-16 items-center justify-center w-20"
+                        className="flex h-16 items-center justify-center pl-4 text-white text-3xl"
                     >
-                        <FaceSmileIcon className="h-8 w-auto text-white" />
+                        {/*<FaceSmileIcon className="h-8 w-auto text-white" />*/}
+                        TerraDesigner
                     </a>
                 </div>
 
