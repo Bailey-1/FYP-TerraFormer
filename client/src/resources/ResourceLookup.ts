@@ -96,6 +96,16 @@ const ResourceLookup: IResourceObject[] = [
                 validation_message: 'Must include the letter a',
             },
             {
+                name: 'resource group',
+                type: 'resource',
+                resource_type: 'azurerm_resource_group',
+                resource_property: 'name',
+                validation: (value: string): boolean => {
+                    return !!value.length;
+                },
+                validation_message: 'Must include the letter b',
+            },
+            {
                 name: 'os_type',
                 type: 'select',
                 options: ['Windows', 'Linux', 'LinuxContainer'],

@@ -40,7 +40,9 @@ const ResourceNodeKeyResource = ({
     return (
         <div className="relative">
             <h2>{globalKey.name}</h2>
-            <p className="text-gray-300">Linked Value: {sourceVal}</p>
+            <p className="text-gray-300">
+                Linked Value: {sourceVal}/{edgeData?.data}
+            </p>
             <Handle
                 type="target"
                 position={Position.Left}

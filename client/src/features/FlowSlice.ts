@@ -77,7 +77,10 @@ export const flowSlice = createSlice({
         onConnect: (state, action: PayloadAction<Connection>) => {
             // Check node is different from self
             if (action.payload.source !== action.payload.target) {
-                state.edges = addEdge(action.payload, state.edges);
+                state.edges = addEdge(
+                    { ...action.payload, type: 'selectEdge' },
+                    state.edges,
+                );
             }
         },
         updateNodeKey: (
@@ -128,6 +131,21 @@ export const flowSlice = createSlice({
                 state.edges,
             );
         },
+        onEdgesDataUpdate: (
+            state,
+            action: PayloadAction<{
+                edgeId: string;
+                data: string;
+            }>,
+        ) => {
+            const target = state.edges.find(
+                (x) => x.id === action.payload.edgeId,
+            );
+
+            if (target) {
+                target.data = action.payload.data;
+            }
+        },
     },
 });
 
@@ -138,6 +156,7 @@ export const {
     updateNodeKey,
     onEdgesChange,
     onEdgesUpdate,
+    onEdgesDataUpdate,
 } = flowSlice.actions;
 
 export default flowSlice;

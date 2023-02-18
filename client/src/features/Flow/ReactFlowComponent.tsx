@@ -25,11 +25,16 @@ import {
 } from '../FlowSlice';
 import resourceLookup from '../../resources/ResourceLookup';
 import SidebarComponent from '../Sidebar/SidebarComponent';
+import SelectEdge from './components/Edges/SelectEdge';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
     resourceNode: ResourceNode,
     dataNode: DataNode,
+};
+
+const edgeTypes = {
+    selectEdge: SelectEdge,
 };
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
@@ -40,9 +45,46 @@ const ReactFlowComponent = () => {
     const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
 
     const nodes = useSelector((state: RootState) => state.flow.nodes);
+    // const [localNodes, setLocalNodes] = useState(nodes);
+    // const [nodeChanges, setNodeChanges] = useState<NodeChange[]>([]);
+    // const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
+
     const edges = useSelector((state: RootState) => state.flow.edges);
 
+    // useEffect(() => {
+    //     setLocalNodes(nodes);
+    // }, [nodes]);
+    //
+    // useEffect(() => {
+    //     // console.log('useeffect');
+    //     const timer = setTimeout(() => {
+    //         // console.log('dispatch called');
+    //         if (nodeChanges) {
+    //             // console.log(nodeChanges);
+    //             // dispatch(onNodesChange(localSelect));
+    //             dispatch(onNodesChange([...nodeChanges, ...localSelect]));
+    //         }
+    //     }, 100);
+    //
+    //     return () => {
+    //         // console.log('timer cleared');
+    //         clearTimeout(timer);
+    //     };
+    // }, [nodeChanges]);
+
     const nodeChange = (changes: NodeChange[]) => {
+        // console.log('nodechange');
+        // console.log(changes[0].type);
+
+        // if (changes[0].type === 'position' && changes[0].dragging) {
+        //     setNodeChanges((prevState) => changes);
+        //     // console.log('local changes ', changes[0]);
+        // } else if (changes[0].type === 'select') {
+        //     // dispatch(onNodesChange(changes));
+        //     // setNodeChanges((prevState) => [...prevState, ...changes]);
+        //     setLocalSelect(() => changes);
+        // }
+        // setLocalNodes((prevState) => applyNodeChanges(changes, prevState));
         dispatch(onNodesChange(changes));
     };
 
@@ -152,6 +194,7 @@ const ReactFlowComponent = () => {
                         onDrop={onDrop}
                         onConnect={edgeConnect}
                         nodeTypes={nodeTypes}
+                        edgeTypes={edgeTypes}
                         connectionLineStyle={connectionLineStyle}
                         defaultViewport={defaultViewport}
                         onInit={setReactFlowInstance}
