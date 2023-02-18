@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from './features/navbar/navbar';
+import NavbarComponent from './features/Navbar/NavbarComponent';
 
 function App() {
-    return <Navbar />;
+    return <NavbarComponent />;
     // return <ReactFlowComponent />;
 }
 

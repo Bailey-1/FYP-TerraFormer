@@ -1,7 +1,7 @@
 import { CloudIcon, CommandLineIcon } from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
-import ReactFlowComponent from '../flow/ReactFlowComponent';
+import ReactFlowComponent from '../Flow/ReactFlowComponent';
 import SwitchComponent from './components/SwitchComponent';
 
 const sidebarNavigation = [
@@ -19,7 +19,7 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
 }
 
-const Navbar = () => {
+const NavbarComponent = () => {
     const [currentProvider, setCurrentProvider] = useState('all');
 
     return (
@@ -54,7 +54,7 @@ const Navbar = () => {
             <div className="flex min-h-0 flex-1 overflow-hidden">
                 {/* Narrow sidebar*/}
                 <nav
-                    aria-label="Sidebar"
+                    aria-label="SidebarComponent"
                     className="block flex-shrink-0 overflow-y-auto bg-gray-800"
                 >
                     <div className="relative flex w-20 flex-col space-y-3 p-3">
@@ -107,4 +107,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default NavbarComponent;

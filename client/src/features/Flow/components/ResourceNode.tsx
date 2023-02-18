@@ -123,11 +123,9 @@ const ResourceNode = ({
             <Handle
                 type="source"
                 position={Position.Right}
-                id={id}
+                id={globalResource.name}
                 style={{
-                    background: '#555',
                     width: '15px',
-                    backgroundColor: 'pink',
                     height: '15px',
                     borderRadius: '10px',
                     right: '-15px',

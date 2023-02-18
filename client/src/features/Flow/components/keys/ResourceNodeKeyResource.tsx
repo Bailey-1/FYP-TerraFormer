@@ -1,6 +1,6 @@
 import { IResourceKeyState } from '../../../../interfaces/IResourceState';
 import { IResourceKeyResource } from '../../../../interfaces/IResourceObject';
-import { Handle, Position, useNodeId } from 'reactflow';
+import { Connection, Handle, Position, useNodeId } from 'reactflow';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import React from 'react';
@@ -52,11 +52,13 @@ const ResourceNodeKeyResource = ({
                     borderRadius: '10px',
                     left: '-15px',
                 }}
-                // isValidConnection={(connection: Connection) => {
-                //     debugger;
-                //     console.log(connection);
-                //     return true;
-                // }}
+                isValidConnection={(connection: Connection) => {
+                    return (
+                        connection.sourceHandle?.includes(
+                            globalKey.resource_type,
+                        ) || false
+                    );
+                }}
             />
             <p>
                 {globalKey.resource_type} {globalKey.resource_property}

@@ -24,7 +24,7 @@ import {
     onNodesChange,
 } from '../FlowSlice';
 import resourceLookup from '../../resources/ResourceLookup';
-import Sidebar from '../sidebar/Sidebar';
+import SidebarComponent from '../Sidebar/SidebarComponent';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
@@ -63,12 +63,18 @@ const ReactFlowComponent = () => {
     const edgeUpdate = useCallback(
         (oldEdge: Edge, newConnection: Connection) => {
             edgeUpdateSuccessful.current = true;
-            dispatch(
-                onEdgesUpdate({
-                    oldEdge,
-                    newConnection,
-                }),
-            );
+
+            if (
+                newConnection.sourceHandle &&
+                newConnection.targetHandle?.includes(newConnection.sourceHandle)
+            ) {
+                dispatch(
+                    onEdgesUpdate({
+                        oldEdge,
+                        newConnection,
+                    }),
+                );
+            }
         },
         [dispatch],
     );
@@ -166,7 +172,7 @@ const ReactFlowComponent = () => {
                     </ReactFlow>
                 </div>
             </ReactFlowProvider>
-            <Sidebar />
+            <SidebarComponent />
         </div>
     );
 };
