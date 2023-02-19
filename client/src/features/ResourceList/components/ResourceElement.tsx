@@ -1,5 +1,6 @@
 // TODO: Make this resource collapsable to hide details
 import { IResourceObject } from '../../../interfaces/IResourceObject';
+import onDragStart from '../../../events/ResourceDragAndDrop';
 
 const ResourceElement = ({
     resource,
@@ -8,14 +9,6 @@ const ResourceElement = ({
     resource: IResourceObject;
     addResource: () => void;
 }) => {
-    const onDragStart = (
-        event: React.DragEvent<HTMLDivElement>,
-        nodeType: string,
-    ) => {
-        event.dataTransfer.setData('application/reactflow', nodeType);
-        event.dataTransfer.effectAllowed = 'move';
-    };
-
     return (
         <div
             className="flex flex-row bg-gray-800 m-2 rounded-lg hover:bg-gray-700 border border-gray-300 hover:border-gray-400 cursor-grab"
