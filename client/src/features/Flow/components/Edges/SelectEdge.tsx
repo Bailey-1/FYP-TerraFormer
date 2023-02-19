@@ -1,6 +1,9 @@
 import { EdgeProps, getBezierPath } from 'reactflow';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { onEdgesDataUpdate } from '../../../FlowSlice';
+import { RootState } from '../../../../store/store';
+import resourceLookup from '../../../../resources/ResourceLookup';
+import { useEffect } from 'react';
 
 const SelectEdge = ({
     id,
@@ -11,8 +14,28 @@ const SelectEdge = ({
     sourcePosition,
     targetPosition,
     markerEnd,
+    data,
 }: EdgeProps) => {
     const dispatch = useDispatch();
+
+    const sourceNode = useSelector((state: RootState) =>
+        state.flow.nodes.find((x) => x.id === data?.connection?.source),
+    );
+
+    const resourceNode = resourceLookup.find(
+        (x) => x.name === sourceNode?.data.resourceState.type,
+    );
+
+    const resourceAttributes = resourceNode?.attributes || [];
+
+    useEffect(() => {
+        dispatch(
+            onEdgesDataUpdate({
+                edgeId: id,
+                data: resourceAttributes[0] || '',
+            }),
+        );
+    }, []);
 
     const [edgePath, labelX, labelY] = getBezierPath({
         sourceX,
@@ -54,16 +77,12 @@ const SelectEdge = ({
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
                 <div>
-                    {/*<button*/}
-                    {/*    className="edgebutton"*/}
-                    {/*    onClick={(event) => onEdgeClick(event, id)}*/}
-                    {/*>*/}
-                    {/*    ×*/}
-                    {/*</button>*/}
                     <select onChange={(e) => onChange(e, id)}>
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                        {resourceAttributes.map((x) => (
+                            <option key={x} value={x}>
+                                {x}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </foreignObject>

@@ -78,7 +78,11 @@ export const flowSlice = createSlice({
             // Check node is different from self
             if (action.payload.source !== action.payload.target) {
                 state.edges = addEdge(
-                    { ...action.payload, type: 'selectEdge' },
+                    {
+                        ...action.payload,
+                        type: 'selectEdge',
+                        data: { connection: action.payload, value: '' },
+                    },
                     state.edges,
                 );
             }
@@ -143,7 +147,7 @@ export const flowSlice = createSlice({
             );
 
             if (target) {
-                target.data = action.payload.data;
+                target.data.value = action.payload.data;
             }
         },
     },

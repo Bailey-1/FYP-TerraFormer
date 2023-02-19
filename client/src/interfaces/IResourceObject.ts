@@ -34,4 +34,5 @@ export interface IResourceObject {
     docs: string;
     validation?: () => boolean;
     keys: (IResourceKey | IResourceKeySelect | IResourceKeyResource)[];
+    attributes: string[];
 }

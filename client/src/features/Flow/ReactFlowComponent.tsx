@@ -75,7 +75,7 @@ const ReactFlowComponent = () => {
     const nodeChange = (changes: NodeChange[]) => {
         // console.log('nodechange');
         // console.log(changes[0].type);
-
+        //
         // if (changes[0].type === 'position' && changes[0].dragging) {
         //     setNodeChanges((prevState) => changes);
         //     // console.log('local changes ', changes[0]);

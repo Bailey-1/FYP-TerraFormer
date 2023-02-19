@@ -30,6 +30,7 @@ const ResourceLookup: IResourceObject[] = [
                 validation_message: 'Must include the letter b',
             },
         ],
+        attributes: ['id', 'name', 'location'],
     },
     {
         name: 'azurerm_container_registry',
@@ -60,6 +61,7 @@ const ResourceLookup: IResourceObject[] = [
                 validation_message: '',
             },
         ],
+        attributes: [],
     },
     {
         name: 'aws_test1',
@@ -68,6 +70,7 @@ const ResourceLookup: IResourceObject[] = [
         docs: 'todo add docs',
         validation: () => true,
         keys: [],
+        attributes: [],
     },
     {
         name: 'aws_test2',
@@ -76,6 +79,7 @@ const ResourceLookup: IResourceObject[] = [
         docs: 'todo add docs',
         validation: () => true,
         keys: [],
+        attributes: [],
     },
     {
         name: 'azurerm_service_plan',
@@ -153,6 +157,7 @@ const ResourceLookup: IResourceObject[] = [
                 validation_message: 'Must include the letter b',
             },
         ],
+        attributes: [],
     },
     {
         name: 'azurerm_linux_web_app',
@@ -183,6 +188,7 @@ const ResourceLookup: IResourceObject[] = [
                 validation_message: 'Must include the letter b',
             },
         ],
+        attributes: [],
     },
 ];
 
