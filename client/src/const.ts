@@ -2,6 +2,7 @@ const k = {
     providers: {
         azure: 'azure',
         aws: 'aws',
+        gcp: 'gcp',
     },
     azure: {
         regions: [

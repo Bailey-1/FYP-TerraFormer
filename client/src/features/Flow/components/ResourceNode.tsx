@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../FlowSlice';
 import resourceLookup from '../../../resources/ResourceLookup';
 import ResourceKeyDecider from './ResourceKeyDecider';
+import providerColours from '../../../resources/ProviderColours';
 
 const PillButton = ({
     children,
@@ -115,8 +116,8 @@ const ResourceNode = ({
 
     return (
         <div
-            className={`bg-gray-800 p-2 rounded border text-gray-300 ${
-                selected ? 'border-gray-400' : 'border-gray-800'
+            className={`border text-gray-300 rounded-t-xl ${
+                selected ? 'border-gray-400' : 'border-transparent'
             }`}
         >
             {/* Completed resource node */}
@@ -138,8 +139,16 @@ const ResourceNode = ({
                     );
                 }}
             />
-            <div className="flex justify-between">
-                <h1 className="text-xl text-blue-500">
+            <div
+                className={`flex justify-between p-2 rounded-t-xl ${
+                    providerColours[globalResource.provider]?.background
+                }`}
+            >
+                <h1
+                    className={`text-xl text-gray-200 ${
+                        providerColours[globalResource.provider]?.foreground
+                    }`}
+                >
                     {globalResource.display_name}
                 </h1>
                 <button className="h-8 nodrag">
@@ -149,25 +158,27 @@ const ResourceNode = ({
                     />
                 </button>
             </div>
-            <h2 className="text-base text-gray-500">
-                {data.resourceState.type}
-            </h2>
-            <p>NodeID: {nodeId}</p>
+            <div className="px-2 pb-2 bg-gray-800 rounded-b">
+                <h2 className="text-base text-gray-500">
+                    {data.resourceState.type}
+                </h2>
+                <p>NodeID: {nodeId}</p>
 
-            {data.resourceState.keys.map((x, i) => {
-                return (
-                    <ResourceKeyDecider
-                        key={x.id}
-                        keyState={x}
-                        globalKey={globalResource.keys.find(
-                            (gk) => gk.name === x.name,
-                        )}
-                        onChange={updateKey}
-                    />
-                );
-            })}
+                {data.resourceState.keys.map((x, i) => {
+                    return (
+                        <ResourceKeyDecider
+                            key={x.id}
+                            keyState={x}
+                            globalKey={globalResource.keys.find(
+                                (gk) => gk.name === x.name,
+                            )}
+                            onChange={updateKey}
+                        />
+                    );
+                })}
 
-            <DisclosureComponent onClick={onClick} />
+                <DisclosureComponent onClick={onClick} />
+            </div>
         </div>
     );
 };

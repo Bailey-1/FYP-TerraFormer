@@ -82,6 +82,15 @@ const ResourceLookup: IResourceObject[] = [
         attributes: [],
     },
     {
+        name: 'gcp_test',
+        display_name: 'GCP Test 1',
+        provider: k.providers.gcp,
+        docs: 'todo add docs',
+        validation: () => true,
+        keys: [],
+        attributes: [],
+    },
+    {
         name: 'azurerm_service_plan',
         display_name: 'Azure Service Plan',
         provider: k.providers.azure,

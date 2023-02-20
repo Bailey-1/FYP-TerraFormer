@@ -42,10 +42,10 @@ const SidebarComponent = () => {
     return (
         <div className="w-1/4 border-l-2 p-2 bg-gray-800 text-gray-300">
             <h1 className="text-2xl m-2 p-2 bg-gray-700 rounded">Sidebar</h1>
-            <h2 className="text-xl m-2 p-2 bg-gray-700 rounded">
+            <h2 className="text-xl mx-2 mt-2 p-2 bg-gray-700 rounded">
                 Resource Info
             </h2>
-            <div className="m-2 p-2">
+            <div className="mx-2 px-2">
                 {desc.split('#').map((x, i) => {
                     if (resourceStrings.includes(x)) {
                         return (
