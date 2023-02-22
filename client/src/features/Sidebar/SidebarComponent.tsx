@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import resourceLookup from '../../resources/ResourceLookup';
 import onDragStart from '../../events/ResourceDragAndDrop';
 import { addNode } from '../FlowSlice';
+import { onSidebarClose } from '../SidebarSlice';
 
 const SidebarComponent = () => {
     const dispatch = useDispatch();
 
-    const [open, setOpen] = useState(true);
+    const open = useSelector((state: RootState) => state.sidebar.isOpen);
 
-    const selectedResource = useSelector((state: RootState) =>
-        state.flow.nodes.find((x) => x.selected),
+    const resourceId = useSelector(
+        (state: RootState) => state.sidebar.resourceId,
     );
 
-    useEffect(() => {
-        setOpen(() => !!selectedResource);
-    }, [selectedResource]);
+    const selectedResource = useSelector((state: RootState) =>
+        state.flow.nodes.find((x) => x.id === resourceId),
+    );
 
     if (!open) {
         return null;
@@ -66,11 +66,27 @@ const SidebarComponent = () => {
             <h2 className="text-xl m-2 p-2 bg-gray-700 rounded">
                 Resource Description/Info
             </h2>
-            <h2 className="text-xl m-2 p-2 bg-gray-700 rounded">
-                Checklist of commonly used subresources
-            </h2>
+            <h2 className="text-xl m-2 p-2 bg-gray-700 rounded">Checklist</h2>
+            <ul className="px-10">
+                <li className="flex justify-between">
+                    <p>Resource Group</p>
+                    <span>✅</span>
+                </li>
+                <li className="flex justify-between">
+                    <p>Network Interface</p>
+                    <span>❌</span>
+                </li>
+                <li className="flex justify-between">
+                    <p>Tags</p>
+                    <span>✅</span>
+                </li>
+                <li className="flex justify-between">
+                    <p>Permissions Block</p>
+                    <span>✅</span>
+                </li>
+            </ul>
 
-            <button onClick={() => setOpen(false)}>Close</button>
+            <button onClick={() => dispatch(onSidebarClose())}>Close</button>
             <p>
                 {selectedResource
                     ? selectedResource.data.resourceState.type

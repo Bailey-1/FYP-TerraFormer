@@ -1,8 +1,13 @@
-import { useState } from 'react';
 import { Switch } from '@headlessui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { onAdditionalSettingsUpdate } from '../../SettingsSlice';
 
 const SwitchComponent = () => {
-    const [enabled, setEnabled] = useState(false);
+    const dispatch = useDispatch();
+    const enabled = useSelector(
+        (state: RootState) => state.settings.additionalDetails,
+    );
 
     return (
         <Switch.Group>
@@ -12,7 +17,13 @@ const SwitchComponent = () => {
                 </Switch.Label>
                 <Switch
                     checked={enabled}
-                    onChange={setEnabled}
+                    onChange={(x) =>
+                        dispatch(
+                            onAdditionalSettingsUpdate({
+                                additionalDetails: x,
+                            }),
+                        )
+                    }
                     className={`${
                         enabled ? 'bg-blue-600' : 'bg-gray-200'
                     } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}

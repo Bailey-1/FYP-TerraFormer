@@ -1,6 +1,10 @@
 import React, { memo } from 'react';
 import { Disclosure } from '@headlessui/react';
-import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+    ChevronUpIcon,
+    InformationCircleIcon,
+    XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import {
     Connection,
@@ -10,11 +14,13 @@ import {
     useUpdateNodeInternals,
 } from 'reactflow';
 import { IResourceState } from '../../../interfaces/IResourceState';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../FlowSlice';
 import resourceLookup from '../../../resources/ResourceLookup';
 import ResourceKeyDecider from './ResourceKeyDecider';
 import providerColours from '../../../resources/ProviderColours';
+import { onSidebarUpdate } from '../../SidebarSlice';
+import { RootState } from '../../../store/store';
 
 const PillButton = ({
     children,
@@ -81,6 +87,10 @@ const ResourceNode = ({
         (x) => x.name === data.resourceState.type,
     );
 
+    const additionalDetails = useSelector(
+        (state: RootState) => state.settings.additionalDetails,
+    );
+
     const onClick = (val: string) => {
         // setKeys((prevState) => [...prevState, val]);
 
@@ -107,6 +117,16 @@ const ResourceNode = ({
                     type: 'remove',
                 },
             ]),
+        );
+    };
+
+    const openSidebar = () => {
+        dispatch(
+            onSidebarUpdate({
+                isOpen: true,
+                resourceId: id,
+                resourceType: data.resourceState.type,
+            }),
         );
     };
 
@@ -151,18 +171,28 @@ const ResourceNode = ({
                 >
                     {globalResource.display_name}
                 </h1>
-                <button className="h-8 nodrag">
-                    <XMarkIcon
-                        className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
-                        onClick={() => removeNode()}
-                    />
-                </button>
+                <div>
+                    <button className="h-8 nodrag mr-2">
+                        <InformationCircleIcon
+                            className="h-full text-gray-300 hover:text-gray-200 hover:bg-gray-700 rounded"
+                            onClick={() => openSidebar()}
+                        />
+                    </button>
+                    <button className="h-8 nodrag">
+                        <XMarkIcon
+                            className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
+                            onClick={() => removeNode()}
+                        />
+                    </button>
+                </div>
             </div>
-            <div className="px-2 pb-2 bg-gray-800 rounded-b">
-                <h2 className="text-base text-gray-500">
-                    {data.resourceState.type}
-                </h2>
-                <p>NodeID: {nodeId}</p>
+            <div className="p-2 bg-gray-800 rounded-b">
+                {additionalDetails && (
+                    <h2 className="text-base text-gray-500">
+                        {data.resourceState.type}
+                    </h2>
+                )}
+                {additionalDetails && <p>NodeID: {nodeId}</p>}
 
                 {data.resourceState.keys.map((x, i) => {
                     return (
