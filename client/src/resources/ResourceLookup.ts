@@ -1,5 +1,6 @@
 import k from '../const';
 import { IResourceObject } from '../interfaces/IResourceObject';
+import { TagSubResource } from './SubResourceLookup';
 
 const ResourceLookup: IResourceObject[] = [
     {
@@ -31,6 +32,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
+        subResources: [],
     },
     {
         name: 'azurerm_container_registry',
@@ -62,6 +64,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
+        subResources: [TagSubResource],
     },
     {
         name: 'aws_test1',
@@ -71,6 +74,7 @@ const ResourceLookup: IResourceObject[] = [
         validation: () => true,
         keys: [],
         attributes: [],
+        subResources: [],
     },
     {
         name: 'aws_test2',
@@ -80,6 +84,7 @@ const ResourceLookup: IResourceObject[] = [
         validation: () => true,
         keys: [],
         attributes: [],
+        subResources: [],
     },
     {
         name: 'gcp_test',
@@ -89,6 +94,7 @@ const ResourceLookup: IResourceObject[] = [
         validation: () => true,
         keys: [],
         attributes: [],
+        subResources: [],
     },
     {
         name: 'azurerm_service_plan',
@@ -167,6 +173,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
+        subResources: [],
     },
     {
         name: 'azurerm_linux_web_app',
@@ -198,6 +205,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
+        subResources: [],
     },
 ];
 

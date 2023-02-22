@@ -13,8 +13,8 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import './reactflow.css';
 
-import ResourceNode from './components/ResourceNode';
-import DataNode from './components/DataNode';
+import ResourceNode from './components/Nodes/ResourceNode';
+import VariableNode from './components/Nodes/VariableNode';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
@@ -27,11 +27,13 @@ import {
 import resourceLookup from '../../resources/ResourceLookup';
 import SidebarComponent from '../Sidebar/SidebarComponent';
 import SelectEdge from './components/Edges/SelectEdge';
+import SubResourceNode from './components/Nodes/SubResourceNode';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
     resourceNode: ResourceNode,
-    dataNode: DataNode,
+    dataNode: VariableNode,
+    subResourceNode: SubResourceNode,
 };
 
 const edgeTypes = {

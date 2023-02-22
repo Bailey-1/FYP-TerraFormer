@@ -16,12 +16,12 @@ const ResourceElement = ({
             draggable
         >
             <div className="p-2 m-2 grow">
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                     <h3 className="text-xl text-gray-200">
                         {resource.display_name}
                     </h3>
                     <button
-                        className="bg-green-600 p-2 px-4 text-gray-200 rounded-lg border border-green-900 hover:bg-green-700"
+                        className="bg-green-600 m-2 p-2 px-4 text-gray-200 rounded-lg border border-green-900 hover:bg-green-700 text-2xl"
                         onClick={addResource}
                     >
                         +
@@ -37,6 +37,24 @@ const ResourceElement = ({
                     Description of the resource. Description of the resource.
                     Description of the resource.
                 </p>
+                {resource.subResources.map((sub) => {
+                    return (
+                        <div
+                            className="flex justify-between bg-blue-400 hover:bg-blue-500 rounded m-2 p-2 items-center"
+                            draggable
+                        >
+                            <h3 className="text-l text-gray-200">
+                                {sub.display_name}
+                            </h3>
+                            <button
+                                className="bg-yellow-600 p-2 px-4 text-gray-200 rounded hover:bg-yellow-700"
+                                onClick={addResource}
+                            >
+                                +
+                            </button>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

@@ -13,14 +13,14 @@ import {
     useNodeId,
     useUpdateNodeInternals,
 } from 'reactflow';
-import { IResourceState } from '../../../interfaces/IResourceState';
+import { IResourceState } from '../../../../interfaces/IResourceState';
 import { useDispatch, useSelector } from 'react-redux';
-import { onNodesChange, updateNodeKey } from '../../FlowSlice';
-import resourceLookup from '../../../resources/ResourceLookup';
-import ResourceKeyDecider from './ResourceKeyDecider';
-import providerColours from '../../../resources/ProviderColours';
-import { onSidebarUpdate } from '../../SidebarSlice';
-import { RootState } from '../../../store/store';
+import { onNodesChange, updateNodeKey } from '../../../FlowSlice';
+import resourceLookup from '../../../../resources/ResourceLookup';
+import ResourceKeyDecider from '../ResourceKeyDecider';
+import providerColours from '../../../../resources/ProviderColours';
+import { onSidebarUpdate } from '../../../SidebarSlice';
+import { RootState } from '../../../../store/store';
 
 const PillButton = ({
     children,

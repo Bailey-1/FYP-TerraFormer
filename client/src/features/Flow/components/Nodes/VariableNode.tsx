@@ -1,7 +1,7 @@
 import React from 'react';
 import { Handle, Position } from 'reactflow';
 
-const DataNode = () => {
+const VariableNode = () => {
     return (
         <div className="bg-gray-300 p-2 rounded border border-black">
             <h1 className="text-xl">Data Node</h1>
@@ -35,4 +35,4 @@ const DataNode = () => {
     );
 };
 
-export default DataNode;
+export default VariableNode;

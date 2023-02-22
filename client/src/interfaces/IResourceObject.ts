@@ -1,4 +1,6 @@
 // Type for text data
+import { ISubResourceObject } from './ISubResourceObject';
+
 export interface IResourceKey {
     name: string;
     type: 'string';
@@ -35,4 +37,5 @@ export interface IResourceObject {
     validation?: () => boolean;
     keys: (IResourceKey | IResourceKeySelect | IResourceKeyResource)[];
     attributes: string[];
+    subResources: ISubResourceObject[];
 }
