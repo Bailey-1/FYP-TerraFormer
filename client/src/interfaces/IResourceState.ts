@@ -9,7 +9,7 @@ export interface IResourceKeyState {
 
 // The state for the data of an individual resource in redux
 export interface IResourceState {
-    id: number;
+    id: string;
     type: string; // Resource type
     keys: IResourceKeyState[];
     valid: boolean;

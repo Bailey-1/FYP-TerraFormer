@@ -76,8 +76,8 @@ const ReactFlowComponent = () => {
     }, [nodeChanges]);
 
     const nodeChange = (changes: NodeChange[]) => {
-        console.log('nodechange');
-        console.log(changes[0].type);
+        // console.log('nodechange');
+        // console.log(changes[0].type);
 
         if (changes[0].type === 'position' && changes[0].dragging) {
             // setNodeChanges((prevState) => changes);
@@ -183,7 +183,12 @@ const ReactFlowComponent = () => {
             const res = resourceLookup.find((x) => x.name === type);
 
             if (res) {
-                dispatch(addNode({ name: res.name, position: position }));
+                dispatch(
+                    addNode({
+                        name: res.name,
+                        position: position,
+                    }),
+                );
             }
         },
         [reactFlowInstance, dispatch],

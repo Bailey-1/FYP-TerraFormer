@@ -11,8 +11,13 @@ import {
     updateEdge,
     XYPosition,
 } from 'reactflow';
-import { IResourceKeyState } from '../interfaces/IResourceState';
+import {
+    IResourceKeyState,
+    IResourceState,
+} from '../interfaces/IResourceState';
 import ResourceLookup from '../resources/ResourceLookup';
+import { IResourceObject } from '../interfaces/IResourceObject';
+import { ISubResourceState } from '../interfaces/ISubResourceState';
 
 // Define a type for the slice state
 interface CounterState {
@@ -32,7 +37,10 @@ export const flowSlice = createSlice({
     reducers: {
         addNode: (
             state,
-            action: PayloadAction<{ name: string; position: XYPosition }>,
+            action: PayloadAction<{
+                name: string;
+                position: XYPosition;
+            }>,
         ) => {
             state.nodes.push({
                 id: Math.random().toString(),
@@ -56,9 +64,45 @@ export const flowSlice = createSlice({
                                     valid: false,
                                 };
                             }) || [],
-                    },
+                    } as IResourceState,
                 },
                 type: 'resourceNode',
+            });
+        },
+        addSubNode: (
+            state,
+            action: PayloadAction<{
+                name: string;
+                position: XYPosition;
+                parentResourceNode: IResourceObject;
+            }>,
+        ) => {
+            state.nodes.push({
+                id: Math.random().toString(),
+                position: action.payload.position,
+                selectable: true,
+                data: {
+                    resourceState: {
+                        id: Math.random().toString(),
+                        type: action.payload.name,
+                        valid: false,
+                        instance_name: action.payload.name,
+                        instance_name_valid: false,
+                        parent_type: action.payload.parentResourceNode.name,
+                        keys:
+                            action.payload.parentResourceNode.subResources
+                                .find((y) => y.name === action.payload.name)
+                                ?.keys.map((key: any) => {
+                                    return {
+                                        id: Math.random().toString(),
+                                        name: key.name,
+                                        value: '',
+                                        valid: false,
+                                    };
+                                }) || [],
+                    } as ISubResourceState,
+                },
+                type: 'subResourceNode',
             });
         },
         onNodesChange: (state, action: PayloadAction<NodeChange[]>) => {
@@ -77,10 +121,17 @@ export const flowSlice = createSlice({
         onConnect: (state, action: PayloadAction<Connection>) => {
             // Check node is different from self
             if (action.payload.source !== action.payload.target) {
+                const srcNode = state.nodes.find(
+                    (x) => x.id === action.payload.source,
+                );
+
+                const type =
+                    srcNode?.type === 'resourceNode' ? 'selectEdge' : 'default';
+
                 state.edges = addEdge(
                     {
                         ...action.payload,
-                        type: 'selectEdge',
+                        type,
                         data: { connection: action.payload, value: '' },
                     },
                     state.edges,
@@ -155,6 +206,7 @@ export const flowSlice = createSlice({
 
 export const {
     addNode,
+    addSubNode,
     onNodesChange,
     onConnect,
     updateNodeKey,

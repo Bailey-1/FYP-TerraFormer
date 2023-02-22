@@ -1,20 +1,12 @@
 import React, { memo } from 'react';
-import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import {
-    Connection,
-    Handle,
-    Position,
-    useNodeId,
-    useUpdateNodeInternals,
-} from 'reactflow';
-import { IResourceState } from '../../../../interfaces/IResourceState';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { useDispatch, useSelector } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import ResourceKeyDecider from '../ResourceKeyDecider';
-import providerColours from '../../../../resources/ProviderColours';
-import { onSidebarUpdate } from '../../../SidebarSlice';
 import { RootState } from '../../../../store/store';
+import { ISubResourceState } from '../../../../interfaces/ISubResourceState';
 
 const SubResourceNode = ({
     id,
@@ -22,7 +14,7 @@ const SubResourceNode = ({
     selected,
 }: {
     id: string;
-    data: { resourceState: IResourceState };
+    data: { resourceState: ISubResourceState };
     selected: boolean;
 }) => {
     const dispatch = useDispatch();
@@ -30,6 +22,10 @@ const SubResourceNode = ({
     const updateNodeInternals = useUpdateNodeInternals();
 
     const globalResource = resourceLookup.find(
+        (x) => x.name === data.resourceState.parent_type,
+    );
+
+    const globalSubResource = globalResource?.subResources.find(
         (x) => x.name === data.resourceState.type,
     );
 
@@ -66,23 +62,13 @@ const SubResourceNode = ({
         );
     };
 
-    const openSidebar = () => {
-        dispatch(
-            onSidebarUpdate({
-                isOpen: true,
-                resourceId: id,
-                resourceType: data.resourceState.type,
-            }),
-        );
-    };
-
-    if (!globalResource) {
-        return <p>Error: globalResource is not defined {globalResource}</p>;
+    if (!globalResource || !globalSubResource) {
+        return <p>Error: globalResource/subResourceType is not defined</p>;
     }
 
     return (
         <div
-            className={`border text-gray-300 rounded-t-xl ${
+            className={`border text-gray-300 rounded-t-xl bg-gray-800 ${
                 selected ? 'border-gray-400' : 'border-transparent'
             }`}
         >
@@ -90,40 +76,19 @@ const SubResourceNode = ({
             <Handle
                 type="source"
                 position={Position.Right}
-                id={globalResource.name}
+                id={globalSubResource.name}
                 style={{
                     width: '15px',
                     height: '15px',
                     borderRadius: '10px',
                     right: '-15px',
                 }}
-                isValidConnection={(connection: Connection) => {
-                    return (
-                        connection.targetHandle?.includes(
-                            globalResource.name,
-                        ) || false
-                    );
-                }}
             />
-            <div
-                className={`flex justify-between p-2 rounded-t-xl ${
-                    providerColours[globalResource.provider]?.background
-                }`}
-            >
-                <h1
-                    className={`text-xl text-gray-200 ${
-                        providerColours[globalResource.provider]?.foreground
-                    }`}
-                >
-                    {globalResource.display_name}
+            <div className={`flex justify-between p-2 rounded-t-xl`}>
+                <h1 className={`text-xl text-gray-200`}>
+                    {globalSubResource.display_name}
                 </h1>
                 <div>
-                    <button className="h-8 nodrag mr-2">
-                        <InformationCircleIcon
-                            className="h-full text-gray-300 hover:text-gray-200 hover:bg-gray-700 rounded"
-                            onClick={() => openSidebar()}
-                        />
-                    </button>
                     <button className="h-8 nodrag">
                         <XMarkIcon
                             className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
@@ -145,7 +110,7 @@ const SubResourceNode = ({
                         <ResourceKeyDecider
                             key={x.id}
                             keyState={x}
-                            globalKey={globalResource.keys.find(
+                            globalKey={globalSubResource.keys.find(
                                 (gk) => gk.name === x.name,
                             )}
                             onChange={updateKey}

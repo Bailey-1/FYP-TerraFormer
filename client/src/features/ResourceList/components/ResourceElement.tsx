@@ -1,14 +1,32 @@
 // TODO: Make this resource collapsable to hide details
 import { IResourceObject } from '../../../interfaces/IResourceObject';
 import onDragStart from '../../../events/ResourceDragAndDrop';
+import { useDispatch } from 'react-redux';
+import { addNode, addSubNode } from '../../FlowSlice';
+import { ISubResourceObject } from '../../../interfaces/ISubResourceObject';
 
-const ResourceElement = ({
-    resource,
-    addResource,
-}: {
-    resource: IResourceObject;
-    addResource: () => void;
-}) => {
+const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
+    const dispatch = useDispatch();
+
+    const addResource = () => {
+        dispatch(
+            addNode({
+                name: resource.name,
+                position: { x: 0, y: 0 },
+            }),
+        );
+    };
+
+    const addSubResource = (sub: ISubResourceObject) => {
+        dispatch(
+            addSubNode({
+                name: sub.name,
+                position: { x: 0, y: 0 },
+                parentResourceNode: resource,
+            }),
+        );
+    };
+
     return (
         <div
             className="flex flex-row bg-gray-800 m-2 rounded-lg hover:bg-gray-700 border border-gray-300 hover:border-gray-400 cursor-grab"
@@ -48,7 +66,7 @@ const ResourceElement = ({
                             </h3>
                             <button
                                 className="bg-yellow-600 p-2 px-4 text-gray-200 rounded hover:bg-yellow-700"
-                                onClick={addResource}
+                                onClick={() => addSubResource(sub)}
                             >
                                 +
                             </button>
