@@ -1,5 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactFlow, {
+    applyNodeChanges,
     Background,
     Connection,
     Controls,
@@ -45,47 +46,58 @@ const ReactFlowComponent = () => {
     const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
 
     const nodes = useSelector((state: RootState) => state.flow.nodes);
-    // const [localNodes, setLocalNodes] = useState(nodes);
-    // const [nodeChanges, setNodeChanges] = useState<NodeChange[]>([]);
-    // const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
+    const [localNodes, setLocalNodes] = useState(nodes);
+    const [nodeChanges, setNodeChanges] = useState<NodeChange[]>([]);
+    const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
 
     const edges = useSelector((state: RootState) => state.flow.edges);
 
-    // useEffect(() => {
-    //     setLocalNodes(nodes);
-    // }, [nodes]);
-    //
-    // useEffect(() => {
-    //     // console.log('useeffect');
-    //     const timer = setTimeout(() => {
-    //         // console.log('dispatch called');
-    //         if (nodeChanges) {
-    //             // console.log(nodeChanges);
-    //             // dispatch(onNodesChange(localSelect));
-    //             dispatch(onNodesChange([...nodeChanges, ...localSelect]));
-    //         }
-    //     }, 100);
-    //
-    //     return () => {
-    //         // console.log('timer cleared');
-    //         clearTimeout(timer);
-    //     };
-    // }, [nodeChanges]);
+    useEffect(() => {
+        setLocalNodes(nodes);
+    }, [nodes]);
+
+    useEffect(() => {
+        // console.log('useeffect');
+        const timer = setTimeout(() => {
+            // console.log('dispatch called');
+            if (nodeChanges) {
+                // console.log(nodeChanges);
+                // dispatch(onNodesChange(localSelect));
+                dispatch(onNodesChange([...nodeChanges, ...localSelect]));
+            }
+        }, 250);
+
+        return () => {
+            // console.log('timer cleared');
+            clearTimeout(timer);
+        };
+    }, [nodeChanges]);
 
     const nodeChange = (changes: NodeChange[]) => {
-        // console.log('nodechange');
-        // console.log(changes[0].type);
-        //
-        // if (changes[0].type === 'position' && changes[0].dragging) {
-        //     setNodeChanges((prevState) => changes);
-        //     // console.log('local changes ', changes[0]);
-        // } else if (changes[0].type === 'select') {
-        //     // dispatch(onNodesChange(changes));
-        //     // setNodeChanges((prevState) => [...prevState, ...changes]);
-        //     setLocalSelect(() => changes);
-        // }
-        // setLocalNodes((prevState) => applyNodeChanges(changes, prevState));
-        dispatch(onNodesChange(changes));
+        console.log('nodechange');
+        console.log(changes[0].type);
+
+        if (changes[0].type === 'position' && changes[0].dragging) {
+            // setNodeChanges((prevState) => changes);
+            // console.log('local changes ', changes[0]);
+            setNodeChanges((prevState) => {
+                return [
+                    ...prevState.filter(
+                        (x) =>
+                            x.type === 'position' &&
+                            changes[0].type === 'position' &&
+                            x.id !== changes[0].id,
+                    ),
+                    changes[0],
+                ];
+            });
+        } else if (changes[0].type === 'select') {
+            // dispatch(onNodesChange(changes));
+            // setNodeChanges((prevState) => [...prevState, ...changes]);
+            setLocalSelect(() => changes);
+        }
+        setLocalNodes((prevState) => applyNodeChanges(changes, prevState));
+        // dispatch(onNodesChange(changes));
     };
 
     const edgeChange = (changes: EdgeChange[]) => {
@@ -183,7 +195,7 @@ const ReactFlowComponent = () => {
                     ref={reactFlowWrapper}
                 >
                     <ReactFlow
-                        nodes={nodes}
+                        nodes={localNodes}
                         edges={edges}
                         onNodesChange={nodeChange}
                         onEdgesChange={edgeChange}
