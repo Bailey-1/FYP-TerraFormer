@@ -12,11 +12,17 @@ import {
     XYPosition,
 } from 'reactflow';
 import {
+    IResourceKeyResourceState,
     IResourceKeyState,
     IResourceState,
 } from '../interfaces/IResourceState';
 import ResourceLookup from '../resources/ResourceLookup';
-import { IResourceObject } from '../interfaces/IResourceObject';
+import {
+    IResourceKey,
+    IResourceKeyResource,
+    IResourceKeySelect,
+    IResourceObject,
+} from '../interfaces/IResourceObject';
 import { ISubResourceState } from '../interfaces/ISubResourceState';
 
 // Define a type for the slice state
@@ -56,14 +62,34 @@ export const flowSlice = createSlice({
                         keys:
                             ResourceLookup.find(
                                 (y) => y.name === action.payload.name,
-                            )?.keys.map((key: any) => {
-                                return {
-                                    id: Math.random().toString(),
-                                    name: key.name,
-                                    value: '',
-                                    valid: false,
-                                };
-                            }) || [],
+                            )?.keys.map(
+                                (
+                                    key:
+                                        | IResourceKey
+                                        | IResourceKeySelect
+                                        | IResourceKeyResource,
+                                ) => {
+                                    if (key.type === 'resource') {
+                                        return {
+                                            id: Math.random().toString(),
+                                            name: key.name,
+                                            resource_type: '',
+                                            resource_key: '',
+                                            instance_name: '',
+                                            valid: false,
+                                            type: 'resource',
+                                        };
+                                    } else {
+                                        return {
+                                            id: Math.random().toString(),
+                                            name: key.name,
+                                            value: '',
+                                            valid: false,
+                                            type: 'string',
+                                        };
+                                    }
+                                },
+                            ) || [],
                     } as IResourceState,
                 },
                 type: 'resourceNode',
@@ -201,6 +227,29 @@ export const flowSlice = createSlice({
                 target.data.value = action.payload.data;
             }
         },
+        addNewNodeKey: (
+            state,
+            action: PayloadAction<{
+                nodeId: string;
+                name: string;
+            }>,
+        ) => {
+            const node = state.nodes.find(
+                (x) => x.id === action.payload.nodeId,
+            );
+
+            const ref: IResourceKeyResourceState = {
+                id: Math.random().toString(),
+                name: '',
+                instance_name: '',
+                resource_key: '',
+                resource_type: '',
+                type: 'resource',
+                valid: false,
+            };
+
+            node?.data.resourceState.keys.push(ref);
+        },
     },
 });
 
@@ -213,6 +262,7 @@ export const {
     onEdgesChange,
     onEdgesUpdate,
     onEdgesDataUpdate,
+    addNewNodeKey,
 } = flowSlice.actions;
 
 export default flowSlice;

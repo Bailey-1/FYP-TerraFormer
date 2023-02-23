@@ -6,7 +6,7 @@ import {
 
 export interface ISubResourceObject {
     name: string;
-    display_name: string | null;
+    display_name: string;
     provider: string;
     validation?: () => boolean;
     keys: (IResourceKey | IResourceKeySelect | IResourceKeyResource)[];

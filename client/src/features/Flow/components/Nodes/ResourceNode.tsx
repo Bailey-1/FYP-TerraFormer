@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { Disclosure } from '@headlessui/react';
 import {
     ChevronUpIcon,
     InformationCircleIcon,
@@ -15,12 +14,22 @@ import {
 } from 'reactflow';
 import { IResourceState } from '../../../../interfaces/IResourceState';
 import { useDispatch, useSelector } from 'react-redux';
-import { onNodesChange, updateNodeKey } from '../../../FlowSlice';
+import {
+    addNewNodeKey,
+    onNodesChange,
+    updateNodeKey,
+} from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import ResourceKeyDecider from '../ResourceKeyDecider';
 import providerColours from '../../../../resources/ProviderColours';
 import { onSidebarUpdate } from '../../../SidebarSlice';
 import { RootState } from '../../../../store/store';
+import { Disclosure } from '@headlessui/react';
+import {
+    IResourceKey,
+    IResourceKeyResource,
+    IResourceKeySelect,
+} from '../../../../interfaces/IResourceObject';
 
 const PillButton = ({
     children,
@@ -37,36 +46,6 @@ const PillButton = ({
             <div>{children}</div>
             <PlusCircleIcon className="ml-1 h-4 w-4 text-gray-700" />
         </button>
-    );
-};
-
-const DisclosureComponent = ({
-    onClick,
-}: {
-    onClick: (val: string) => void;
-}) => {
-    return (
-        <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
-            <Disclosure>
-                {({ open }) => (
-                    <>
-                        <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                            <span>Additional Keys</span>
-                            <ChevronUpIcon
-                                className={`${
-                                    open ? 'rotate-180 transform' : ''
-                                } h-5 w-5 text-purple-500`}
-                            />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
-                            <PillButton onClick={onClick}>
-                                Example Button
-                            </PillButton>
-                        </Disclosure.Panel>
-                    </>
-                )}
-            </Disclosure>
-        </div>
     );
 };
 
@@ -91,10 +70,19 @@ const ResourceNode = ({
         (state: RootState) => state.settings.additionalDetails,
     );
 
-    const onClick = (val: string) => {
+    const addExtraKey = (
+        obj: IResourceKey | IResourceKeySelect | IResourceKeyResource,
+    ) => {
         // setKeys((prevState) => [...prevState, val]);
 
         if (nodeId) {
+            dispatch(
+                addNewNodeKey({
+                    nodeId: nodeId,
+                    name: obj.name,
+                }),
+            );
+
             updateNodeInternals(nodeId);
         }
     };
@@ -207,7 +195,38 @@ const ResourceNode = ({
                     );
                 })}
 
-                <DisclosureComponent onClick={onClick} />
+                <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
+                    <Disclosure>
+                        {({ open }) => (
+                            <>
+                                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                    <span>Additional Keys</span>
+                                    <ChevronUpIcon
+                                        className={`${
+                                            open ? 'rotate-180 transform' : ''
+                                        } h-5 w-5 text-purple-500`}
+                                    />
+                                </Disclosure.Button>
+                                <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
+                                    {globalResource.keys
+                                        .filter((x) => !x.required)
+                                        .map((x) => {
+                                            return (
+                                                <PillButton
+                                                    key={x.name}
+                                                    onClick={() =>
+                                                        addExtraKey(x)
+                                                    }
+                                                >
+                                                    {x.display_name}
+                                                </PillButton>
+                                            );
+                                        })}
+                                </Disclosure.Panel>
+                            </>
+                        )}
+                    </Disclosure>
+                </div>
             </div>
         </div>
     );

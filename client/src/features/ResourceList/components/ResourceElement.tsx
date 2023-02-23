@@ -60,6 +60,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                         <div
                             className="flex justify-between bg-blue-400 hover:bg-blue-500 rounded m-2 p-2 items-center"
                             draggable
+                            key={sub.name}
                         >
                             <h3 className="text-l text-gray-200">
                                 {sub.display_name}

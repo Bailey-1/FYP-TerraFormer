@@ -1,5 +1,9 @@
 // Decide which input to use for a key
-import { IResourceKeyState } from '../../../interfaces/IResourceState';
+import {
+    IResourceKeyResourceState,
+    IResourceKeyState,
+    IResourceKeyStateTypes,
+} from '../../../interfaces/IResourceState';
 import {
     IResourceKey,
     IResourceKeyResource,
@@ -14,7 +18,7 @@ const ResourceKeyDecider = ({
     onChange,
     globalKey,
 }: {
-    keyState: IResourceKeyState;
+    keyState: IResourceKeyStateTypes;
     onChange: (name: string, value: string) => void;
     globalKey:
         | IResourceKey
@@ -27,7 +31,7 @@ const ResourceKeyDecider = ({
             case 'string':
                 return (
                     <ResourceNodeKeyInput
-                        keyState={keyState}
+                        keyState={keyState as IResourceKeyState}
                         globalKey={globalKey}
                         onChange={onChange}
                     />
@@ -35,7 +39,7 @@ const ResourceKeyDecider = ({
             case 'select':
                 return (
                     <ResourceNodeKeySelect
-                        keyState={keyState}
+                        keyState={keyState as IResourceKeyState}
                         globalKey={globalKey}
                         onChange={onChange}
                     />
@@ -43,7 +47,7 @@ const ResourceKeyDecider = ({
             case 'resource':
                 return (
                     <ResourceNodeKeyResource
-                        keyState={keyState}
+                        keyState={keyState as IResourceKeyResourceState}
                         globalKey={globalKey}
                         onChange={onChange}
                     />
@@ -51,7 +55,7 @@ const ResourceKeyDecider = ({
         }
     }
 
-    return <p>Global key is not valid</p>;
+    return <p>Global key is not valid {JSON.stringify(globalKey)}</p>;
 };
 
 export default ResourceKeyDecider;

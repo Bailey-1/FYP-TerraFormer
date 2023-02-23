@@ -1,4 +1,7 @@
-import { IResourceKeyState } from '../../../../interfaces/IResourceState';
+import {
+    IResourceKeyResourceState,
+    IResourceKeyState,
+} from '../../../../interfaces/IResourceState';
 import { IResourceKeyResource } from '../../../../interfaces/IResourceObject';
 import { Connection, Handle, Position, useNodeId } from 'reactflow';
 import { useSelector } from 'react-redux';
@@ -10,7 +13,7 @@ const ResourceNodeKeyResource = ({
     globalKey,
     onChange,
 }: {
-    keyState: IResourceKeyState;
+    keyState: IResourceKeyResourceState;
     globalKey: IResourceKeyResource;
     onChange(name: string, value: string): void;
 }) => {

@@ -14,6 +14,7 @@ export const TagSubResource: ISubResourceObject = {
                 return value.includes('b');
             },
             validation_message: '',
+            required: true,
         },
         {
             name: 'value',
@@ -23,6 +24,7 @@ export const TagSubResource: ISubResourceObject = {
                 return value.includes('b');
             },
             validation_message: '',
+            required: true,
         },
     ],
     attributes: [],
