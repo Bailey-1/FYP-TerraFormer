@@ -27,7 +27,7 @@ const ResourceNodeKeyInput = ({
             {/*    }}*/}
             {/*/>*/}
             <div className="col-span-1 text-gray-400">
-                <p>{keyState.name}:</p>
+                <p>{globalKey.display_name}:</p>
             </div>
             <div className="col-span-2">
                 <input

@@ -25,11 +25,7 @@ import providerColours from '../../../../resources/ProviderColours';
 import { onSidebarUpdate } from '../../../SidebarSlice';
 import { RootState } from '../../../../store/store';
 import { Disclosure } from '@headlessui/react';
-import {
-    IResourceKey,
-    IResourceKeyResource,
-    IResourceKeySelect,
-} from '../../../../interfaces/IResourceObject';
+import { IResourceKeys } from '../../../../interfaces/IResourceObject';
 
 const PillButton = ({
     children,
@@ -70,16 +66,15 @@ const ResourceNode = ({
         (state: RootState) => state.settings.additionalDetails,
     );
 
-    const addExtraKey = (
-        obj: IResourceKey | IResourceKeySelect | IResourceKeyResource,
-    ) => {
+    const addExtraKey = (obj: IResourceKeys) => {
         // setKeys((prevState) => [...prevState, val]);
 
         if (nodeId) {
             dispatch(
                 addNewNodeKey({
                     nodeId: nodeId,
-                    name: obj.name,
+                    keyName: obj.name,
+                    keyType: obj.type,
                 }),
             );
 
@@ -209,7 +204,13 @@ const ResourceNode = ({
                                 </Disclosure.Button>
                                 <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
                                     {globalResource.keys
-                                        .filter((x) => !x.required)
+                                        .filter(
+                                            (x) =>
+                                                !x.required &&
+                                                !data.resourceState.keys
+                                                    .map((x) => x.name)
+                                                    .includes(x.name),
+                                        )
                                         .map((x) => {
                                             return (
                                                 <PillButton

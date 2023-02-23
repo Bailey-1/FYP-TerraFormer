@@ -1,14 +1,10 @@
-import {
-    IResourceKey,
-    IResourceKeyResource,
-    IResourceKeySelect,
-} from './IResourceObject';
+import { IResourceKeys } from './IResourceObject';
 
 export interface ISubResourceObject {
     name: string;
     display_name: string;
     provider: string;
     validation?: () => boolean;
-    keys: (IResourceKey | IResourceKeySelect | IResourceKeyResource)[];
+    keys: IResourceKeys[];
     attributes: string[];
 }

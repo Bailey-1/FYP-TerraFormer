@@ -8,6 +8,7 @@ export const TagSubResource: ISubResourceObject = {
     keys: [
         {
             name: 'name',
+            display_name: 'Name',
             type: 'string',
             value: '',
             validation: (value: string): boolean => {
@@ -18,6 +19,7 @@ export const TagSubResource: ISubResourceObject = {
         },
         {
             name: 'value',
+            display_name: 'Value',
             type: 'string',
             value: '',
             validation: (value: string): boolean => {

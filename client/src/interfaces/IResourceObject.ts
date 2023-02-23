@@ -1,4 +1,19 @@
-// Type for text data
+import { ISubResourceObject } from './ISubResourceObject';
+
+export type IResourceKeys =
+    | IResourceKey
+    | IResourceKeySelect
+    | IResourceKeyResource
+    | IResourceKeySubResource;
+export interface IResourceKeySubResource {
+    name: string;
+    display_name: string;
+    subresource: ISubResourceObject;
+    type: 'subresource';
+    validation?: (value: string) => boolean;
+    validation_message: string;
+    required: boolean;
+}
 
 export interface IResourceKey {
     name: string;
@@ -40,6 +55,6 @@ export interface IResourceObject {
     provider: string;
     docs: string;
     validation?: () => boolean;
-    keys: (IResourceKey | IResourceKeySelect | IResourceKeyResource)[];
+    keys: IResourceKeys[];
     attributes: string[];
 }

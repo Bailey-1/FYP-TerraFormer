@@ -1,9 +1,11 @@
 // TODO: Make this resource collapsable to hide details
-import { IResourceObject } from '../../../interfaces/IResourceObject';
+import {
+    IResourceKeySubResource,
+    IResourceObject,
+} from '../../../interfaces/IResourceObject';
 import onDragStart from '../../../events/ResourceDragAndDrop';
 import { useDispatch } from 'react-redux';
 import { addNode, addSubNode } from '../../FlowSlice';
-import { ISubResourceObject } from '../../../interfaces/ISubResourceObject';
 
 const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
     const dispatch = useDispatch();
@@ -17,15 +19,20 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
         );
     };
 
-    const addSubResource = (sub: ISubResourceObject) => {
+    const addSubResource = (sub: IResourceKeySubResource) => {
         dispatch(
             addSubNode({
                 name: sub.name,
                 position: { x: 0, y: 0 },
                 parentResourceNode: resource,
+                subResource: sub.subresource,
             }),
         );
     };
+
+    const r = resource.keys.filter(
+        (x) => x.type === 'subresource',
+    ) as IResourceKeySubResource[];
 
     return (
         <div
@@ -55,7 +62,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                     Description of the resource. Description of the resource.
                     Description of the resource.
                 </p>
-                {resource.subResources.map((sub) => {
+                {r.map((sub: IResourceKeySubResource) => {
                     return (
                         <div
                             className="flex justify-between bg-blue-400 hover:bg-blue-500 rounded m-2 p-2 items-center"

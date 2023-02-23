@@ -1,5 +1,6 @@
 import k from '../const';
 import { IResourceObject } from '../interfaces/IResourceObject';
+import { TagSubResource } from './SubResourceLookup';
 
 const ResourceLookup: IResourceObject[] = [
     {
@@ -67,6 +68,17 @@ const ResourceLookup: IResourceObject[] = [
                 },
                 validation_message: '',
                 required: true,
+            },
+            {
+                name: 'tags',
+                display_name: 'Tags',
+                type: 'subresource',
+                subresource: TagSubResource,
+                validation: (value: string): boolean => {
+                    return !!value.length;
+                },
+                validation_message: 'Must include the letter b',
+                required: false,
             },
         ],
         attributes: [],

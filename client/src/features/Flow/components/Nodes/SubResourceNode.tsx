@@ -4,9 +4,10 @@ import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { useDispatch, useSelector } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
-import ResourceKeyDecider from '../ResourceKeyDecider';
 import { RootState } from '../../../../store/store';
 import { ISubResourceState } from '../../../../interfaces/ISubResourceState';
+import { IResourceKeySubResource } from '../../../../interfaces/IResourceObject';
+import ResourceKeyDecider from '../ResourceKeyDecider';
 
 const SubResourceNode = ({
     id,
@@ -25,9 +26,11 @@ const SubResourceNode = ({
         (x) => x.name === data.resourceState.parent_type,
     );
 
-    const globalSubResource = globalResource?.subResources.find(
-        (x) => x.name === data.resourceState.type,
-    );
+    const globalSubResource = globalResource?.keys
+        .filter((x) => x.type === 'subresource')
+        .find(
+            (x) => x.name === data.resourceState.type,
+        ) as IResourceKeySubResource;
 
     const additionalDetails = useSelector(
         (state: RootState) => state.settings.additionalDetails,
@@ -105,14 +108,16 @@ const SubResourceNode = ({
                 )}
                 {additionalDetails && <p>NodeID: {nodeId}</p>}
 
-                {data.resourceState.keys.map((x, i) => {
+                {globalSubResource.subresource.keys.map((x, i) => {
                     return (
                         <ResourceKeyDecider
-                            key={x.id}
-                            keyState={x}
-                            globalKey={globalSubResource.keys.find(
-                                (gk) => gk.name === x.name,
-                            )}
+                            key={x.name}
+                            keyState={
+                                data.resourceState.keys.find(
+                                    (z) => z.name === x.name,
+                                )!
+                            }
+                            globalKey={x}
                             onChange={updateKey}
                         />
                     );

@@ -4,14 +4,11 @@ import {
     IResourceKeyState,
     IResourceKeyStateTypes,
 } from '../../../interfaces/IResourceState';
-import {
-    IResourceKey,
-    IResourceKeyResource,
-    IResourceKeySelect,
-} from '../../../interfaces/IResourceObject';
+import { IResourceKeys } from '../../../interfaces/IResourceObject';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import ResourceNodeKeySelect from './keys/ResourceNodeKeySelect';
 import ResourceNodeKeyResource from './keys/ResourceNodeKeyResource';
+import ResourceNodeKeySubResource from './keys/ResourceNodeKeySubResource';
 
 const ResourceKeyDecider = ({
     keyState,
@@ -20,11 +17,7 @@ const ResourceKeyDecider = ({
 }: {
     keyState: IResourceKeyStateTypes;
     onChange: (name: string, value: string) => void;
-    globalKey:
-        | IResourceKey
-        | IResourceKeySelect
-        | IResourceKeyResource
-        | undefined;
+    globalKey: IResourceKeys | undefined;
 }) => {
     if (globalKey) {
         switch (globalKey.type) {
@@ -47,6 +40,14 @@ const ResourceKeyDecider = ({
             case 'resource':
                 return (
                     <ResourceNodeKeyResource
+                        keyState={keyState as IResourceKeyResourceState}
+                        globalKey={globalKey}
+                        onChange={onChange}
+                    />
+                );
+            case 'subresource':
+                return (
+                    <ResourceNodeKeySubResource
                         keyState={keyState as IResourceKeyResourceState}
                         globalKey={globalKey}
                         onChange={onChange}

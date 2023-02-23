@@ -28,6 +28,7 @@ import resourceLookup from '../../resources/ResourceLookup';
 import SidebarComponent from '../Sidebar/SidebarComponent';
 import SelectEdge from './components/Edges/SelectEdge';
 import SubResourceNode from './components/Nodes/SubResourceNode';
+// import SubResourceNode from './components/Nodes/SubResourceNode';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
@@ -65,7 +66,7 @@ const ReactFlowComponent = () => {
             if (nodeChanges) {
                 // console.log(nodeChanges);
                 // dispatch(onNodesChange(localSelect));
-                dispatch(onNodesChange([...nodeChanges, ...localSelect]));
+                dispatch(onNodesChange([...nodeChanges]));
             }
         }, 250);
 
@@ -86,9 +87,10 @@ const ReactFlowComponent = () => {
                 return [
                     ...prevState.filter(
                         (x) =>
-                            x.type === 'position' &&
-                            changes[0].type === 'position' &&
-                            x.id !== changes[0].id,
+                            x.type === 'select' ||
+                            (x.type === 'position' &&
+                                changes[0].type === 'position' &&
+                                x.id !== changes[0].id),
                     ),
                     changes[0],
                 ];
@@ -96,7 +98,13 @@ const ReactFlowComponent = () => {
         } else if (changes[0].type === 'select') {
             // dispatch(onNodesChange(changes));
             // setNodeChanges((prevState) => [...prevState, ...changes]);
-            setLocalSelect(() => changes);
+            // setLocalSelect(() => changes);
+            setNodeChanges((prevState) => {
+                return [
+                    ...prevState.filter((x) => x.type !== 'select'),
+                    changes[0],
+                ];
+            });
         }
         setLocalNodes((prevState) => applyNodeChanges(changes, prevState));
         // dispatch(onNodesChange(changes));
