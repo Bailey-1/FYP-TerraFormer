@@ -13,6 +13,7 @@ import {
 } from 'reactflow';
 import {
     IResourceKeyState,
+    IResourceKeyStateTypes,
     IResourceState,
 } from '../interfaces/IResourceState';
 import ResourceLookup from '../resources/ResourceLookup';
@@ -252,6 +253,25 @@ export const flowSlice = createSlice({
 
             node?.data.resourceState.keys.push(ref);
         },
+        removeNodeKey: (
+            state,
+            action: PayloadAction<{
+                nodeId: string;
+                keyId: string;
+            }>,
+        ) => {
+            const node = state.nodes.find(
+                (x) => x.id === action.payload.nodeId,
+            ) as Node;
+
+            if (!node) {
+                return;
+            }
+
+            node.data.resourceState.keys = node.data.resourceState.keys.filter(
+                (x: IResourceKeyStateTypes) => x.id !== action.payload.keyId,
+            );
+        },
     },
 });
 
@@ -265,6 +285,7 @@ export const {
     onEdgesUpdate,
     onEdgesDataUpdate,
     addNewNodeKey,
+    removeNodeKey,
 } = flowSlice.actions;
 
 export default flowSlice;

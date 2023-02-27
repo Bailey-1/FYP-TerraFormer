@@ -4,7 +4,6 @@ import {
     InformationCircleIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import {
     Connection,
     Handle,
@@ -26,24 +25,8 @@ import { onSidebarUpdate } from '../../../SidebarSlice';
 import { RootState } from '../../../../store/store';
 import { Disclosure } from '@headlessui/react';
 import { IResourceKeys } from '../../../../interfaces/IResourceObject';
-
-const PillButton = ({
-    children,
-    onClick,
-}: {
-    children: string;
-    onClick: (val: string) => void;
-}) => {
-    return (
-        <button
-            className="text-xs bg-orange-300 rounded-full p-1 px-2 m-1 flex"
-            onClick={(e) => onClick(e.currentTarget.textContent || '')}
-        >
-            <div>{children}</div>
-            <PlusCircleIcon className="ml-1 h-4 w-4 text-gray-700" />
-        </button>
-    );
-};
+import PillButton from '../../../../components/controls/PillBtn';
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
 
 const ResourceNode = ({
     id,
@@ -117,6 +100,25 @@ const ResourceNode = ({
         return <p>Error: globalResource is not defined {globalResource}</p>;
     }
 
+    const pillBtnsArr = globalResource.keys
+        .filter(
+            (x) =>
+                !x.required &&
+                !data.resourceState.keys.map((x) => x.name).includes(x.name),
+        )
+        .map((x) => {
+            return (
+                <PillButton
+                    key={x.name}
+                    onClick={() => addExtraKey(x)}
+                    className="bg-orange-300"
+                >
+                    <p>{x.display_name}</p>
+                    <PlusCircleIcon className="ml-1 h-4 w-4 text-gray-700" />
+                </PillButton>
+            );
+        });
+
     return (
         <div
             className={`border text-gray-300 rounded-t-xl ${
@@ -179,14 +181,15 @@ const ResourceNode = ({
 
                 {data.resourceState.keys.map((x, i) => {
                     return (
-                        <ResourceKeyDecider
-                            key={x.id}
-                            keyState={x}
-                            globalKey={globalResource.keys.find(
-                                (gk) => gk.name === x.name,
-                            )}
-                            onChange={updateKey}
-                        />
+                        <div className="border-b pb-2" key={x.id}>
+                            <ResourceKeyDecider
+                                keyState={x}
+                                globalKey={globalResource.keys.find(
+                                    (gk) => gk.name === x.name,
+                                )}
+                                onChange={updateKey}
+                            />
+                        </div>
                     );
                 })}
 
@@ -203,26 +206,13 @@ const ResourceNode = ({
                                     />
                                 </Disclosure.Button>
                                 <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
-                                    {globalResource.keys
-                                        .filter(
-                                            (x) =>
-                                                !x.required &&
-                                                !data.resourceState.keys
-                                                    .map((x) => x.name)
-                                                    .includes(x.name),
-                                        )
-                                        .map((x) => {
-                                            return (
-                                                <PillButton
-                                                    key={x.name}
-                                                    onClick={() =>
-                                                        addExtraKey(x)
-                                                    }
-                                                >
-                                                    {x.display_name}
-                                                </PillButton>
-                                            );
-                                        })}
+                                    {pillBtnsArr.length ? (
+                                        pillBtnsArr
+                                    ) : (
+                                        <p>
+                                            No additional arguments available.
+                                        </p>
+                                    )}
                                 </Disclosure.Panel>
                             </>
                         )}
