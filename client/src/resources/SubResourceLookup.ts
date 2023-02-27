@@ -1,7 +1,7 @@
-import { ISubResourceObject } from '../interfaces/ISubResourceObject';
+import { IBlockObject } from '../interfaces/IBlockObject';
 import k from '../const';
 
-export const TagSubResource: ISubResourceObject = {
+export const TagSubResource: IBlockObject = {
     name: 'tags',
     display_name: 'Tags',
     provider: k.providers.azure,

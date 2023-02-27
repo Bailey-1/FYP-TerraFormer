@@ -1,15 +1,15 @@
-import { ISubResourceObject } from './ISubResourceObject';
+import { IBlockObject } from './IBlockObject';
 
 export type IResourceKeys =
     | IResourceKey
     | IResourceKeySelect
     | IResourceKeyResource
-    | IResourceKeySubResource;
-export interface IResourceKeySubResource {
+    | IResourceKeyBlock;
+export interface IResourceKeyBlock {
     name: string;
     display_name: string;
-    subresource: ISubResourceObject;
-    type: 'subresource';
+    block: IBlockObject;
+    type: 'block';
     validation?: (value: string) => boolean;
     validation_message: string;
     required: boolean;

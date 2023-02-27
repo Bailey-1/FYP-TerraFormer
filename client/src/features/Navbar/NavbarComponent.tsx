@@ -1,4 +1,8 @@
-import { CloudIcon, CommandLineIcon } from '@heroicons/react/24/outline';
+import {
+    CloudIcon,
+    Cog8ToothIcon,
+    CommandLineIcon,
+} from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
 import ReactFlowComponent from '../Flow/ReactFlowComponent';
@@ -10,8 +14,15 @@ const sidebarNavigation = [
     { name: 'AWS', icon: CloudIcon },
     { name: 'GCP', icon: CloudIcon },
     {
-        name: 'Debug',
+        name: 'Meta',
         icon: CommandLineIcon,
+    },
+];
+
+const endSidebarNavigation = [
+    {
+        name: 'Provider Settings',
+        icon: Cog8ToothIcon,
     },
 ];
 
@@ -55,9 +66,9 @@ const NavbarComponent = () => {
                 {/* Narrow sidebar*/}
                 <nav
                     aria-label="SidebarComponent"
-                    className="block flex-shrink-0 overflow-y-auto bg-gray-800"
+                    className="flex flex-col overflow-y-auto bg-gray-800 justify-between"
                 >
-                    <div className="relative flex w-20 flex-col space-y-3 p-3">
+                    <div className="flex w-20 flex-col space-y-3 p-3">
                         {sidebarNavigation.map((item) => (
                             <button
                                 key={item.name}
@@ -80,6 +91,30 @@ const NavbarComponent = () => {
                             </button>
                         ))}
                     </div>
+
+                    <div className="flex w-20 flex-col space-y-3 p-3">
+                        {endSidebarNavigation.map((item) => (
+                            <button
+                                key={item.name}
+                                // href={item.href}
+                                className={classNames(
+                                    currentProvider === item.name.toLowerCase()
+                                        ? 'bg-gray-900 text-white'
+                                        : 'text-gray-400 hover:bg-gray-700',
+                                    'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg',
+                                )}
+                                onClick={() =>
+                                    setCurrentProvider(item.name.toLowerCase())
+                                }
+                            >
+                                <item.icon
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                />
+                                {/*{item.name}*/}
+                            </button>
+                        ))}
+                    </div>
                 </nav>
 
                 {/* Main area */}
@@ -96,7 +131,7 @@ const NavbarComponent = () => {
 
                     {/* Available resources */}
                     <aside>
-                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700">
+                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700 px-2">
                             {/*<h1>Available resource list here</h1>*/}
                             <ResourceList filter={currentProvider} />
                         </div>

@@ -1,15 +1,15 @@
 import { IResourceKeyResourceState } from '../../../../interfaces/IResourceState';
-import { IResourceKeySubResource } from '../../../../interfaces/IResourceObject';
+import { IResourceKeyBlock } from '../../../../interfaces/IResourceObject';
 import { Handle, Position, useNodeId } from 'reactflow';
 import React from 'react';
 
-const ResourceNodeKeySubResource = ({
+const ResourceNodeKeyBlock = ({
     keyState,
     globalKey,
     onChange,
 }: {
     keyState: IResourceKeyResourceState;
-    globalKey: IResourceKeySubResource;
+    globalKey: IResourceKeyBlock;
     onChange(name: string, value: string): void;
 }) => {
     const nodeId = useNodeId();
@@ -33,4 +33,4 @@ const ResourceNodeKeySubResource = ({
     );
 };
 
-export default ResourceNodeKeySubResource;
+export default ResourceNodeKeyBlock;

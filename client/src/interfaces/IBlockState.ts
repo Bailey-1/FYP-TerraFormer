@@ -1,6 +1,6 @@
 import { IResourceKeyResourceState, IResourceKeyState } from './IResourceState';
 
-export interface ISubResourceState {
+export interface IBlockState {
     id: string;
     type: string;
     parent_type: string;

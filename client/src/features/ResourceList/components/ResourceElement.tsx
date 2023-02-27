@@ -1,6 +1,6 @@
 // TODO: Make this resource collapsable to hide details
 import {
-    IResourceKeySubResource,
+    IResourceKeyBlock,
     IResourceObject,
 } from '../../../interfaces/IResourceObject';
 import onDragStart from '../../../events/ResourceDragAndDrop';
@@ -19,20 +19,19 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
         );
     };
 
-    const addSubResource = (sub: IResourceKeySubResource) => {
+    const addBlock = (sub: IResourceKeyBlock) => {
         dispatch(
             addSubNode({
                 name: sub.name,
+                parentResourceName: resource.name,
                 position: { x: 0, y: 0 },
-                parentResourceNode: resource,
-                subResource: sub.subresource,
             }),
         );
     };
 
     const r = resource.keys.filter(
-        (x) => x.type === 'subresource',
-    ) as IResourceKeySubResource[];
+        (x) => x.type === 'block',
+    ) as IResourceKeyBlock[];
 
     return (
         <div
@@ -62,10 +61,10 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                     Description of the resource. Description of the resource.
                     Description of the resource.
                 </p>
-                {r.map((sub: IResourceKeySubResource) => {
+                {r.map((sub: IResourceKeyBlock) => {
                     return (
                         <div
-                            className="flex justify-between bg-blue-400 hover:bg-blue-500 rounded m-2 p-2 items-center"
+                            className="flex justify-between m-2 p-2 items-center border border-l-4 bg-gray-800 hover:bg-gray-700"
                             draggable
                             key={sub.name}
                         >
@@ -74,7 +73,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                             </h3>
                             <button
                                 className="bg-yellow-600 p-2 px-4 text-gray-200 rounded hover:bg-yellow-700"
-                                onClick={() => addSubResource(sub)}
+                                onClick={() => addBlock(sub)}
                             >
                                 +
                             </button>

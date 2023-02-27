@@ -16,9 +16,11 @@ import {
     IResourceState,
 } from '../interfaces/IResourceState';
 import ResourceLookup from '../resources/ResourceLookup';
-import { IResourceKeys, IResourceObject } from '../interfaces/IResourceObject';
-import { ISubResourceState } from '../interfaces/ISubResourceState';
-import { ISubResourceObject } from '../interfaces/ISubResourceObject';
+import {
+    IResourceKeyBlock,
+    IResourceKeys,
+} from '../interfaces/IResourceObject';
+import { IBlockState } from '../interfaces/IBlockState';
 
 // Define a type for the slice state
 interface CounterState {
@@ -87,38 +89,49 @@ export const flowSlice = createSlice({
             state,
             action: PayloadAction<{
                 name: string;
+                parentResourceName: string;
                 position: XYPosition;
-                parentResourceNode: IResourceObject;
-                subResource: ISubResourceObject;
             }>,
         ) => {
-            state.nodes.push({
-                id: Math.random().toString(),
-                position: action.payload.position,
-                selectable: true,
-                data: {
-                    resourceState: {
-                        id: Math.random().toString(),
-                        type: action.payload.name,
-                        valid: false,
-                        instance_name: action.payload.name,
-                        instance_name_valid: false,
-                        parent_type: action.payload.parentResourceNode.name,
-                        keys:
-                            action.payload.subResource.keys
-                                .filter((x) => x.required)
-                                .map((key: any) => {
-                                    return {
-                                        id: Math.random().toString(),
-                                        name: key.name,
-                                        value: '',
-                                        valid: false,
-                                    };
-                                }) || [],
-                    } as ISubResourceState,
-                },
-                type: 'subResourceNode',
-            });
+            const parent = ResourceLookup.find(
+                (y) => y.name === action.payload.parentResourceName,
+            );
+
+            const sub = parent?.keys
+                .filter((x) => x.type === 'block')
+                .find(
+                    (x) => x.name === action.payload.name,
+                ) as IResourceKeyBlock;
+
+            if (parent) {
+                state.nodes.push({
+                    id: Math.random().toString(),
+                    position: action.payload.position,
+                    selectable: true,
+                    data: {
+                        resourceState: {
+                            id: Math.random().toString(),
+                            type: action.payload.name,
+                            valid: false,
+                            instance_name: action.payload.name,
+                            instance_name_valid: false,
+                            parent_type: parent.name,
+                            keys:
+                                sub.block.keys
+                                    .filter((x) => x.required)
+                                    .map((key: any) => {
+                                        return {
+                                            id: Math.random().toString(),
+                                            name: key.name,
+                                            value: '',
+                                            valid: false,
+                                        };
+                                    }) || [],
+                        } as IBlockState,
+                    },
+                    type: 'subResourceNode',
+                });
+            }
         },
         onNodesChange: (state, action: PayloadAction<NodeChange[]>) => {
             action.payload.forEach((payload) => {

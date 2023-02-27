@@ -27,7 +27,7 @@ import {
 import resourceLookup from '../../resources/ResourceLookup';
 import SidebarComponent from '../Sidebar/SidebarComponent';
 import SelectEdge from './components/Edges/SelectEdge';
-import SubResourceNode from './components/Nodes/SubResourceNode';
+import SubResourceNode from './components/Nodes/BlockNode';
 // import SubResourceNode from './components/Nodes/SubResourceNode';
 
 const connectionLineStyle = { stroke: 'black' };

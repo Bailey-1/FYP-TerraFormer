@@ -72,8 +72,37 @@ const ResourceLookup: IResourceObject[] = [
             {
                 name: 'tags',
                 display_name: 'Tags',
-                type: 'subresource',
-                subresource: TagSubResource,
+                type: 'block',
+                block: TagSubResource,
+                validation: (value: string): boolean => {
+                    return !!value.length;
+                },
+                validation_message: 'Must include the letter b',
+                required: false,
+            },
+            {
+                name: 'georeplications',
+                display_name: 'Geo Replications',
+                type: 'block',
+                block: {
+                    name: 'georeplications',
+                    display_name: 'Geo Replications',
+                    provider: k.providers.azure,
+                    keys: [
+                        {
+                            name: 'location',
+                            display_name: 'Location',
+                            type: 'select',
+                            options: k.azure.regions,
+                            validation: (value: string): boolean => {
+                                return value.includes('b');
+                            },
+                            validation_message: 'Must include the letter b',
+                            required: true,
+                        },
+                    ],
+                    attributes: [],
+                },
                 validation: (value: string): boolean => {
                     return !!value.length;
                 },

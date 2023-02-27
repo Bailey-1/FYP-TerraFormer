@@ -1,6 +1,6 @@
 import { IResourceKeys } from './IResourceObject';
 
-export interface ISubResourceObject {
+export interface IBlockObject {
     name: string;
     display_name: string;
     provider: string;

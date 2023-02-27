@@ -143,7 +143,7 @@ const ResourceNode = ({
                 }}
             />
             <div
-                className={`flex justify-between p-2 rounded-t-xl ${
+                className={`flex justify-between p-2 rounded-t-xl items-center ${
                     providerColours[globalResource.provider]?.background
                 }`}
             >
@@ -155,13 +155,13 @@ const ResourceNode = ({
                     {globalResource.display_name}
                 </h1>
                 <div>
-                    <button className="h-8 nodrag mr-2">
+                    <button className="h-7 nodrag mr-2">
                         <InformationCircleIcon
                             className="h-full text-gray-300 hover:text-gray-200 hover:bg-gray-700 rounded"
                             onClick={() => openSidebar()}
                         />
                     </button>
-                    <button className="h-8 nodrag">
+                    <button className="h-7 nodrag">
                         <XMarkIcon
                             className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
                             onClick={() => removeNode()}

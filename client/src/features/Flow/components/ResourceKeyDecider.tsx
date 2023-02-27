@@ -8,7 +8,7 @@ import { IResourceKeys } from '../../../interfaces/IResourceObject';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import ResourceNodeKeySelect from './keys/ResourceNodeKeySelect';
 import ResourceNodeKeyResource from './keys/ResourceNodeKeyResource';
-import ResourceNodeKeySubResource from './keys/ResourceNodeKeySubResource';
+import ResourceNodeKeyBlock from './keys/ResourceNodeKeyBlock';
 
 const ResourceKeyDecider = ({
     keyState,
@@ -45,9 +45,9 @@ const ResourceKeyDecider = ({
                         onChange={onChange}
                     />
                 );
-            case 'subresource':
+            case 'block':
                 return (
-                    <ResourceNodeKeySubResource
+                    <ResourceNodeKeyBlock
                         keyState={keyState as IResourceKeyResourceState}
                         globalKey={globalKey}
                         onChange={onChange}

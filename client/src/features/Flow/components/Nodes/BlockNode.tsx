@@ -5,17 +5,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import { RootState } from '../../../../store/store';
-import { ISubResourceState } from '../../../../interfaces/ISubResourceState';
-import { IResourceKeySubResource } from '../../../../interfaces/IResourceObject';
+import { IBlockState } from '../../../../interfaces/IBlockState';
+import { IResourceKeyBlock } from '../../../../interfaces/IResourceObject';
 import ResourceKeyDecider from '../ResourceKeyDecider';
 
-const SubResourceNode = ({
+const BlockNode = ({
     id,
     data,
     selected,
 }: {
     id: string;
-    data: { resourceState: ISubResourceState };
+    data: { resourceState: IBlockState };
     selected: boolean;
 }) => {
     const dispatch = useDispatch();
@@ -26,11 +26,9 @@ const SubResourceNode = ({
         (x) => x.name === data.resourceState.parent_type,
     );
 
-    const globalSubResource = globalResource?.keys
-        .filter((x) => x.type === 'subresource')
-        .find(
-            (x) => x.name === data.resourceState.type,
-        ) as IResourceKeySubResource;
+    const globalBlock = globalResource?.keys
+        .filter((x) => x.type === 'block')
+        .find((x) => x.name === data.resourceState.type) as IResourceKeyBlock;
 
     const additionalDetails = useSelector(
         (state: RootState) => state.settings.additionalDetails,
@@ -65,7 +63,7 @@ const SubResourceNode = ({
         );
     };
 
-    if (!globalResource || !globalSubResource) {
+    if (!globalResource || !globalBlock) {
         return <p>Error: globalResource/subResourceType is not defined</p>;
     }
 
@@ -79,7 +77,7 @@ const SubResourceNode = ({
             <Handle
                 type="source"
                 position={Position.Right}
-                id={globalSubResource.name}
+                id={globalBlock.name}
                 style={{
                     width: '15px',
                     height: '15px',
@@ -89,7 +87,7 @@ const SubResourceNode = ({
             />
             <div className={`flex justify-between p-2 rounded-t-xl`}>
                 <h1 className={`text-xl text-gray-200`}>
-                    {globalSubResource.display_name}
+                    {globalBlock.display_name}
                 </h1>
                 <div>
                     <button className="h-8 nodrag">
@@ -108,7 +106,7 @@ const SubResourceNode = ({
                 )}
                 {additionalDetails && <p>NodeID: {nodeId}</p>}
 
-                {globalSubResource.subresource.keys.map((x, i) => {
+                {globalBlock.block.keys.map((x, i) => {
                     return (
                         <ResourceKeyDecider
                             key={x.name}
@@ -127,4 +125,4 @@ const SubResourceNode = ({
     );
 };
 
-export default memo(SubResourceNode);
+export default memo(BlockNode);
