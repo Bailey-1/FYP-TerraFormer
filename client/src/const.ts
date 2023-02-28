@@ -1,7 +1,11 @@
+export type providers = 'azure' | 'aws' | 'gcp';
+export type nodeTypes = 'resourceNode' | 'dataNode' | 'subResourceNode';
+
 const k = {
     providers: {
-        azure: 'azure',
-        aws: 'aws',
+        azure: 'azure' as providers,
+        aws: 'aws' as providers,
+        gcp: 'gcp' as providers,
     },
     azure: {
         regions: [

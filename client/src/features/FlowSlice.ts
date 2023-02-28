@@ -11,8 +11,17 @@ import {
     updateEdge,
     XYPosition,
 } from 'reactflow';
-import { IResourceKeyState } from '../interfaces/IResourceState';
+import {
+    IResourceKeyState,
+    IResourceKeyStateTypes,
+    IResourceState,
+} from '../interfaces/IResourceState';
 import ResourceLookup from '../resources/ResourceLookup';
+import {
+    IResourceKeyBlock,
+    IResourceKeys,
+} from '../interfaces/IResourceObject';
+import { IBlockState } from '../interfaces/IBlockState';
 
 // Define a type for the slice state
 interface CounterState {
@@ -32,11 +41,15 @@ export const flowSlice = createSlice({
     reducers: {
         addNode: (
             state,
-            action: PayloadAction<{ name: string; position: XYPosition }>,
+            action: PayloadAction<{
+                name: string;
+                position: XYPosition;
+            }>,
         ) => {
             state.nodes.push({
                 id: Math.random().toString(),
                 position: action.payload.position,
+                selectable: true,
                 data: {
                     resourceState: {
                         id: Math.random().toString(),
@@ -47,26 +60,111 @@ export const flowSlice = createSlice({
                         keys:
                             ResourceLookup.find(
                                 (y) => y.name === action.payload.name,
-                            )?.keys.map((key: any) => {
-                                return {
-                                    id: Math.random().toString(),
-                                    name: key.name,
-                                    value: '',
-                                    valid: false,
-                                };
-                            }) || [],
-                    },
+                            )
+                                ?.keys.filter((x) => x.required)
+                                .map((key: IResourceKeys) => {
+                                    if (key.type === 'resource') {
+                                        return {
+                                            id: Math.random().toString(),
+                                            name: key.name,
+                                            value: '',
+                                            valid: false,
+                                            type: 'resource',
+                                        };
+                                    } else {
+                                        return {
+                                            id: Math.random().toString(),
+                                            name: key.name,
+                                            value: '',
+                                            valid: false,
+                                            type: key.type,
+                                        };
+                                    }
+                                }) || [],
+                    } as IResourceState,
                 },
                 type: 'resourceNode',
             });
         },
+        addSubNode: (
+            state,
+            action: PayloadAction<{
+                name: string;
+                parentResourceName: string;
+                position: XYPosition;
+            }>,
+        ) => {
+            const parent = ResourceLookup.find(
+                (y) => y.name === action.payload.parentResourceName,
+            );
+
+            const sub = parent?.keys
+                .filter((x) => x.type === 'block')
+                .find(
+                    (x) => x.name === action.payload.name,
+                ) as IResourceKeyBlock;
+
+            if (parent) {
+                state.nodes.push({
+                    id: Math.random().toString(),
+                    position: action.payload.position,
+                    selectable: true,
+                    data: {
+                        resourceState: {
+                            id: Math.random().toString(),
+                            type: action.payload.name,
+                            valid: false,
+                            instance_name: action.payload.name,
+                            instance_name_valid: false,
+                            parent_type: parent.name,
+                            keys:
+                                sub.block.keys
+                                    .filter((x) => x.required)
+                                    .map((key: any) => {
+                                        return {
+                                            id: Math.random().toString(),
+                                            name: key.name,
+                                            value: '',
+                                            valid: false,
+                                        };
+                                    }) || [],
+                        } as IBlockState,
+                    },
+                    type: 'subResourceNode',
+                });
+            }
+        },
         onNodesChange: (state, action: PayloadAction<NodeChange[]>) => {
+            action.payload.forEach((payload) => {
+                // Remove edges from redux when linked node is deleted
+                if (payload.type === 'remove') {
+                    state.edges = state.edges.filter(
+                        (x) =>
+                            x.source !== payload.id && x.target !== payload.id,
+                    );
+                }
+            });
+
             state.nodes = applyNodeChanges(action.payload, state.nodes);
         },
         onConnect: (state, action: PayloadAction<Connection>) => {
             // Check node is different from self
             if (action.payload.source !== action.payload.target) {
-                state.edges = addEdge(action.payload, state.edges);
+                const srcNode = state.nodes.find(
+                    (x) => x.id === action.payload.source,
+                );
+
+                const type =
+                    srcNode?.type === 'resourceNode' ? 'selectEdge' : 'default';
+
+                state.edges = addEdge(
+                    {
+                        ...action.payload,
+                        type,
+                        data: { connection: action.payload, value: '' },
+                    },
+                    state.edges,
+                );
             }
         },
         updateNodeKey: (
@@ -117,16 +215,77 @@ export const flowSlice = createSlice({
                 state.edges,
             );
         },
+        onEdgesDataUpdate: (
+            state,
+            action: PayloadAction<{
+                edgeId: string;
+                data: string;
+            }>,
+        ) => {
+            const target = state.edges.find(
+                (x) => x.id === action.payload.edgeId,
+            );
+
+            if (target) {
+                target.data.value = action.payload.data;
+            }
+        },
+        addNewNodeKey: (
+            state,
+            action: PayloadAction<{
+                nodeId: string;
+                keyName: string;
+                keyType: string;
+            }>,
+        ) => {
+            const node = state.nodes.find(
+                (x) => x.id === action.payload.nodeId,
+            );
+
+            const ref = {
+                id: Math.random().toString(),
+                name: action.payload.keyName,
+                // instance_name: '',
+                // resource_key: '',
+                // resource_type: '',
+                type: action.payload.keyType,
+            };
+
+            node?.data.resourceState.keys.push(ref);
+        },
+        removeNodeKey: (
+            state,
+            action: PayloadAction<{
+                nodeId: string;
+                keyId: string;
+            }>,
+        ) => {
+            const node = state.nodes.find(
+                (x) => x.id === action.payload.nodeId,
+            ) as Node;
+
+            if (!node) {
+                return;
+            }
+
+            node.data.resourceState.keys = node.data.resourceState.keys.filter(
+                (x: IResourceKeyStateTypes) => x.id !== action.payload.keyId,
+            );
+        },
     },
 });
 
 export const {
     addNode,
+    addSubNode,
     onNodesChange,
     onConnect,
     updateNodeKey,
     onEdgesChange,
     onEdgesUpdate,
+    onEdgesDataUpdate,
+    addNewNodeKey,
+    removeNodeKey,
 } = flowSlice.actions;
 
 export default flowSlice;

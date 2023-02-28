@@ -1,0 +1,11 @@
+.react-flow__handle {
+    background: dodgerblue;
+}
+
+.react-flow__handle-connecting {
+    background: darkred;
+}
+
+.react-flow__handle-valid {
+    background: darkgreen;
+}
