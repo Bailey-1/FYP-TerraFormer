@@ -14,35 +14,21 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/jsonToHcl', (req, res) => {
-    const providers = {
-        azurerm: {
-            source: 'hasicorp/azurerm',
-            version: '3.39.1',
-        },
-    };
-
-    const resources = {
-        azurerm_resource_group: {
-            compulsary: {
-                name: 'string',
-                location: [
-                    'UK South',
-                    'UK West',
-                    'West Europe',
-                    'North Europe',
-                    'East US',
-                    'East US 2',
+    const input = {
+        terraform: [
+            {
+                required_providers: [
+                    {
+                        azurerm: [
+                            {
+                                source: 'hashicorp/azurerm',
+                                version: '3.45.0',
+                            },
+                        ],
+                    },
                 ],
             },
-            optional: {
-                tag: {
-                    environment: '',
-                },
-            },
-        },
-    };
-
-    const input = {
+        ],
         resource: {
             azurerm_resource_group: {
                 staging_rg: {
@@ -72,7 +58,14 @@ app.use('/api/jsonToHcl', (req, res) => {
 
     let result: string = hcl.stringify(JSON.stringify(input));
 
-    result = result.replace(/"\$([^"]*)"/gm, '$1'); // Replace references to other variables so its valid - "$a.b.c" => a.b.c
+    // Replace references to other variables so its valid - "$a.b.c" => a.b.c
+    result = result.replace(/"\$([^"]*)"/gm, '$1');
+
+    // Remove double quotes from key string names - "location" = "UK South" -> location = "UK South"
+    result = result.replace(/"(\w+)" =/gm, '$1 =');
+
+    // Do the same but with the word "resource" in resource blocks
+    result = result.replace(/"resource"/gm, 'resource');
 
     return res.send(result);
 });
