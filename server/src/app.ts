@@ -67,7 +67,14 @@ app.use('/api/jsonToHcl', (req, res) => {
     // Do the same but with the word "resource" in resource blocks
     result = result.replace(/"resource"/gm, 'resource');
 
-    return res.send(result);
+    // You have to define a block not assign a value -> generate doesn't do this
+    result = result.replace('terraform = {', 'terraform {');
+    result = result.replace('required_providers = {', 'required_providers {');
+
+    return res.send({
+        status: 'success',
+        result,
+    });
 });
 
 export { app };

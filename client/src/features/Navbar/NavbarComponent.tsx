@@ -7,6 +7,9 @@ import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
 import ReactFlowComponent from '../Flow/ReactFlowComponent';
 import SwitchComponent from './components/SwitchComponent';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { useCreateHclMutation } from '../../services/Api';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -33,6 +36,26 @@ function classNames(...classes: string[]) {
 const NavbarComponent = () => {
     const [currentProvider, setCurrentProvider] = useState('all');
 
+    const nodes = useSelector((state: RootState) => state.flow.nodes);
+    const edges = useSelector((state: RootState) => state.flow.edges);
+
+    const [createHcl, { data }] = useCreateHclMutation();
+
+    const exportHcl = async () => {
+        const resources = nodes.map((x) => x.data.resourceState);
+
+        console.log('Resources:');
+        console.table(resources);
+
+        const connections = edges.map((x) => x);
+        console.table('connections');
+        console.table(connections);
+
+        await createHcl({ nodes: resources, edges });
+
+        console.log(data);
+    };
+
     return (
         <div className="flex h-full flex-col">
             {/* Top nav*/}
@@ -52,7 +75,10 @@ const NavbarComponent = () => {
                     <div className="mr-2">
                         <SwitchComponent />
                     </div>
-                    <button className="p-2 px-4 m-2 bg-green-800 hover:bg-green-900 rounded-lg text-gray-100">
+                    <button
+                        className="p-2 px-4 m-2 bg-green-800 hover:bg-green-900 rounded-lg text-gray-100"
+                        onClick={() => exportHcl()}
+                    >
                         Export to HCL
                     </button>
                     <button className="bg-gray-300 hover:bg-gray-400 rounded-full p-2 px-4 m-2 font-bold border-gray-900 border">
