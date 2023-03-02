@@ -12,16 +12,14 @@ import {
     XYPosition,
 } from 'reactflow';
 import {
+    IBlockState,
+    IResourceKeyBlock,
+    IResourceKeys,
     IResourceKeyState,
     IResourceKeyStateTypes,
     IResourceState,
-} from '../interfaces/IResourceState';
+} from '@bailey-1/terraformwebapp-common';
 import ResourceLookup from '../resources/ResourceLookup';
-import {
-    IResourceKeyBlock,
-    IResourceKeys,
-} from '../interfaces/IResourceObject';
-import { IBlockState } from '../interfaces/IBlockState';
 
 // Define a type for the slice state
 interface CounterState {

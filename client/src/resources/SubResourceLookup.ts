@@ -1,4 +1,4 @@
-import { IBlockObject } from '../interfaces/IBlockObject';
+import { IBlockObject } from '@bailey-1/terraformwebapp-common';
 import k from '../const';
 
 export const TagSubResource: IBlockObject = {

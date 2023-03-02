@@ -1,6 +1,8 @@
 import React from 'react';
-import { IResourceKeyState } from '../../../../interfaces/IResourceState';
-import { IResourceKey } from '../../../../interfaces/IResourceObject';
+import {
+    IResourceKey,
+    IResourceKeyState,
+} from '@bailey-1/terraformwebapp-common';
 
 const ResourceNodeKeyInput = ({
     keyState,

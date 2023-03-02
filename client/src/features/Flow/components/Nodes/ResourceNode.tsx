@@ -11,7 +11,10 @@ import {
     useNodeId,
     useUpdateNodeInternals,
 } from 'reactflow';
-import { IResourceState } from '../../../../interfaces/IResourceState';
+import {
+    IResourceKeys,
+    IResourceState,
+} from '@bailey-1/terraformwebapp-common';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addNewNodeKey,
@@ -24,7 +27,6 @@ import providerColours from '../../../../resources/ProviderColours';
 import { onSidebarUpdate } from '../../../SidebarSlice';
 import { RootState } from '../../../../store/store';
 import { Disclosure } from '@headlessui/react';
-import { IResourceKeys } from '../../../../interfaces/IResourceObject';
 import PillButton from '../../../../components/controls/PillBtn';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 

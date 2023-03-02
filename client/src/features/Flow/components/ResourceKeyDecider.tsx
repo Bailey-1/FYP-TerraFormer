@@ -1,10 +1,10 @@
 // Decide which input to use for a key
 import {
     IResourceKeyResourceState,
+    IResourceKeys,
     IResourceKeyState,
     IResourceKeyStateTypes,
-} from '../../../interfaces/IResourceState';
-import { IResourceKeys } from '../../../interfaces/IResourceObject';
+} from '@bailey-1/terraformwebapp-common';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import ResourceNodeKeySelect from './keys/ResourceNodeKeySelect';
 import ResourceNodeKeyResource from './keys/ResourceNodeKeyResource';

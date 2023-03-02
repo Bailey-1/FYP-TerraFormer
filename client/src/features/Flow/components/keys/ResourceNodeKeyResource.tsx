@@ -1,8 +1,8 @@
 import {
+    IResourceKeyResource,
     IResourceKeyResourceState,
     IResourceKeyState,
-} from '../../../../interfaces/IResourceState';
-import { IResourceKeyResource } from '../../../../interfaces/IResourceObject';
+} from '@bailey-1/terraformwebapp-common';
 import { Connection, Handle, Position, useNodeId } from 'reactflow';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';

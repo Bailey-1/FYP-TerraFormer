@@ -1,5 +1,5 @@
 import k from '../const';
-import { IResourceObject } from '../interfaces/IResourceObject';
+import { IResourceObject } from '@bailey-1/terraformwebapp-common';
 import { TagSubResource } from './SubResourceLookup';
 
 const ResourceLookup: IResourceObject[] = [

@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onNodesChange, updateNodeKey } from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import { RootState } from '../../../../store/store';
-import { IBlockState } from '../../../../interfaces/IBlockState';
-import { IResourceKeyBlock } from '../../../../interfaces/IResourceObject';
+import {
+    IBlockState,
+    IResourceKeyBlock,
+} from '@bailey-1/terraformwebapp-common';
 import ResourceKeyDecider from '../ResourceKeyDecider';
 
 const BlockNode = ({

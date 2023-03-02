@@ -1,10 +1,12 @@
-import { IResourceKeyResourceState } from '../../../../interfaces/IResourceState';
-import { IResourceKeyBlock } from '../../../../interfaces/IResourceObject';
+import {
+    IBlockState,
+    IResourceKeyBlock,
+    IResourceKeyResourceState,
+} from '@bailey-1/terraformwebapp-common';
 import { Handle, Position, useNodeId } from 'reactflow';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
-import { IBlockState } from '../../../../interfaces/IBlockState';
 import { removeNodeKey } from '../../../FlowSlice';
 import PillButton from '../../../../components/controls/PillBtn';
 
