@@ -18,11 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - run: npm install -g npm-cli-login
-      - name: NPM Login
-        working-directory: ./client
-        run: npm-cli-login -u "bailey-1" -p "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" -e "44928829+Bailey-1@users.noreply.github.com" -r "https://npm.pkg.github.com" -s "@bailey-1"
-        
+      - run: ls
+      - run: echo "registry=https://npm.pkg.github.com/:_authToken=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" >> .npmrc
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
