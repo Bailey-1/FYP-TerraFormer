@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
       - run: ls
-      - run: echo "registry=https://npm.pkg.github.com/:_authToken=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" >> .npmrc
+      - run: echo "registry=https://npm.pkg.github.com/:_authToken=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" >> ./client/.npmrc
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
