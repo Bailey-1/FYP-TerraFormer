@@ -10,6 +10,7 @@ import SwitchComponent from './components/SwitchComponent';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useCreateHclMutation } from '../../services/Api';
+import { IResourceState } from '@bailey-1/terraformwebapp-common';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -42,7 +43,13 @@ const NavbarComponent = () => {
     const [createHcl, { data }] = useCreateHclMutation();
 
     const exportHcl = async () => {
-        const resources = nodes.map((x) => x.data.resourceState);
+        const resources = nodes.map((x) => {
+            return {
+                id: x.id,
+                type: x.type,
+                resourceState: x.data.resourceState as IResourceState,
+            };
+        });
 
         console.log('Resources:');
         console.table(resources);
@@ -57,12 +64,13 @@ const NavbarComponent = () => {
                 data: {
                     value: x.data.value,
                 },
+                type: x.type,
             };
         });
         console.table('connections');
         console.table(connections);
 
-        await createHcl({ nodes, edges: connections });
+        await createHcl({ resources, edges: connections });
 
         console.log(data);
     };

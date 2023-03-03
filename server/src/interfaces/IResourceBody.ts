@@ -7,9 +7,16 @@ interface IConnection {
     target: string;
     targetHandle: string;
     data: { value: string };
+    type: string;
+}
+
+interface IResource {
+    id: string;
+    type: string;
+    resourceState: IResourceState;
 }
 
 export default interface IResourceBody {
-    resources: IResourceState[];
+    resources: IResource[];
     edges: IConnection[];
 }

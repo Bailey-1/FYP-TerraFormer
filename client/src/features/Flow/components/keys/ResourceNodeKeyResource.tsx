@@ -19,6 +19,10 @@ const ResourceNodeKeyResource = ({
 }) => {
     const nodeId = useNodeId();
 
+    const additionalDetails = useSelector(
+        (state: RootState) => state.settings.additionalDetails,
+    );
+
     // Find any edges which link to this input
     const edgeData = useSelector((state: RootState) =>
         state.flow.edges.find(
@@ -30,14 +34,12 @@ const ResourceNodeKeyResource = ({
     );
 
     // Find the value of the key linked to this input
-    const sourceVal = useSelector(
-        (state: RootState) =>
-            state.flow.nodes
-                .find((x) => x.id === edgeData?.source)
-                ?.data.resourceState.keys.find(
-                    (x: IResourceKeyState) =>
-                        x.name === globalKey.resource_property,
-                )?.value,
+    const sourceNode = useSelector((state: RootState) =>
+        state.flow.nodes.find((x) => x.id === edgeData?.source),
+    );
+
+    const sourceKey = sourceNode?.data.resourceState.keys.find(
+        (x: IResourceKeyState) => x.name === edgeData?.data?.value,
     );
 
     return (
@@ -64,7 +66,9 @@ const ResourceNodeKeyResource = ({
             />
             <div className="flex">
                 <p className="text-gray-400">{globalKey.display_name}:</p>
-                <p className="text-gray-300 pl-2">{sourceVal}</p>
+                <p className="text-gray-300 pl-2">
+                    {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
+                </p>
                 <p
                     className="pl-2"
                     title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
@@ -74,6 +78,19 @@ const ResourceNodeKeyResource = ({
                         : '⚠️'}
                 </p>
             </div>
+            {additionalDetails && (
+                <div className="flex">
+                    <p className="text-gray-400">Ref:</p>
+                    <p
+                        className="text-gray-300 pl-2"
+                        title="Actual link used in the Terraform file."
+                    >
+                        {`@${sourceNode?.data.resourceState.type}`}.
+                        {sourceNode?.data.resourceState.id}.{sourceKey?.name}
+                    </p>
+                </div>
+            )}
+            {/*<p>{JSON.stringify(sourceNode)}</p>*/}
         </div>
     );
 };

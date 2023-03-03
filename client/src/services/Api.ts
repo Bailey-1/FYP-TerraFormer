@@ -9,11 +9,11 @@ export const baseApi = createApi({
     baseQuery,
     endpoints: (builder) => ({
         createHcl: builder.mutation({
-            query: ({ nodes, edges }) => ({
+            query: ({ resources, edges }) => ({
                 url: '/jsonToHcl',
                 method: 'POST',
                 body: {
-                    nodes,
+                    resources,
                     edges,
                 },
             }),

@@ -20,6 +20,7 @@ import {
     IResourceState,
 } from '@bailey-1/terraformwebapp-common';
 import ResourceLookup from '../resources/ResourceLookup';
+import RandomID from '../utility/RandomID';
 
 // Define a type for the slice state
 interface CounterState {
@@ -45,12 +46,12 @@ export const flowSlice = createSlice({
             }>,
         ) => {
             state.nodes.push({
-                id: Math.random().toString(),
+                id: RandomID(),
                 position: action.payload.position,
                 selectable: true,
                 data: {
                     resourceState: {
-                        id: Math.random().toString(),
+                        id: RandomID(),
                         type: action.payload.name,
                         valid: false,
                         instance_name: action.payload.name,
@@ -63,7 +64,7 @@ export const flowSlice = createSlice({
                                 .map((key: IResourceKeys) => {
                                     if (key.type === 'resource') {
                                         return {
-                                            id: Math.random().toString(),
+                                            id: RandomID(),
                                             name: key.name,
                                             value: '',
                                             valid: false,
@@ -71,7 +72,7 @@ export const flowSlice = createSlice({
                                         };
                                     } else {
                                         return {
-                                            id: Math.random().toString(),
+                                            id: RandomID(),
                                             name: key.name,
                                             value: '',
                                             valid: false,
@@ -104,12 +105,12 @@ export const flowSlice = createSlice({
 
             if (parent) {
                 state.nodes.push({
-                    id: Math.random().toString(),
+                    id: RandomID(),
                     position: action.payload.position,
                     selectable: true,
                     data: {
                         resourceState: {
-                            id: Math.random().toString(),
+                            id: RandomID(),
                             type: action.payload.name,
                             valid: false,
                             instance_name: action.payload.name,
@@ -120,7 +121,7 @@ export const flowSlice = createSlice({
                                     .filter((x) => x.required)
                                     .map((key: any) => {
                                         return {
-                                            id: Math.random().toString(),
+                                            id: RandomID(),
                                             name: key.name,
                                             value: '',
                                             valid: false,
@@ -190,7 +191,7 @@ export const flowSlice = createSlice({
                 existingEl.value = action.payload.value;
             } else {
                 node.data.resourceState.keys.push({
-                    id: Math.random().toString(),
+                    id: RandomID(),
                     name: action.payload.key,
                     value: action.payload.value,
                     valid: true,
@@ -241,7 +242,7 @@ export const flowSlice = createSlice({
             );
 
             const ref = {
-                id: Math.random().toString(),
+                id: RandomID(),
                 name: action.payload.keyName,
                 // instance_name: '',
                 // resource_key: '',
