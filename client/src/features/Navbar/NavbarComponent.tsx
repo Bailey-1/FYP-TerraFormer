@@ -47,11 +47,22 @@ const NavbarComponent = () => {
         console.log('Resources:');
         console.table(resources);
 
-        const connections = edges.map((x) => x);
+        const connections = edges.map((x) => {
+            return {
+                id: x.id,
+                source: x.source,
+                sourceHandle: x.sourceHandle,
+                target: x.target,
+                targetHandle: x.targetHandle,
+                data: {
+                    value: x.data.value,
+                },
+            };
+        });
         console.table('connections');
         console.table(connections);
 
-        await createHcl({ nodes: resources, edges });
+        await createHcl({ nodes, edges: connections });
 
         console.log(data);
     };

@@ -128,7 +128,7 @@ export const flowSlice = createSlice({
                                     }) || [],
                         } as IBlockState,
                     },
-                    type: 'subResourceNode',
+                    type: 'blockNode',
                 });
             }
         },

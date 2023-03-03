@@ -25,7 +25,7 @@ const ResourceNodeKeyResource = ({
             (x) =>
                 x.target === nodeId &&
                 x.targetHandle ===
-                    `${globalKey.resource_type}---${globalKey.resource_property}`,
+                    `${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`,
         ),
     );
 
@@ -42,14 +42,11 @@ const ResourceNodeKeyResource = ({
 
     return (
         <div className="relative">
-            <h2>{globalKey.name}</h2>
-            <p className="text-gray-300">
-                Linked Value: {sourceVal}/{edgeData?.data?.value}
-            </p>
+            {/*<h2>{globalKey.name}</h2>*/}
             <Handle
                 type="target"
                 position={Position.Left}
-                id={`${globalKey.resource_type}---${globalKey.resource_property}`}
+                id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
                 className="bg-blue-300"
                 style={{
                     width: '15px',
@@ -65,9 +62,18 @@ const ResourceNodeKeyResource = ({
                     );
                 }}
             />
-            <p>
-                {globalKey.resource_type} {globalKey.resource_property}
-            </p>
+            <div className="flex">
+                <p className="text-gray-400">{globalKey.display_name}:</p>
+                <p className="text-gray-300 pl-2">{sourceVal}</p>
+                <p
+                    className="pl-2"
+                    title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
+                >
+                    {edgeData?.data?.value === globalKey.resource_property
+                        ? '✅'
+                        : '⚠️'}
+                </p>
+            </div>
         </div>
     );
 };

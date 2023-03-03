@@ -1,10 +1,11 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import morgan from 'morgan';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import hcl from 'js-hcl-parser';
+import IResourceBody from './interfaces/IResourceBody';
 
 const app = express();
 
@@ -13,7 +14,9 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/jsonToHcl', (req, res) => {
+app.use('/api/jsonToHcl', (req: Request, res: Response) => {
+    const resources = req.body as IResourceBody;
+
     const input = {
         terraform: [
             {

@@ -183,7 +183,7 @@ const ResourceNode = ({
 
                 {data.resourceState.keys.map((x, i) => {
                     return (
-                        <div className="border-b pb-2" key={x.id}>
+                        <div className="border-b p-2 first:pt-0" key={x.id}>
                             <ResourceKeyDecider
                                 keyState={x}
                                 globalKey={globalResource.keys.find(

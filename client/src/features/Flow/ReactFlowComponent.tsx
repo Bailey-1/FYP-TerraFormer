@@ -27,14 +27,14 @@ import {
 import resourceLookup from '../../resources/ResourceLookup';
 import SidebarComponent from '../Sidebar/SidebarComponent';
 import SelectEdge from './components/Edges/SelectEdge';
-import SubResourceNode from './components/Nodes/BlockNode';
+import BlockNode from './components/Nodes/BlockNode';
 // import SubResourceNode from './components/Nodes/SubResourceNode';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
     resourceNode: ResourceNode,
     dataNode: VariableNode,
-    subResourceNode: SubResourceNode,
+    blockNode: BlockNode,
 };
 
 const edgeTypes = {
