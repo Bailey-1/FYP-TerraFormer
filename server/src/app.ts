@@ -6,6 +6,7 @@ import morgan from 'morgan';
 // @ts-ignore
 import hcl from 'js-hcl-parser';
 import IResourceBody from './interfaces/IResourceBody';
+import { IResourceKeyState, logger } from '@bailey-1/terraformwebapp-common';
 
 const app = express();
 
@@ -125,18 +126,68 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
                     primary.resourceState.id
                 ];
 
+            // Work out the value of the key for each type of resource
+
             switch (key.type) {
+                // Just assign the value to the key
                 case 'string':
                     res[key.name] = key.value;
                     break;
 
+                // Find the linked resource and use it as a variable
                 case 'resource':
+                    // eslint-disable-next-line no-case-declarations
+                    const linkedBlocks = connections.find(
+                        (x) =>
+                            x.target === primary.id &&
+                            x.targetHandle.includes(key.id),
+                    );
+
+                    if (linkedBlocks) {
+                        res[
+                            key.name
+                        ] = `$${linkedBlocks.sourceHandle}.${linkedBlocks.source}.${linkedBlocks.data.value}`;
+                    }
+
+                    break;
+
+                // Find the linked resources and add them as a nested block object
+                case 'block':
+                    // eslint-disable-next-line no-case-declarations
+                    const linkedBlocksArr = connections.filter(
+                        (x) =>
+                            x.target === primary.id &&
+                            x.targetHandle === key.id,
+                    );
+
+                    if (linkedBlocksArr.length) {
+                        res[key.name] = {};
+
+                        linkedBlocksArr.forEach((link) => {
+                            const linkRes = blockResources.find(
+                                (x) => x.id === link.source,
+                            );
+
+                            if (linkRes?.resourceState.type === 'tags') {
+                                const tagName = linkRes.resourceState.keys.find(
+                                    (x) => x.name === 'name',
+                                ) as IResourceKeyState;
+                                const tagValue =
+                                    linkRes.resourceState.keys.find(
+                                        (x) => x.name === 'value',
+                                    ) as IResourceKeyState;
+
+                                if (tagName) {
+                                    const tagBlock = res[key.name] as IBlock;
+                                    tagBlock[tagName.value] = tagValue.value;
+                                }
+                            }
+                        });
+                    }
                     break;
             }
         });
     });
-
-    debugger;
 
     let result: string = hcl.stringify(JSON.stringify(input));
 
@@ -153,10 +204,14 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
     result = result.replace('terraform = {', 'terraform {');
     result = result.replace('required_providers = {', 'required_providers {');
 
-    return res.send({
-        status: 'success',
-        result,
-    });
+    logger.info('app.ts', result);
+
+    // return res.send({
+    //     status: 'success',
+    //     result,
+    // });
+
+    return res.send(result);
 });
 
 export { app };

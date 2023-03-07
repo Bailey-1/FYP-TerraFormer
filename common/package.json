@@ -4,7 +4,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -22,5 +22,8 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "log4js": "^6.9.0"
   }
 }
