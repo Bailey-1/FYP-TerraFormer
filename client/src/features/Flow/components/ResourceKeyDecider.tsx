@@ -1,5 +1,6 @@
 // Decide which input to use for a key
 import {
+    IResourceKeyBlockState,
     IResourceKeyResourceState,
     IResourceKeys,
     IResourceKeyState,
@@ -16,7 +17,7 @@ const ResourceKeyDecider = ({
     globalKey,
 }: {
     keyState: IResourceKeyStateTypes;
-    onChange: (name: string, value: string) => void;
+    onChange: (name: string, value: string | string[]) => void;
     globalKey: IResourceKeys | undefined;
 }) => {
     if (globalKey) {
@@ -48,7 +49,7 @@ const ResourceKeyDecider = ({
             case 'block':
                 return (
                     <ResourceNodeKeyBlock
-                        keyState={keyState as IResourceKeyResourceState}
+                        keyState={keyState as IResourceKeyBlockState}
                         globalKey={globalKey}
                         onChange={onChange}
                     />

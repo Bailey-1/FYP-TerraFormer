@@ -67,7 +67,7 @@ const ResourceNode = ({
         }
     };
 
-    const updateKey = (name: string, value: string) => {
+    const updateKey = (name: string, value: string | string[]) => {
         dispatch(
             updateNodeKey({
                 nodeId: nodeId || '',

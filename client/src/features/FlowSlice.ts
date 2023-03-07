@@ -45,13 +45,14 @@ export const flowSlice = createSlice({
                 position: XYPosition;
             }>,
         ) => {
+            const id = RandomID();
             state.nodes.push({
-                id: RandomID(),
+                id,
                 position: action.payload.position,
                 selectable: true,
                 data: {
                     resourceState: {
-                        id: RandomID(),
+                        id,
                         type: action.payload.name,
                         valid: false,
                         instance_name: action.payload.name,
@@ -62,13 +63,13 @@ export const flowSlice = createSlice({
                             )
                                 ?.keys.filter((x) => x.required)
                                 .map((key: IResourceKeys) => {
-                                    if (key.type === 'resource') {
+                                    if (key.type === 'block') {
                                         return {
                                             id: RandomID(),
                                             name: key.name,
-                                            value: '',
+                                            value: [],
                                             valid: false,
-                                            type: 'resource',
+                                            type: 'block',
                                         };
                                     } else {
                                         return {
@@ -104,13 +105,15 @@ export const flowSlice = createSlice({
                 ) as IResourceKeyBlock;
 
             if (parent) {
+                const id = RandomID();
+
                 state.nodes.push({
-                    id: RandomID(),
+                    id,
                     position: action.payload.position,
                     selectable: true,
                     data: {
                         resourceState: {
-                            id: RandomID(),
+                            id,
                             type: action.payload.name,
                             valid: false,
                             instance_name: action.payload.name,
@@ -171,7 +174,7 @@ export const flowSlice = createSlice({
             action: PayloadAction<{
                 nodeId: string;
                 key: string;
-                value: string;
+                value: string | string[];
             }>,
         ) => {
             const node = state.nodes.find(
@@ -269,6 +272,12 @@ export const flowSlice = createSlice({
 
             node.data.resourceState.keys = node.data.resourceState.keys.filter(
                 (x: IResourceKeyStateTypes) => x.id !== action.payload.keyId,
+            );
+
+            state.edges = state.edges.filter(
+                (x) =>
+                    x.target !== action.payload.nodeId &&
+                    x.targetHandle !== action.payload.keyId,
             );
         },
     },
