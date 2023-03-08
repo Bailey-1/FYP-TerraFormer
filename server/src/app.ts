@@ -26,8 +26,22 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.get('/api/status', (req: Request, res: Response) => {
+    return res.status(200).send({
+        status: 200,
+        message: 'Server is alive.',
+    });
+});
+
 app.post('/api/generateHcl', (req: Request, res: Response) => {
     const body = req.body as IResourceBody;
+
+    if (!body?.resources.length) {
+        return res.status(400).send({
+            status: 400,
+            error: 'No resources in request body.',
+        });
+    }
 
     console.log(body);
 
