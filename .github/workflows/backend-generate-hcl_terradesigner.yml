@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - terradesigner
 on:
   push:
     branches:
-      - backend-generate-hcl
+      - master
   workflow_dispatch:
 
 jobs:
