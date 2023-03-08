@@ -1,9 +1,10 @@
 import { app } from './app';
+import { logger } from '@bailey-1/terraformwebapp-common';
 
 const start = async () => {
-    console.log('Starting server');
+    logger.info('index.ts', 'Starting Server');
     app.listen(8080, () => {
-        console.log('Server started');
+        logger.info('index.ts', 'Server started');
     });
 };
 

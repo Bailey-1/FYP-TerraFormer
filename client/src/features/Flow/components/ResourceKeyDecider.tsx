@@ -1,10 +1,11 @@
 // Decide which input to use for a key
 import {
+    IResourceKeyBlockState,
     IResourceKeyResourceState,
+    IResourceKeys,
     IResourceKeyState,
     IResourceKeyStateTypes,
-} from '../../../interfaces/IResourceState';
-import { IResourceKeys } from '../../../interfaces/IResourceObject';
+} from '@bailey-1/terraformwebapp-common';
 import ResourceNodeKeyInput from './keys/ResourceNodeKeyInput';
 import ResourceNodeKeySelect from './keys/ResourceNodeKeySelect';
 import ResourceNodeKeyResource from './keys/ResourceNodeKeyResource';
@@ -16,7 +17,7 @@ const ResourceKeyDecider = ({
     globalKey,
 }: {
     keyState: IResourceKeyStateTypes;
-    onChange: (name: string, value: string) => void;
+    onChange: (name: string, value: string | string[]) => void;
     globalKey: IResourceKeys | undefined;
 }) => {
     if (globalKey) {
@@ -48,7 +49,7 @@ const ResourceKeyDecider = ({
             case 'block':
                 return (
                     <ResourceNodeKeyBlock
-                        keyState={keyState as IResourceKeyResourceState}
+                        keyState={keyState as IResourceKeyBlockState}
                         globalKey={globalKey}
                         onChange={onChange}
                     />

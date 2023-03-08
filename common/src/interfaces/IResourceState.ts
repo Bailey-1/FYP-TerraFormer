@@ -1,6 +1,7 @@
 export type IResourceKeyStateTypes =
     | IResourceKeyState
-    | IResourceKeyResourceState;
+    | IResourceKeyResourceState
+    | IResourceKeyBlockState;
 
 export interface IResourceKeyState {
     id: string;
@@ -21,6 +22,15 @@ export interface IResourceKeyResourceState {
     instance_name: string;
     valid: boolean;
     // touched: boolean;
+}
+
+// Key state for a block key type
+export interface IResourceKeyBlockState {
+    id: string;
+    name: string; // For the key name e.g. resource_group_name
+    type: 'block';
+    valid: boolean;
+    value: string[];
 }
 
 // The state for the data of an individual resource in redux

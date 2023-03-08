@@ -1,6 +1,8 @@
 import React from 'react';
-import { IResourceKeyState } from '../../../../interfaces/IResourceState';
-import { IResourceKeySelect } from '../../../../interfaces/IResourceObject';
+import {
+    IResourceKeySelect,
+    IResourceKeyState,
+} from '@bailey-1/terraformwebapp-common';
 
 const ResourceNodeKeySelect = ({
     keyState,
@@ -17,7 +19,10 @@ const ResourceNodeKeySelect = ({
                 <p>{globalKey.display_name}</p>
             </div>
             <div className="col-span-2">
-                <select className="nodrag w-full p-0 text-gray-800">
+                <select
+                    className="nodrag w-full p-0 text-gray-800"
+                    onChange={(e) => onChange(keyState.name, e.target.value)}
+                >
                     {globalKey.options.sort().map((x) => (
                         <option key={x} value={x}>
                             {x}

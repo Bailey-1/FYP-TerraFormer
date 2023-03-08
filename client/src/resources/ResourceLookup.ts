@@ -1,5 +1,5 @@
 import k from '../const';
-import { IResourceObject } from '../interfaces/IResourceObject';
+import { IResourceObject } from '@bailey-1/terraformwebapp-common';
 import { TagSubResource } from './SubResourceLookup';
 
 const ResourceLookup: IResourceObject[] = [
@@ -48,7 +48,7 @@ const ResourceLookup: IResourceObject[] = [
         keys: [
             {
                 name: 'resource_group_name',
-                display_name: 'Resource Group',
+                display_name: 'Resource Group Name',
                 type: 'resource',
                 resource_type: 'azurerm_resource_group',
                 resource_property: 'name',

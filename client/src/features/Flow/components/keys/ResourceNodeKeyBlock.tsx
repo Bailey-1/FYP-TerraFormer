@@ -1,10 +1,11 @@
-import { IResourceKeyResourceState } from '../../../../interfaces/IResourceState';
-import { IResourceKeyBlock } from '../../../../interfaces/IResourceObject';
+import {
+    IResourceKeyBlock,
+    IResourceKeyBlockState,
+} from '@bailey-1/terraformwebapp-common';
 import { Handle, Position, useNodeId } from 'reactflow';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
-import { IBlockState } from '../../../../interfaces/IBlockState';
 import { removeNodeKey } from '../../../FlowSlice';
 import PillButton from '../../../../components/controls/PillBtn';
 
@@ -13,29 +14,31 @@ const ResourceNodeKeyBlock = ({
     globalKey,
     onChange,
 }: {
-    keyState: IResourceKeyResourceState;
+    keyState: IResourceKeyBlockState;
     globalKey: IResourceKeyBlock;
-    onChange(name: string, value: string): void;
+    onChange(name: string, value: string[]): void;
 }) => {
     const nodeId = useNodeId();
+
     const dispatch = useDispatch();
 
     // Find any edges which link to this input
     const edgeData = useSelector((state: RootState) =>
-        state.flow.edges.find(
-            (x) =>
-                x.target === nodeId && x.targetHandle === `${globalKey.name}`,
+        state.flow.edges.filter(
+            (x) => x.target === nodeId && x.targetHandle === keyState.id,
         ),
     );
 
-    const sourceVal = useSelector((state: RootState) =>
-        state.flow.nodes.find((x) => x.id === edgeData?.source),
-    )?.data.resourceState as IBlockState;
+    const connectedBlockIds = edgeData.map((x) => x.source);
+
+    if (!nodeId) {
+        return <p>Error: NodeID does not exist</p>;
+    }
 
     const removeKey = () => {
         dispatch(
             removeNodeKey({
-                nodeId: nodeId || '',
+                nodeId: nodeId,
                 keyId: keyState.id,
             }),
         );
@@ -47,7 +50,7 @@ const ResourceNodeKeyBlock = ({
             <Handle
                 type="target"
                 position={Position.Left}
-                id={`${globalKey.name}`}
+                id={keyState.id}
                 className="bg-blue-300"
                 style={{
                     width: '15px',
@@ -56,7 +59,8 @@ const ResourceNodeKeyBlock = ({
                     left: '-15px',
                 }}
             />
-            <p className="pl-2">{!!sourceVal ? '✅' : '❌'}</p>
+            <p className="pl-2">{!!edgeData.length ? '✅' : '❌'}</p>
+            <p>{JSON.stringify(connectedBlockIds)}</p>
             <PillButton className="" onClick={() => removeKey()}>
                 Remove
             </PillButton>

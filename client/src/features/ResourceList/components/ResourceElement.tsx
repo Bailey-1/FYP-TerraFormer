@@ -2,7 +2,7 @@
 import {
     IResourceKeyBlock,
     IResourceObject,
-} from '../../../interfaces/IResourceObject';
+} from '@bailey-1/terraformwebapp-common';
 import onDragStart from '../../../events/ResourceDragAndDrop';
 import { useDispatch } from 'react-redux';
 import { addNode, addSubNode } from '../../FlowSlice';

@@ -67,6 +67,7 @@ const SelectEdge = ({
                 className="react-flow__edge-path"
                 d={edgePath}
                 markerEnd={markerEnd}
+                style={{ stroke: '#844fba', strokeWidth: '2px' }}
             />
             <foreignObject
                 width={120}

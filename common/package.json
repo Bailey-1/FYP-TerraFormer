@@ -1,0 +1,29 @@
+{
+  "name": "@bailey-1/terraformwebapp-common",
+  "repository": "git://github.com/Bailey-1/TerraformWebApp.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "version": "0.0.6",
+  "description": "",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./build/*",
+    "build": "npm run clean && tsc",
+    "patch": "npm version patch --git-tag-version false",
+    "pub": "npm run build && npm run patch && npm publish",
+    "pub:dev": "npm run build && npm publish"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "log4js": "^6.9.0"
+  }
+}

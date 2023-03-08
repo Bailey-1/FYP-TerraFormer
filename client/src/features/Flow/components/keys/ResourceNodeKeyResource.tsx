@@ -1,8 +1,8 @@
 import {
+    IResourceKeyResource,
     IResourceKeyResourceState,
     IResourceKeyState,
-} from '../../../../interfaces/IResourceState';
-import { IResourceKeyResource } from '../../../../interfaces/IResourceObject';
+} from '@bailey-1/terraformwebapp-common';
 import { Connection, Handle, Position, useNodeId } from 'reactflow';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
@@ -19,37 +19,36 @@ const ResourceNodeKeyResource = ({
 }) => {
     const nodeId = useNodeId();
 
+    const additionalDetails = useSelector(
+        (state: RootState) => state.settings.additionalDetails,
+    );
+
     // Find any edges which link to this input
     const edgeData = useSelector((state: RootState) =>
         state.flow.edges.find(
             (x) =>
                 x.target === nodeId &&
                 x.targetHandle ===
-                    `${globalKey.resource_type}---${globalKey.resource_property}`,
+                    `${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`,
         ),
     );
 
     // Find the value of the key linked to this input
-    const sourceVal = useSelector(
-        (state: RootState) =>
-            state.flow.nodes
-                .find((x) => x.id === edgeData?.source)
-                ?.data.resourceState.keys.find(
-                    (x: IResourceKeyState) =>
-                        x.name === globalKey.resource_property,
-                )?.value,
+    const sourceNode = useSelector((state: RootState) =>
+        state.flow.nodes.find((x) => x.id === edgeData?.source),
+    );
+
+    const sourceKey = sourceNode?.data.resourceState.keys.find(
+        (x: IResourceKeyState) => x.name === edgeData?.data?.value,
     );
 
     return (
         <div className="relative">
-            <h2>{globalKey.name}</h2>
-            <p className="text-gray-300">
-                Linked Value: {sourceVal}/{edgeData?.data?.value}
-            </p>
+            {/*<h2>{globalKey.name}</h2>*/}
             <Handle
                 type="target"
                 position={Position.Left}
-                id={`${globalKey.resource_type}---${globalKey.resource_property}`}
+                id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
                 className="bg-blue-300"
                 style={{
                     width: '15px',
@@ -65,9 +64,33 @@ const ResourceNodeKeyResource = ({
                     );
                 }}
             />
-            <p>
-                {globalKey.resource_type} {globalKey.resource_property}
-            </p>
+            <div className="flex">
+                <p className="text-gray-400">{globalKey.display_name}:</p>
+                <p className="text-gray-300 pl-2">
+                    {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
+                </p>
+                <p
+                    className="pl-2"
+                    title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
+                >
+                    {edgeData?.data?.value === globalKey.resource_property
+                        ? '✅'
+                        : '⚠️'}
+                </p>
+            </div>
+            {additionalDetails && (
+                <div className="flex">
+                    <p className="text-gray-400">Ref:</p>
+                    <p
+                        className="text-gray-300 pl-2"
+                        title="Actual link used in the Terraform file."
+                    >
+                        {`@${sourceNode?.data.resourceState.type}`}.
+                        {sourceNode?.data.resourceState.id}.{sourceKey?.name}
+                    </p>
+                </div>
+            )}
+            {/*<p>{JSON.stringify(sourceNode)}</p>*/}
         </div>
     );
 };

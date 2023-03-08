@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@bailey-1/terraformwebapp-common": "*",
     "@headlessui/react": "^1.7.10",
     "@heroicons/react": "^2.0.13",
     "@reduxjs/toolkit": "^1.9.1",

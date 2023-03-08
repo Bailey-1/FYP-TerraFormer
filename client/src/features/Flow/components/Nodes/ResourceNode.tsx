@@ -11,7 +11,10 @@ import {
     useNodeId,
     useUpdateNodeInternals,
 } from 'reactflow';
-import { IResourceState } from '../../../../interfaces/IResourceState';
+import {
+    IResourceKeys,
+    IResourceState,
+} from '@bailey-1/terraformwebapp-common';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addNewNodeKey,
@@ -24,7 +27,6 @@ import providerColours from '../../../../resources/ProviderColours';
 import { onSidebarUpdate } from '../../../SidebarSlice';
 import { RootState } from '../../../../store/store';
 import { Disclosure } from '@headlessui/react';
-import { IResourceKeys } from '../../../../interfaces/IResourceObject';
 import PillButton from '../../../../components/controls/PillBtn';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 
@@ -65,7 +67,7 @@ const ResourceNode = ({
         }
     };
 
-    const updateKey = (name: string, value: string) => {
+    const updateKey = (name: string, value: string | string[]) => {
         dispatch(
             updateNodeKey({
                 nodeId: nodeId || '',
@@ -181,7 +183,7 @@ const ResourceNode = ({
 
                 {data.resourceState.keys.map((x, i) => {
                     return (
-                        <div className="border-b pb-2" key={x.id}>
+                        <div className="border-b p-2 first:pt-0" key={x.id}>
                             <ResourceKeyDecider
                                 keyState={x}
                                 globalKey={globalResource.keys.find(

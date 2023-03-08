@@ -27,14 +27,14 @@ import {
 import resourceLookup from '../../resources/ResourceLookup';
 import SidebarComponent from '../Sidebar/SidebarComponent';
 import SelectEdge from './components/Edges/SelectEdge';
-import SubResourceNode from './components/Nodes/BlockNode';
+import BlockNode from './components/Nodes/BlockNode';
 // import SubResourceNode from './components/Nodes/SubResourceNode';
 
 const connectionLineStyle = { stroke: 'black' };
 const nodeTypes = {
     resourceNode: ResourceNode,
     dataNode: VariableNode,
-    subResourceNode: SubResourceNode,
+    blockNode: BlockNode,
 };
 
 const edgeTypes = {
@@ -68,7 +68,7 @@ const ReactFlowComponent = () => {
                 // dispatch(onNodesChange(localSelect));
                 dispatch(onNodesChange([...nodeChanges]));
             }
-        }, 250);
+        }, 1000);
 
         return () => {
             // console.log('timer cleared');
@@ -76,6 +76,7 @@ const ReactFlowComponent = () => {
         };
     }, [nodeChanges]);
 
+    // TODO: Fix deleting resources quickly before redux updates issue
     const nodeChange = (changes: NodeChange[]) => {
         // console.log('nodechange');
         // console.log(changes[0].type);
@@ -99,12 +100,13 @@ const ReactFlowComponent = () => {
             // dispatch(onNodesChange(changes));
             // setNodeChanges((prevState) => [...prevState, ...changes]);
             // setLocalSelect(() => changes);
-            setNodeChanges((prevState) => {
-                return [
-                    ...prevState.filter((x) => x.type !== 'select'),
-                    changes[0],
-                ];
-            });
+            // Add this back to add select redux changes
+            // setNodeChanges((prevState) => {
+            //     return [
+            //         ...prevState.filter((x) => x.type !== 'select'),
+            //         changes[0],
+            //     ];
+            // });
         }
         setLocalNodes((prevState) => applyNodeChanges(changes, prevState));
         // dispatch(onNodesChange(changes));

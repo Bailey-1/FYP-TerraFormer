@@ -66,6 +66,11 @@ const k = {
             'US Sec West',
         ],
     },
+    serverHost: 'https://terradesigner.azurewebsites.net',
 };
+
+if (window.location.hostname.includes('localhost')) {
+    k.serverHost = 'http://localhost:8080';
+}
 
 export default k;
