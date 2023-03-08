@@ -7,7 +7,11 @@
     "start": "node dist/src/index.js",
     "start:unknown": "ts-node-dev --inspect --poll src/index.ts",
     "build": "tsc",
-    "dev:start": "ts-node-dev --poll src/index.ts --files"
+    "dev:start": "ts-node-dev --poll src/index.ts --files",
+    "test": "./node_modules/.bin/_mocha -r ts-node/register --file ./src/global.test.ts src/**/*.test.ts --exit --timeout 10000",
+    "test:watch": "npm run test -- --reporter nyan --watch --watch-files src",
+    "test:coverage:ci": "nyc npm test",
+    "test:coverage:html": "rm -r ./coverage && nyc --reporter=html npm test"
   },
   "keywords": [],
   "author": "",
@@ -24,5 +28,14 @@
     "morgan": "^1.10.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/supertest": "^2.0.12",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "supertest": "^6.3.3"
   }
 }
