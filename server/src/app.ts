@@ -15,7 +15,7 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/jsonToHcl', (req: Request, res: Response) => {
+app.post('/api/generateHcl', (req: Request, res: Response) => {
     const body = req.body as IResourceBody;
 
     console.log(body);
@@ -228,6 +228,10 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
     // });
 
     return res.send(result);
+});
+
+app.get('*', (req: Request, res: Response) => {
+    return res.status(404).send();
 });
 
 export { app };

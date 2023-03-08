@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import k from '../const';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: `http://localhost:8080/api`,
+    baseUrl: `${k.serverHost}/api`,
 });
 
 export const baseApi = createApi({
@@ -10,7 +11,7 @@ export const baseApi = createApi({
     endpoints: (builder) => ({
         createHcl: builder.mutation({
             query: ({ resources, edges }) => ({
-                url: '/jsonToHcl',
+                url: '/generateHcl',
                 method: 'POST',
                 body: {
                     resources,
