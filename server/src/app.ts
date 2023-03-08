@@ -121,7 +121,7 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
             {};
 
         primary.resourceState.keys.forEach((key) => {
-            const res =
+            const resource =
                 input.resource[primary.resourceState.type][
                     primary.resourceState.id
                 ];
@@ -131,8 +131,12 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
             switch (key.type) {
                 // Just assign the value to the key
                 case 'string':
-                    res[key.name] = key.value;
+                    resource[key.name] = key.value;
                     break;
+
+                // case 'select':
+                //     resource[key.name] = key.value;
+                //     break;
 
                 // Find the linked resource and use it as a variable
                 case 'resource':
@@ -144,7 +148,7 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
                     );
 
                     if (linkedBlocks) {
-                        res[
+                        resource[
                             key.name
                         ] = `$${linkedBlocks.sourceHandle}.${linkedBlocks.source}.${linkedBlocks.data.value}`;
                     }
@@ -161,13 +165,23 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
                     );
 
                     if (linkedBlocksArr.length) {
-                        res[key.name] = {};
+                        resource[key.name] = {};
 
                         linkedBlocksArr.forEach((link) => {
+                            // Find the block linked in the connection
                             const linkRes = blockResources.find(
                                 (x) => x.id === link.source,
                             );
 
+                            // Return if connection is using an invalid resource
+                            if (!linkRes) {
+                                return res.status(400).send({
+                                    status: 400,
+                                    error: 'Resource referenced in block connection does not exist',
+                                });
+                            }
+
+                            // Tags are handled differently from the normal blocks since the key value is set by the user as well
                             if (linkRes?.resourceState.type === 'tags') {
                                 const tagName = linkRes.resourceState.keys.find(
                                     (x) => x.name === 'name',
@@ -178,7 +192,9 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
                                     ) as IResourceKeyState;
 
                                 if (tagName) {
-                                    const tagBlock = res[key.name] as IBlock;
+                                    const tagBlock = resource[
+                                        key.name
+                                    ] as IBlock;
                                     tagBlock[tagName.value] = tagValue.value;
                                 }
                             }
@@ -197,7 +213,7 @@ app.use('/api/jsonToHcl', (req: Request, res: Response) => {
     // Remove double quotes from key string names - "location" = "UK South" -> location = "UK South"
     result = result.replace(/"(\w+)" =/gm, '$1 =');
 
-    // Do the same but with the word "resource" in resource blocks
+    // Do the same but with the word "resource" in resource blocks - "resource" "azurerm_resource_group" "oyexm" -> resource "azurerm_resource_group" "oyexm"
     result = result.replace(/"resource"/gm, 'resource');
 
     // You have to define a block not assign a value -> generate doesn't do this

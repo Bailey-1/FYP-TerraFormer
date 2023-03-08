@@ -71,6 +71,14 @@ export const flowSlice = createSlice({
                                             valid: false,
                                             type: 'block',
                                         };
+                                    } else if (key.type === 'select') {
+                                        return {
+                                            id: RandomID(),
+                                            name: key.name,
+                                            value: '',
+                                            valid: false,
+                                            type: 'string',
+                                        };
                                     } else {
                                         return {
                                             id: RandomID(),
