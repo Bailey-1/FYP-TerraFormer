@@ -31,7 +31,8 @@
     "build:test": "rm -rf build && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "css:watch": "npx tailwindcss -i ./main.css -o ./src/style.css --watch"
+    "css:watch": "npx tailwindcss -i ./main.css -o ./src/style.css --watch",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@types/redux-logger": "^3.0.9",
     "autoprefixer": "^10.4.13",
+    "cypress": "^12.7.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"
   }
