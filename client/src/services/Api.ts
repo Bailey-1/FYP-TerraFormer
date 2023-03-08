@@ -3,10 +3,6 @@ import k from '../const';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${k.serverHost}/api`,
-    // prepareHeaders: (headers, { getState }) => {
-    //     headers.set('Access-Control-Allow-Origin', '*');
-    //     return headers;
-    // },
 });
 
 export const baseApi = createApi({
