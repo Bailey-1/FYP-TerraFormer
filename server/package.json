@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --inspect --poll src/index.ts",
-    "start:old": "node dist/src/index.js",
+    "start": "node dist/src/index.js",
+    "start:unknown": "ts-node-dev --inspect --poll src/index.ts",
     "build": "tsc",
     "dev:start": "ts-node-dev --poll src/index.ts --files"
   },
