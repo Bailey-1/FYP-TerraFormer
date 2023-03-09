@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
     addNode,
+    addSubNode,
     onConnect,
     onEdgesChange,
     onEdgesUpdate,
@@ -178,10 +179,17 @@ const ReactFlowComponent = () => {
 
             const reactFlowBounds =
                 reactFlowWrapper.current.getBoundingClientRect();
-            const type = event.dataTransfer.getData('application/reactflow');
+            const nodeType = event.dataTransfer.getData('application/nodeType');
+            const resourceName = event.dataTransfer.getData(
+                'application/resourceName',
+            );
 
             // check if the dropped element is valid
-            if (typeof type === 'undefined' || !type) {
+            if (typeof nodeType === 'undefined' || !nodeType) {
+                return;
+            }
+
+            if (typeof resourceName === 'undefined' || !resourceName) {
                 return;
             }
 
@@ -190,15 +198,32 @@ const ReactFlowComponent = () => {
                 y: event.clientY - reactFlowBounds.top,
             });
 
-            const res = resourceLookup.find((x) => x.name === type);
+            if (nodeType === 'resource') {
+                const res = resourceLookup.find((x) => x.name === resourceName);
 
-            if (res) {
-                dispatch(
-                    addNode({
-                        name: res.name,
-                        position: position,
-                    }),
-                );
+                if (res) {
+                    dispatch(
+                        addNode({
+                            name: res.name,
+                            position: position,
+                        }),
+                    );
+                }
+            } else if (nodeType === 'block') {
+                const parent = resourceName.split('/')[0];
+                const sub = resourceName.split('/')[1];
+
+                const res = resourceLookup.find((x) => x.name === parent);
+
+                if (res) {
+                    dispatch(
+                        addSubNode({
+                            name: sub,
+                            parentResourceName: parent,
+                            position: position,
+                        }),
+                    );
+                }
             }
         },
         [reactFlowInstance, dispatch],

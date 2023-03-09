@@ -36,7 +36,9 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
     return (
         <div
             className="flex flex-row bg-gray-800 m-2 rounded-lg hover:bg-gray-700 border border-gray-300 hover:border-gray-400 cursor-grab"
-            onDragStart={(event) => onDragStart(event, resource.name)}
+            onDragStart={(event) =>
+                onDragStart(event, 'resource', resource.name)
+            }
             draggable
         >
             <div className="p-2 m-2 grow">
@@ -67,6 +69,14 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                             className="flex justify-between m-2 p-2 items-center border border-l-4 bg-gray-800 hover:bg-gray-700"
                             draggable
                             key={sub.name}
+                            onDragStart={(event) => {
+                                event.stopPropagation();
+                                onDragStart(
+                                    event,
+                                    'block',
+                                    `${resource.name}/${sub.name}`,
+                                );
+                            }}
                         >
                             <h3 className="text-l text-gray-200">
                                 {sub.display_name}

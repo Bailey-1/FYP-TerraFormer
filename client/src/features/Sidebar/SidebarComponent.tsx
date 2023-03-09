@@ -51,7 +51,9 @@ const SidebarComponent = () => {
                         return (
                             <button
                                 className="bg-blue-500 inline-block cursor-grab rounded hover:bg-blue-400 px-1"
-                                onDragStart={(event) => onDragStart(event, x)}
+                                onDragStart={(event) =>
+                                    onDragStart(event, 'resource', x)
+                                }
                                 key={i}
                                 draggable
                                 onClick={() => add(x)}

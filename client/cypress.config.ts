@@ -13,5 +13,8 @@ export default defineConfig({
             // implement node event listeners here
         },
         video: false,
+        viewportWidth: 1920,
+        viewportHeight: 1080,
+        scrollBehavior: false,
     },
 });
