@@ -15,6 +15,7 @@ root.render(
         <Provider store={store}>
             <BrowserRouter>
                 <App />
+                {/*<NotificationArea />*/}
             </BrowserRouter>
         </Provider>
     </StrictMode>,

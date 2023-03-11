@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useCreateHclMutation } from '../../services/Api';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
+import NotificationArea from '../../components/notifications/NotificationArea';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -182,6 +183,8 @@ const NavbarComponent = () => {
                         </div>
                     </aside>
                 </main>
+
+                <NotificationArea />
             </div>
         </div>
     );
