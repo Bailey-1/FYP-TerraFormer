@@ -3,6 +3,7 @@ import ResourceList from './ResourceList';
 import { Provider } from 'react-redux';
 import { store } from '../../store/store';
 import '../../style.css';
+import spok from 'cy-spok';
 
 describe('<ResourceList />', () => {
     it('Mounts and Renders', () => {
@@ -23,5 +24,20 @@ describe('Redux <ResourceList />', () => {
                 <ResourceList filter="all" />
             </Provider>,
         );
+
+        cy.window()
+            .its('store')
+            .invoke('getState')
+            .should(
+                spok({
+                    flow: {
+                        nodes: [
+                            {
+                                type: 'resourceNode',
+                            },
+                        ],
+                    },
+                }),
+            );
     });
 });

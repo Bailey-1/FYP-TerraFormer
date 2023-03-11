@@ -3,41 +3,74 @@ import { Transition } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import {
     ExclamationCircleIcon,
+    InformationCircleIcon,
     XCircleIcon,
     XMarkIcon,
 } from '@heroicons/react/20/solid';
 
-const Notification = ({ type }: { type: 'success' | 'error' | 'warning' }) => {
-    const [show, setShow] = useState(true);
+const Notification = ({
+    type,
+    title,
+    message,
+    onRemove,
+}: {
+    type: 'success' | 'error' | 'warning' | 'info';
+    title: string;
+    message?: string;
+    onRemove?: () => void;
+}) => {
+    const [show, setShow] = useState(false);
+    const [finishedInitialLoad, setFinishedInitialLoad] = useState(false);
 
-    // TODO Remove this test to check I can add auto remove delay.
-    useEffect(() => {
-        const time = Math.floor(Math.random() * 10000);
-
-        setTimeout(() => {
-            setShow(false);
-        }, time);
-    }, []);
-
-    let divClassname = '';
-    let headerClassname = '';
+    let divClassname,
+        headerClassname = '';
+    let delayUntilRemoved = 1000;
 
     switch (type) {
         case 'error':
             divClassname = 'bg-red-100 border-red-800';
             headerClassname = 'text-red-800';
+            delayUntilRemoved = 7000;
             break;
 
         case 'success':
             divClassname = 'bg-green-100 border-green-800';
             headerClassname = 'text-green-800';
+            delayUntilRemoved = 3000;
             break;
 
         case 'warning':
             divClassname = 'bg-yellow-100 border-yellow-800';
             headerClassname = 'text-yellow-800';
+            delayUntilRemoved = 5000;
             break;
+        case 'info':
+        default:
+            divClassname = 'bg-blue-100 border-blue-800';
+            headerClassname = 'text-blue-800';
+            delayUntilRemoved = 3000;
     }
+
+    // Remove object after animation has finished
+    useEffect(() => {
+        if (!show && finishedInitialLoad && onRemove) {
+            setTimeout(() => {
+                onRemove();
+            }, 1000);
+        } else if (show) {
+            setShow(true);
+            setTimeout(() => {
+                setShow(false);
+            }, delayUntilRemoved);
+        }
+    }, [show]);
+
+    // TODO Remove this test to check I can add auto remove delay.
+    useEffect(() => {
+        setShow(true);
+        setFinishedInitialLoad(true);
+    }, []);
+
     return (
         <Transition
             show={show}
@@ -67,6 +100,9 @@ const Notification = ({ type }: { type: 'success' | 'error' | 'warning' }) => {
                             {type === 'warning' && (
                                 <ExclamationCircleIcon className="h-6 w-6 text-yellow-400" />
                             )}
+                            {type === 'info' && (
+                                <InformationCircleIcon className="h-6 w-6 text-blue-400" />
+                            )}
                         </div>
                         <div className="ml-3 w-0 flex-1 pt-0.5">
                             <p
@@ -74,11 +110,13 @@ const Notification = ({ type }: { type: 'success' | 'error' | 'warning' }) => {
                                     'text-base font-medium ' + headerClassname
                                 }
                             >
-                                Successfully saved!
+                                {title}
                             </p>
-                            <p className="mt-1 text-sm text-gray-500">
-                                Anyone with a link can now view this file.
-                            </p>
+                            {message && (
+                                <p className="mt-1 text-sm text-gray-500">
+                                    {message}
+                                </p>
+                            )}
                         </div>
                         <div className="ml-4 flex flex-shrink-0">
                             <button

@@ -7,11 +7,13 @@ import ResourceList from '../ResourceList/ResourceList';
 import { useState } from 'react';
 import ReactFlowComponent from '../Flow/ReactFlowComponent';
 import SwitchComponent from './components/SwitchComponent';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useCreateHclMutation } from '../../services/Api';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
-import NotificationArea from '../../components/notifications/NotificationArea';
+import NotificationArea from '../Notifications/NotificationArea';
+import { onCreateNotification } from '../NotificationSlice';
+import randomID from '../../utility/RandomID';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -36,6 +38,7 @@ function classNames(...classes: string[]) {
 }
 
 const NavbarComponent = () => {
+    const dispatch = useDispatch();
     const [currentProvider, setCurrentProvider] = useState('all');
 
     const nodes = useSelector((state: RootState) => state.flow.nodes);
@@ -74,6 +77,18 @@ const NavbarComponent = () => {
         await createHcl({ resources, edges: connections });
 
         console.log(data);
+
+        dispatch(
+            onCreateNotification({
+                notificationObj: {
+                    id: randomID(),
+                    type: 'success',
+                    title: 'Generated HCL',
+                    message:
+                        'Successfully generated HCL from the resource nodes.',
+                },
+            }),
+        );
     };
 
     return (
