@@ -11,6 +11,9 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths:
+      - 'client/**'
+      - '.github/workflows'
 
 jobs:
   build_and_deploy_job:
