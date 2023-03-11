@@ -5,8 +5,9 @@ name: Server Test
 
 on:
   push:
-#    paths:
-#      - 'server/**'
+    paths:
+      - 'server/**'
+      - '.github/workflows'
       
 jobs:
   Test_and_Coverage:
