@@ -4,7 +4,8 @@ import './style.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { BrowserRouter } from 'react-router-dom';
+import NotificationArea from './features/Notifications/NotificationArea';
+import GeneratedHclModal from './features/GeneratedHclModal/GeneratedHclModal';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -13,10 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
-                <App />
-                {/*<NotificationArea />*/}
-            </BrowserRouter>
+            <App />
+            <NotificationArea />
+            <GeneratedHclModal />
         </Provider>
     </StrictMode>,
 );

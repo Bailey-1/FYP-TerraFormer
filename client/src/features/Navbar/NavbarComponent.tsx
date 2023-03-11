@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useCreateHclMutation } from '../../services/Api';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
-import NotificationArea from '../Notifications/NotificationArea';
 import { onCreateNotification } from '../NotificationSlice';
 import randomID from '../../utility/RandomID';
 
@@ -199,7 +198,7 @@ const NavbarComponent = () => {
                     </aside>
                 </main>
 
-                <NotificationArea />
+                {/*<NotificationArea />*/}
             </div>
         </div>
     );
