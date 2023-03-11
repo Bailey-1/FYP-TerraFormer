@@ -36,7 +36,7 @@ app.get('/api/status', (req: Request, res: Response) => {
 app.post('/api/generateHcl', (req: Request, res: Response) => {
     const body = req.body as IResourceBody;
 
-    if (!body?.resources.length) {
+    if (!body.resources?.length) {
         return res.status(400).send({
             status: 400,
             error: 'No resources in request body.',

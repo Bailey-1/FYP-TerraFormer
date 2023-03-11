@@ -1,6 +1,9 @@
 build/
 .DS_Store
 
+cypress/videos
+cypress/screenshots
+
 # Logs
 logs
 *.log
