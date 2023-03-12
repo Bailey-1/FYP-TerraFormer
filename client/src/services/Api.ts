@@ -22,8 +22,8 @@ export const baseApi = createApi({
             transformResponse: (response: IResponse, meta, arg) => {
                 return {
                     response,
-                    meta,
-                    arg,
+                    // meta,
+                    // arg,
                 };
             },
         }),

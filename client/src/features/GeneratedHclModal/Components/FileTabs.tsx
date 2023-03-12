@@ -6,9 +6,9 @@ function classNames(...classes: string[]) {
 
 const FileTabs = () => {
     const [state, setState] = useState([
-        { name: 'main.tf', href: '#', current: true },
-        { name: 'variables.tf', href: '#', current: false },
-        { name: 'outputs.tf', href: '#', current: false },
+        { name: 'main.tf', current: true },
+        // { name: 'variables.tf', current: false },
+        // { name: 'outputs.tf', current: false },
     ]);
 
     return (

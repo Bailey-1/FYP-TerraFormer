@@ -13,7 +13,6 @@ import { useCreateHclMutation } from '../../services/Api';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import GeneratedHclModal from '../GeneratedHclModal/GeneratedHclModal';
 import { onCreateNotification } from '../NotificationSlice';
-import randomID from '../../utility/RandomID';
 import IResponse from '../../interfaces/IResponse';
 
 const sidebarNavigation = [
@@ -83,13 +82,10 @@ const NavbarComponent = () => {
 
                 dispatch(
                     onCreateNotification({
-                        notificationObj: {
-                            id: randomID(),
-                            type: 'success',
-                            title: 'Generated HCL',
-                            message:
-                                'Successfully generated HCL from the resource nodes.',
-                        },
+                        type: 'success',
+                        title: 'Generated HCL',
+                        message:
+                            'Successfully generated HCL from the resource nodes.',
                     }),
                 );
             })
@@ -97,13 +93,9 @@ const NavbarComponent = () => {
                 console.error('rejected', error);
                 dispatch(
                     onCreateNotification({
-                        notificationObj: {
-                            id: randomID(),
-                            type: 'error',
-                            title: 'Failed to Generate HCL',
-                            message:
-                                'Successfully generated HCL from the resource nodes.',
-                        },
+                        type: 'error',
+                        title: 'Failed to Generate HCL',
+                        message: error.data.error,
                     }),
                 );
             });

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import RandomID from '../utility/RandomID';
 
 // Define a type for the slice state
 interface INotification {
@@ -18,10 +19,19 @@ export const notificationsSlice = createSlice({
         onCreateNotification: (
             state,
             action: PayloadAction<{
-                notificationObj: INotification;
+                type: INotification['type'];
+                title: INotification['title'];
+                message?: INotification['message'];
             }>,
         ) => {
-            state.push(action.payload.notificationObj);
+            state.push({
+                id: RandomID(),
+                type: action.payload.type,
+                title: action.payload.title,
+                message: action.payload.message
+                    ? action.payload.message
+                    : undefined,
+            });
         },
         onRemoveNotification: (
             state,

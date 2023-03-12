@@ -3,6 +3,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import FileTabs from './Components/FileTabs';
 import IResponse from '../../interfaces/IResponse';
+import { useDispatch } from 'react-redux';
+import { onCreateNotification } from '../NotificationSlice';
 
 const GeneratedHclModal = ({
     response,
@@ -11,6 +13,7 @@ const GeneratedHclModal = ({
     response: IResponse;
     onDismiss?: () => void;
 }) => {
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -18,6 +21,8 @@ const GeneratedHclModal = ({
             setOpen(true);
         }, 500);
     }, [response]);
+
+    const downloadMain = new Blob([response.hcl.main], { type: 'text/plain' });
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -71,6 +76,8 @@ const GeneratedHclModal = ({
                                             rows={20}
                                             style={{ width: '40rem' }}
                                             value={response.hcl.main}
+                                            readOnly
+                                            className="resize-none"
                                         />
                                     </div>
                                 </div>
@@ -78,17 +85,47 @@ const GeneratedHclModal = ({
                                     <button
                                         type="button"
                                         className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-                                        onClick={() => setOpen(false)}
+                                        onClick={async () => {
+                                            await navigator.clipboard
+                                                .writeText(response.hcl.main)
+                                                .then(
+                                                    () => {
+                                                        /* clipboard successfully set */
+                                                        dispatch(
+                                                            onCreateNotification(
+                                                                {
+                                                                    type: 'success',
+                                                                    title: 'Successfully Copied to Clipboard',
+                                                                },
+                                                            ),
+                                                        );
+                                                    },
+                                                    () => {
+                                                        /* clipboard write failed */
+                                                        dispatch(
+                                                            onCreateNotification(
+                                                                {
+                                                                    type: 'error',
+                                                                    title: 'Could not copy to clipboard',
+                                                                },
+                                                            ),
+                                                        );
+                                                    },
+                                                );
+                                        }}
                                     >
                                         Copy
                                     </button>
-                                    <button
+                                    <a
                                         type="button"
                                         className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                                        onClick={() => setOpen(false)}
+                                        href={window.URL.createObjectURL(
+                                            downloadMain,
+                                        )}
+                                        download="main.tf"
                                     >
                                         Download File
-                                    </button>
+                                    </a>
                                     <button
                                         type="button"
                                         className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
