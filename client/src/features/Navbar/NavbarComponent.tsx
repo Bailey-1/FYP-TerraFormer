@@ -4,15 +4,17 @@ import {
     CommandLineIcon,
 } from '@heroicons/react/24/outline';
 import ResourceList from '../ResourceList/ResourceList';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ReactFlowComponent from '../Flow/ReactFlowComponent';
 import SwitchComponent from './components/SwitchComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useCreateHclMutation } from '../../services/Api';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
+import GeneratedHclModal from '../GeneratedHclModal/GeneratedHclModal';
 import { onCreateNotification } from '../NotificationSlice';
 import randomID from '../../utility/RandomID';
+import IResponse from '../../interfaces/IResponse';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -39,11 +41,13 @@ function classNames(...classes: string[]) {
 const NavbarComponent = () => {
     const dispatch = useDispatch();
     const [currentProvider, setCurrentProvider] = useState('all');
+    const [generatedHclResponse, setGeneratedHclResponse] =
+        useState<IResponse>();
 
     const nodes = useSelector((state: RootState) => state.flow.nodes);
     const edges = useSelector((state: RootState) => state.flow.edges);
 
-    const [createHcl, { data }] = useCreateHclMutation();
+    const [createHcl, { error }] = useCreateHclMutation();
 
     const exportHcl = async () => {
         const resources = nodes.map((x) => {
@@ -55,7 +59,6 @@ const NavbarComponent = () => {
         });
 
         console.log('Resources:');
-        console.table(resources);
 
         const connections = edges.map((x) => {
             return {
@@ -70,24 +73,40 @@ const NavbarComponent = () => {
                 type: x.type,
             };
         });
-        console.table('connections');
-        console.table(connections);
 
-        await createHcl({ resources, edges: connections });
+        createHcl({ resources, edges: connections })
+            .unwrap()
+            .then((payload) => {
+                console.log('fulfilled', payload);
 
-        console.log(data);
+                setGeneratedHclResponse(payload.response);
 
-        dispatch(
-            onCreateNotification({
-                notificationObj: {
-                    id: randomID(),
-                    type: 'success',
-                    title: 'Generated HCL',
-                    message:
-                        'Successfully generated HCL from the resource nodes.',
-                },
-            }),
-        );
+                dispatch(
+                    onCreateNotification({
+                        notificationObj: {
+                            id: randomID(),
+                            type: 'success',
+                            title: 'Generated HCL',
+                            message:
+                                'Successfully generated HCL from the resource nodes.',
+                        },
+                    }),
+                );
+            })
+            .catch((error) => {
+                console.error('rejected', error);
+                dispatch(
+                    onCreateNotification({
+                        notificationObj: {
+                            id: randomID(),
+                            type: 'error',
+                            title: 'Failed to Generate HCL',
+                            message:
+                                'Successfully generated HCL from the resource nodes.',
+                        },
+                    }),
+                );
+            });
     };
 
     return (
@@ -199,6 +218,9 @@ const NavbarComponent = () => {
                 </main>
 
                 {/*<NotificationArea />*/}
+                {generatedHclResponse && (
+                    <GeneratedHclModal response={generatedHclResponse} />
+                )}
             </div>
         </div>
     );

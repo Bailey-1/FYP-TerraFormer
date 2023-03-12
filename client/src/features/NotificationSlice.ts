@@ -9,31 +9,10 @@ interface INotification {
 }
 
 // Define the initial state using that type
-const initialState: INotification[] = [
-    {
-        id: '1',
-        type: 'success',
-        title: 'does this work',
-        message: 'yes',
-    },
-    {
-        id: '2',
-        type: 'error',
-        title: 'does this work',
-        message: 'error',
-    },
-    {
-        id: '3',
-        type: 'warning',
-        title: 'warning',
-    },
-];
+const initialState: INotification[] = [];
 
 export const notificationsSlice = createSlice({
     name: 'notifications',
-    // initialState: {
-    //     notifications: initialState,
-    // },
     initialState,
     reducers: {
         onCreateNotification: (

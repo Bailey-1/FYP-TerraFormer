@@ -5,7 +5,6 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import NotificationArea from './features/Notifications/NotificationArea';
-import GeneratedHclModal from './features/GeneratedHclModal/GeneratedHclModal';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -16,7 +15,7 @@ root.render(
         <Provider store={store}>
             <App />
             <NotificationArea />
-            <GeneratedHclModal />
+            {/*<GeneratedHclModal />*/}
         </Provider>
     </StrictMode>,
 );

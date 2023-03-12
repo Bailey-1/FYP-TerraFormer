@@ -15,7 +15,7 @@ const NotificationArea = () => {
     };
 
     return (
-        <div className="pointer-events-none fixed inset-0 flex px-4 py-[5rem] items-start">
+        <div className="pointer-events-none fixed inset-0 flex px-4 py-[5rem] items-start z-20">
             <div className="flex w-full flex-col space-y-4 items-end">
                 {notifications.map((x) => (
                     <Notification

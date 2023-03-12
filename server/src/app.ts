@@ -252,7 +252,13 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
     //     result,
     // });
 
-    return res.send(result);
+    return res.send({
+        status: 200,
+        hcl: {
+            main: result,
+        },
+        datetime: new Date().toISOString(),
+    });
 });
 
 app.get('*', (req: Request, res: Response) => {

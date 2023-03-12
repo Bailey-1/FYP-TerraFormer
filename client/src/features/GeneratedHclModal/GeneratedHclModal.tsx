@@ -2,15 +2,22 @@ import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import FileTabs from './Components/FileTabs';
+import IResponse from '../../interfaces/IResponse';
 
-const GeneratedHclModal = () => {
+const GeneratedHclModal = ({
+    response,
+    onDismiss,
+}: {
+    response: IResponse;
+    onDismiss?: () => void;
+}) => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
             setOpen(true);
         }, 500);
-    }, []);
+    }, [response]);
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -63,6 +70,7 @@ const GeneratedHclModal = () => {
                                         <textarea
                                             rows={20}
                                             style={{ width: '40rem' }}
+                                            value={response.hcl.main}
                                         />
                                     </div>
                                 </div>
