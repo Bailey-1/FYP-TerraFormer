@@ -1,32 +1,35 @@
+// Cypress.Commands.add(
+//     'dragTo',
+//     { prevSubject: 'element' },
+//     (subject, targetEl) => {
+//         cy.wrap(subject).trigger('dragstart');
+//         cy.get(targetEl).trigger('drop');
+//     },
+// );
+
+import '@4tw/cypress-drag-drop';
+
 describe('App', () => {
     before(() => {
         cy.visit('http://localhost:3000');
     });
 
     it('Renders', () => {
-        cy.get('button.bg-green-600').first().click();
+        // cy.get('button.bg-green-600').first().click();
 
-        // cy.get('input.nodrag').type('hello world', {
-        //     scrollBehavior: false,
-        // });
-        //
-        // cy.get('select').select('Brazil South', {
-        //     scrollBehavior: false,
-        // });
-        //
-        // cy.get('select').select('Korea Central', {
-        //     scrollBehavior: false,
-        // });
-        //
-        // cy.get('select').scrollIntoView();
+        // cy.get('input.nodrag').type('hello world', { scrollBehavior: false });
 
-        cy.get('input.nodrag').type('hello world');
-        cy.get('input.nodrag').scrollIntoView();
-
-        // cy.get('button.bg-green-600').eq(1).click();
-        //
-        // cy.get('input.nodrag').eq(1).type('Hello World', {
+        // cy.get('div.bg-azure-blue > h1').move({
+        //     deltaX: 100,
+        //     deltaY: 100,
         //     scrollBehavior: false,
         // });
+
+        cy.get('aside h3').first().move({
+            deltaX: -1000,
+            deltaY: 0,
+            scrollBehavior: false,
+            force: true,
+        });
     });
 });

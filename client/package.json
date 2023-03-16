@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.3",
     "@types/redux-logger": "^3.0.9",
     "autoprefixer": "^10.4.13",
     "cy-spok": "^1.6.1",
