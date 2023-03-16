@@ -40,10 +40,24 @@ provider "azurerm" {
  features {}
 }
 
-# Resource blocks
+# Resource group - A logical grouping of cloud resources primarily for management
 resource "azurerm_resource_group" "rg" {
- name     = "classrooms"
+ name     = "my-resource-group"
  location = "West Europe"
+}
+
+# The database server which is in the above resource group
+resource "azurerm_mssql_server" "example" {
+  name                         = "example-db-server"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = azurerm_resource_group.rg.location
+  version                      = "12.0"
+}
+
+# An example database in the database server
+resource "azurerm_mssql_database" "test" {
+  name           = "example-db"
+  server_id      = azurerm_mssql_server.example.id
 }
 
 resource "azurerm_container_registry" "acr" {

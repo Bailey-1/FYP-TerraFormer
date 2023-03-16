@@ -173,7 +173,7 @@ const ResourceNode = ({
                     </button>
                 </div>
             </div>
-            <div className="p-2 bg-gray-800 rounded-b">
+            <div className="p-2 bg-gray-800/75 rounded-b">
                 {additionalDetails && (
                     <h2 className="text-base text-gray-500">
                         {data.resourceState.type}

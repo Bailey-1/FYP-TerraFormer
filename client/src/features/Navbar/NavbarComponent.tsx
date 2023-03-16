@@ -191,12 +191,7 @@ const NavbarComponent = () => {
                 {/* Main area */}
                 <main className="min-w-0 flex-1 flex">
                     {/* Primary column */}
-                    <section
-                        aria-labelledby="primary-heading"
-                        className="flex h-full min-w-0 overflow-y-auto order-last flex-1 flex-col"
-                    >
-                        {/*<h1>Selected resource list here</h1>*/}
-                        {/*<SelectedResources />*/}
+                    <section className="flex h-full min-w-0 order-last flex-1 flex-col">
                         <ReactFlowComponent />
                     </section>
 
