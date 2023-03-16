@@ -233,7 +233,7 @@ const ReactFlowComponent = () => {
         <div className="h-full flex">
             <ReactFlowProvider>
                 <div
-                    className="reactflow-wrapper flex-grow h-full"
+                    className="reactflow-wrapper flex-grow min-h-full"
                     ref={reactFlowWrapper}
                 >
                     <ReactFlow

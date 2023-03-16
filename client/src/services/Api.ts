@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import k from '../const';
+import IResponse from '../interfaces/IResponse';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${k.serverHost}/api`,
@@ -18,6 +19,13 @@ export const baseApi = createApi({
                     edges,
                 },
             }),
+            transformResponse: (response: IResponse, meta, arg) => {
+                return {
+                    response,
+                    // meta,
+                    // arg,
+                };
+            },
         }),
     }),
 });
