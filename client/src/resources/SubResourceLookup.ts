@@ -31,3 +31,34 @@ export const TagSubResource: IBlockObject = {
     ],
     attributes: [],
 };
+
+export const GeoreplicationsBlock: IBlockObject = {
+    name: 'georeplications',
+    display_name: 'Georeplications',
+    provider: k.providers.azure,
+    keys: [
+        {
+            name: 'location',
+            display_name: 'Location',
+            type: 'select',
+            options: k.azure.regions,
+            validation: (value: string): boolean => {
+                return value.includes('b');
+            },
+            validation_message: '',
+            required: true,
+        },
+        {
+            name: 'tags',
+            display_name: 'Tags',
+            type: 'block',
+            block: TagSubResource,
+            validation: (value: string): boolean => {
+                return !!value.length;
+            },
+            validation_message: 'Must include the letter b',
+            required: false,
+        },
+    ],
+    attributes: [],
+};

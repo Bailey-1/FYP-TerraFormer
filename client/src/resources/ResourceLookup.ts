@@ -1,6 +1,6 @@
 import k from '../const';
 import { IResourceObject } from '@bailey-1/terraformwebapp-common';
-import { TagSubResource } from './SubResourceLookup';
+import { GeoreplicationsBlock, TagSubResource } from './SubResourceLookup';
 
 const ResourceLookup: IResourceObject[] = [
     {
@@ -47,6 +47,17 @@ const ResourceLookup: IResourceObject[] = [
         },
         keys: [
             {
+                name: 'name',
+                display_name: 'Name',
+                type: 'string',
+                value: '',
+                validation: (value: string): boolean => {
+                    return !!value.length;
+                },
+                validation_message: 'Must include the letter b',
+                required: true,
+            },
+            {
                 name: 'resource_group_name',
                 display_name: 'Resource Group Name',
                 type: 'resource',
@@ -59,21 +70,32 @@ const ResourceLookup: IResourceObject[] = [
                 required: true,
             },
             {
-                name: 'keyname2',
-                display_name: 'Keyname2',
-                type: 'string',
-                value: '',
+                name: 'location',
+                display_name: 'Location',
+                type: 'select',
+                options: k.azure.regions,
                 validation: (value: string): boolean => {
                     return value.includes('b');
                 },
-                validation_message: '',
+                validation_message: 'Must include the letter b',
                 required: true,
             },
             {
-                name: 'tags',
-                display_name: 'Tags',
+                name: 'sku',
+                display_name: 'SKU',
+                type: 'select',
+                options: ['Basic', 'Standard', 'Premium'],
+                validation: (value: string): boolean => {
+                    return value.includes('b');
+                },
+                validation_message: 'Must include the letter b',
+                required: true,
+            },
+            {
+                name: 'georeplications',
+                display_name: 'Georeplications',
                 type: 'block',
-                block: TagSubResource,
+                block: GeoreplicationsBlock,
                 validation: (value: string): boolean => {
                     return !!value.length;
                 },
@@ -81,28 +103,10 @@ const ResourceLookup: IResourceObject[] = [
                 required: false,
             },
             {
-                name: 'georeplications',
-                display_name: 'Geo Replications',
+                name: 'tags',
+                display_name: 'Tags',
                 type: 'block',
-                block: {
-                    name: 'georeplications',
-                    display_name: 'Geo Replications',
-                    provider: k.providers.azure,
-                    keys: [
-                        {
-                            name: 'location',
-                            display_name: 'Location',
-                            type: 'select',
-                            options: k.azure.regions,
-                            validation: (value: string): boolean => {
-                                return value.includes('b');
-                            },
-                            validation_message: 'Must include the letter b',
-                            required: true,
-                        },
-                    ],
-                    attributes: [],
-                },
+                block: TagSubResource,
                 validation: (value: string): boolean => {
                     return !!value.length;
                 },

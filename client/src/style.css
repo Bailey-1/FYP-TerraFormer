@@ -730,10 +730,6 @@ select {
   pointer-events: auto;
 }
 
-.visible {
-  visibility: visible;
-}
-
 .static {
   position: static;
 }
@@ -981,10 +977,6 @@ select {
   min-width: 0px;
 }
 
-.min-w-full {
-  min-width: 100%;
-}
-
 .max-w-sm {
   max-width: 24rem;
 }
@@ -1124,10 +1116,6 @@ select {
 
 .overflow-hidden {
   overflow: hidden;
-}
-
-.overflow-visible {
-  overflow: visible;
 }
 
 .overflow-y-auto {
@@ -1360,25 +1348,13 @@ select {
   background-color: rgb(253 186 116 / var(--tw-bg-opacity));
 }
 
-.bg-purple-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 232 255 / var(--tw-bg-opacity));
-}
-
-.bg-azure-blue\/50 {
-  background-color: rgb(0 120 212 / 0.5);
-}
-
-.bg-azure-blue\/75 {
-  background-color: rgb(0 120 212 / 0.75);
-}
-
 .bg-gray-800\/75 {
   background-color: rgb(31 41 55 / 0.75);
 }
 
-.bg-gray-800\/50 {
-  background-color: rgb(31 41 55 / 0.5);
+.bg-purple-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 232 255 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-75 {
@@ -1650,10 +1626,6 @@ select {
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
-.text-gray-200\/50 {
-  color: rgb(229 231 235 / 0.5);
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -1664,10 +1636,6 @@ select {
 
 .opacity-100 {
   opacity: 1;
-}
-
-.opacity-50 {
-  opacity: 0.5;
 }
 
 .shadow-xl {

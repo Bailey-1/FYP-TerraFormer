@@ -69,7 +69,7 @@ const ReactFlowComponent = () => {
                 // dispatch(onNodesChange(localSelect));
                 dispatch(onNodesChange([...nodeChanges]));
             }
-        }, 1000);
+        }, 250);
 
         return () => {
             // console.log('timer cleared');
