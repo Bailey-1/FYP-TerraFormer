@@ -55,14 +55,13 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                 </div>
                 <a
                     className="underline text-gray-500"
-                    href="https://google.com"
+                    href={resource.docs.terraform}
+                    target="_blank"
+                    rel="noreferrer"
                 >
-                    {resource.docs}
+                    {resource.docs.terraform}
                 </a>
-                <p className="text-gray-400">
-                    Description of the resource. Description of the resource.
-                    Description of the resource.
-                </p>
+                <p className="text-gray-400">{resource.description.small}</p>
                 {r.map((sub: IResourceKeyBlock) => {
                     return (
                         <div
