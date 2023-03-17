@@ -18,6 +18,7 @@ import ResourceKeyDecider from '../ResourceKeyDecider';
 import { Disclosure } from '@headlessui/react';
 import PillButton from '../../../../components/controls/PillBtn';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
+import getNestedBlockKeys from '../../../../utility/GetNestedBlockKeys';
 
 const BlockNode = ({
     id,
@@ -32,17 +33,27 @@ const BlockNode = ({
     const nodeId = useNodeId();
     const updateNodeInternals = useUpdateNodeInternals();
 
+    const additionalDetails = useSelector(
+        (state: RootState) => state.settings.additionalDetails,
+    );
+
     const globalResource = resourceLookup.find(
         (x) => x.name === data.resourceState.parent_type,
     );
 
-    const globalBlock = globalResource?.keys
-        .filter((x) => x.type === 'block')
-        .find((x) => x.name === data.resourceState.type) as IResourceKeyBlock;
+    if (!globalResource) {
+        return <p>Error: globalResource is not defined</p>;
+    }
 
-    const additionalDetails = useSelector(
-        (state: RootState) => state.settings.additionalDetails,
-    );
+    const allBlockKeys = getNestedBlockKeys(globalResource.keys);
+
+    const globalBlock = allBlockKeys.find(
+        (x) => x.name === data.resourceState.type,
+    ) as IResourceKeyBlock;
+
+    if (!globalBlock) {
+        return <p>Error: globalBlock is not defined</p>;
+    }
 
     const onClick = (val: string) => {
         // setKeys((prevState) => [...prevState, val]);
@@ -72,10 +83,6 @@ const BlockNode = ({
             ]),
         );
     };
-
-    if (!globalResource || !globalBlock) {
-        return <p>Error: globalResource/subResourceType is not defined</p>;
-    }
 
     const addExtraKey = (obj: IResourceKeys) => {
         // setKeys((prevState) => [...prevState, val]);

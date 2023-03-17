@@ -6,6 +6,7 @@ import {
 import onDragStart from '../../../events/ResourceDragAndDrop';
 import { useDispatch } from 'react-redux';
 import { addNode, addSubNode } from '../../FlowSlice';
+import getNestedBlockKeys from '../../../utility/GetNestedBlockKeys';
 
 const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
     };
 
     const addBlock = (sub: IResourceKeyBlock) => {
+        debugger;
         dispatch(
             addSubNode({
                 name: sub.name,
@@ -29,9 +31,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
         );
     };
 
-    const r = resource.keys.filter(
-        (x) => x.type === 'block',
-    ) as IResourceKeyBlock[];
+    const allBlockKeys = getNestedBlockKeys(resource.keys);
 
     return (
         <div
@@ -62,7 +62,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                     {resource.docs.terraform}
                 </a>
                 <p className="text-gray-400">{resource.description.small}</p>
-                {r.map((sub: IResourceKeyBlock) => {
+                {allBlockKeys.map((sub: IResourceKeyBlock) => {
                     return (
                         <div
                             className="flex justify-between m-2 p-2 items-center border border-l-4 bg-gray-800 hover:bg-gray-700"
