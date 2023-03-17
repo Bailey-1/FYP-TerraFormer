@@ -21,7 +21,6 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
     };
 
     const addBlock = (sub: IResourceKeyBlock) => {
-        debugger;
         dispatch(
             addSubNode({
                 name: sub.name,

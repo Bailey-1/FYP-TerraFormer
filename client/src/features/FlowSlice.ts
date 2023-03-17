@@ -265,7 +265,10 @@ export const flowSlice = createSlice({
                 // instance_name: '',
                 // resource_key: '',
                 // resource_type: '',
-                type: action.payload.keyType,
+                type:
+                    action.payload.keyType === 'select'
+                        ? 'string'
+                        : action.payload.keyType,
             };
 
             node?.data.resourceState.keys.push(ref);

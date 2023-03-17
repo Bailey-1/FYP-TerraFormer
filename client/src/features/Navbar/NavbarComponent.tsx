@@ -76,8 +76,6 @@ const NavbarComponent = () => {
         createHcl({ resources, edges: connections })
             .unwrap()
             .then((payload) => {
-                console.log('fulfilled', payload);
-
                 setGeneratedHclResponse(payload.response);
 
                 dispatch(

@@ -2,23 +2,22 @@ import React, { memo } from 'react';
 import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    addNewNodeKey,
-    onNodesChange,
-    updateNodeKey,
-} from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import { RootState } from '../../../../store/store';
 import {
     IBlockState,
     IResourceKeyBlock,
-    IResourceKeys,
 } from '@bailey-1/terraformwebapp-common';
 import ResourceKeyDecider from '../ResourceKeyDecider';
 import { Disclosure } from '@headlessui/react';
 import PillButton from '../../../../components/controls/PillBtn';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import getNestedBlockKeys from '../../../../utility/GetNestedBlockKeys';
+import {
+    addExtraKey,
+    removeNode,
+    updateKey,
+} from '../../utility/NodeUtilityFunctions';
 
 const BlockNode = ({
     id,
@@ -36,6 +35,10 @@ const BlockNode = ({
     const additionalDetails = useSelector(
         (state: RootState) => state.settings.additionalDetails,
     );
+
+    if (!nodeId) {
+        return <div>Error: no nodeId</div>;
+    }
 
     const globalResource = resourceLookup.find(
         (x) => x.name === data.resourceState.parent_type,
@@ -58,46 +61,7 @@ const BlockNode = ({
     const onClick = (val: string) => {
         // setKeys((prevState) => [...prevState, val]);
 
-        if (nodeId) {
-            updateNodeInternals(nodeId);
-        }
-    };
-
-    const updateKey = (name: string, value: string | string[]) => {
-        dispatch(
-            updateNodeKey({
-                nodeId: nodeId || '',
-                key: name,
-                value,
-            }),
-        );
-    };
-
-    const removeNode = () => {
-        dispatch(
-            onNodesChange([
-                {
-                    id: nodeId || '',
-                    type: 'remove',
-                },
-            ]),
-        );
-    };
-
-    const addExtraKey = (obj: IResourceKeys) => {
-        // setKeys((prevState) => [...prevState, val]);
-
-        if (nodeId) {
-            dispatch(
-                addNewNodeKey({
-                    nodeId: nodeId,
-                    keyName: obj.name,
-                    keyType: obj.type,
-                }),
-            );
-
-            updateNodeInternals(nodeId);
-        }
+        updateNodeInternals(nodeId);
     };
 
     const pillBtnsArr = globalBlock.block.keys
@@ -110,7 +74,10 @@ const BlockNode = ({
             return (
                 <PillButton
                     key={x.name}
-                    onClick={() => addExtraKey(x)}
+                    onClick={() => {
+                        addExtraKey(dispatch, nodeId, x);
+                        updateNodeInternals(nodeId);
+                    }}
                     className="bg-orange-300"
                 >
                     <p>{x.display_name}</p>
@@ -145,7 +112,7 @@ const BlockNode = ({
                     <button className="h-8 nodrag">
                         <XMarkIcon
                             className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
-                            onClick={() => removeNode()}
+                            onClick={() => removeNode(dispatch, nodeId)}
                         />
                     </button>
                 </div>
@@ -170,7 +137,9 @@ const BlockNode = ({
                             globalKey={globalBlock.block.keys.find(
                                 (gk) => gk.name === x.name,
                             )}
-                            onChange={updateKey}
+                            onChange={(name, value) =>
+                                updateKey(dispatch, nodeId, name, value)
+                            }
                         />
                     );
                 })}
