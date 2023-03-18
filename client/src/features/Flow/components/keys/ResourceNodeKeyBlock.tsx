@@ -58,6 +58,7 @@ const ResourceNodeKeyBlock = ({
                     borderRadius: '10px',
                     left: '-15px',
                 }}
+                data-cy={`target-handle-${globalKey.name}`}
             />
             <p className="pl-2">{!!edgeData.length ? '✅' : '❌'}</p>
             <p>{JSON.stringify(connectedBlockIds)}</p>

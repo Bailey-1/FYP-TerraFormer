@@ -103,6 +103,7 @@ const BlockNode = ({
                     borderRadius: '10px',
                     right: '-15px',
                 }}
+                data-cy={`source-handle-${globalBlock.name}`}
             />
             <div className={`flex justify-between p-2 rounded-t-xl`}>
                 <h1 className={`text-xl text-gray-200`}>

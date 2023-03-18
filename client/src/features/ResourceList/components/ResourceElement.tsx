@@ -39,6 +39,8 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                 onDragStart(event, 'resource', resource.name)
             }
             draggable
+            data-cy={`draggable-${resource.name}`}
+            data-cy-type="primaryResource"
         >
             <div className="p-2 m-2 grow">
                 <div className="flex justify-between items-center">
@@ -48,6 +50,8 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                     <button
                         className="bg-green-600 m-2 p-2 px-4 text-gray-200 rounded-lg border border-green-900 hover:bg-green-700 text-2xl"
                         onClick={addResource}
+                        data-cy={`add-${resource.name}`}
+                        data-cy-type="primaryResourceAddButton"
                     >
                         +
                     </button>
@@ -75,6 +79,7 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                                     `${resource.name}/${sub.name}`,
                                 );
                             }}
+                            data-cy={`draggable-${resource.name}-${sub.name}`}
                         >
                             <h3 className="text-l text-gray-200">
                                 {sub.display_name}
@@ -82,6 +87,8 @@ const ResourceElement = ({ resource }: { resource: IResourceObject }) => {
                             <button
                                 className="bg-yellow-600 p-2 px-4 text-gray-200 rounded hover:bg-yellow-700"
                                 onClick={() => addBlock(sub)}
+                                data-cy={`addBlock-${resource.name}-${sub.name}`}
+                                data-cy-type="blockAddButton"
                             >
                                 +
                             </button>
