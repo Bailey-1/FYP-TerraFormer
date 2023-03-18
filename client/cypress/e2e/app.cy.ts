@@ -36,7 +36,7 @@ describe('App', () => {
 
         cy.get('[data-cy="draggable-azurerm_resource_group"]').trigger(
             'dragstart',
-            { dataTransfer },
+            { dataTransfer, force: true },
         );
 
         cy.get('.react-flow')
@@ -98,7 +98,7 @@ describe('App', () => {
 
         cy.get(
             '[data-cy="draggable-azurerm_container_registry-georeplications"]',
-        ).trigger('dragstart', { dataTransfer });
+        ).trigger('dragstart', { dataTransfer, force: true });
 
         cy.get('.react-flow')
             .trigger('dragenter', { force: true })
@@ -244,7 +244,7 @@ describe('App', () => {
 
         cy.get('[data-cy="draggable-azurerm_container_registry-tags"]').trigger(
             'dragstart',
-            { dataTransfer },
+            { dataTransfer, force: true },
         );
 
         cy.get('.react-flow')
