@@ -7,7 +7,7 @@ const PillButton = ({
 }: {
     children: any;
     onClick: (val: string) => void;
-    className: string | undefined;
+    className?: string;
 }) => {
     return (
         <button
