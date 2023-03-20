@@ -1,6 +1,6 @@
 import PillButton from '../../../components/controls/PillBtn';
 import React, { useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid';
 
 const SearchBar = () => {
     const [selectedCat, setSelectedCat] = useState<string[]>([]);
@@ -38,6 +38,7 @@ const SearchBar = () => {
                             <PillButton
                                 onClick={() => setSelectedCat([x])}
                                 className="px-2 bg-blue-300 hover:bg-blue-400"
+                                key={x}
                             >
                                 <p className="text-sm">{x}</p>
                             </PillButton>
@@ -60,9 +61,10 @@ const SearchBar = () => {
                                         }
                                     }}
                                     className="px-2 bg-red-300 hover:bg-red-400"
+                                    key={cat}
                                 >
                                     <p className="text-sm">{cat}</p>
-                                    <button className="px-2">X</button>
+                                    <XMarkIcon className="h-5 w-5" />
                                 </PillButton>
                             );
                         })}
@@ -81,6 +83,7 @@ const SearchBar = () => {
                                                 ])
                                             }
                                             className="px-2 border bg-yellow-500 text-gray-800 hover:bg-yellow-600"
+                                            key={sub}
                                         >
                                             <p className="text-sm">{sub}</p>
                                         </PillButton>
