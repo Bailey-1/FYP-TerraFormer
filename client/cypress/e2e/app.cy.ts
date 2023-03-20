@@ -4,7 +4,7 @@ import * as spok from 'cy-spok';
 describe('App', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000');
-        cy.wait(100); // Ensure react flow instance loads before
+        cy.wait(1000); // Ensure react flow instance loads before
     });
 
     it('Add resource - Button', () => {

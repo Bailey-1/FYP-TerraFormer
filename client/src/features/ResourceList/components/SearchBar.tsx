@@ -1,60 +1,34 @@
 import PillButton from '../../../components/controls/PillBtn';
 import React, { useState } from 'react';
-import { BarsArrowUpIcon, UsersIcon } from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 const SearchBar = () => {
     const [selectedCat, setSelectedCat] = useState<string[]>([]);
 
-    const maxDepth = 2;
-
     const categories: { [x: string]: string[] } = {
-        Compute: ['Virtual Machines', 'App Service', 'Kubernetes'],
+        Compute: ['Virtual Machines', 'App Service'],
         Databases: ['SQL', 'NoSQL', 'MSSQL', 'PostgreSQL'],
         Storage: ['Account', 'Blob', 'File'],
         Management: ['Resources', 'Vault'],
-    };
-
-    const test = {
-        Compute: ['Virtual Machines', 'App Service', 'Kubernetes'],
-        Databases: ['SQL', 'NoSQL', 'MSSQL', 'PostgreSQL'],
-        Storage: ['Account', 'Blob', 'File'],
-        Management: ['Resources', 'Vault'],
-        Test: {
-            Test1: ['TestA', 'TestB'],
-            Test2: ['TestA', 'TestB'],
-        },
+        Containers: ['Kubernetes', 'Instance', 'Registry'],
     };
 
     return (
-        <div className="m-2 bg-gray-800">
-            <div className="flex p-2">
-                <div className="flex rounded-md shadow-sm">
-                    <div className="relative flex flex-grow items-stretch focus-within:z-10">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <UsersIcon
-                                className="h-5 w-5 text-gray-400"
-                                aria-hidden="true"
-                            />
-                        </div>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            className="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="John Smith"
-                        />
+        <div className="bg-gray-700 p-4">
+            <div className="flex rounded-md shadow-sm pb-4">
+                <div className="relative flex flex-grow items-stretch">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                     </div>
-                    <button
-                        type="button"
-                        className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                        <BarsArrowUpIcon
-                            className="-ml-0.5 h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                        />
-                        Sort
-                    </button>
+                    <input
+                        className="w-full rounded-md py-1.5 pl-10 text-gray-900 placeholder:text-gray-400 text-base"
+                        placeholder="Search"
+                    />
                 </div>
+                {/*<button className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm text-gray-300 bg-blue-700 hover:bg-blue-800">*/}
+                {/*    <MagnifyingGlassIcon className="-ml-0.5 h-5 w-5 text-gray-400" />*/}
+                {/*    Search*/}
+                {/*</button>*/}
             </div>
             {/*Primary categories*/}
             {!selectedCat.length && (
@@ -63,7 +37,7 @@ const SearchBar = () => {
                         return (
                             <PillButton
                                 onClick={() => setSelectedCat([x])}
-                                className="px-2 bg-blue-300"
+                                className="px-2 bg-blue-300 hover:bg-blue-400"
                             >
                                 <p className="text-sm">{x}</p>
                             </PillButton>
@@ -85,7 +59,7 @@ const SearchBar = () => {
                                             setSelectedCat((x) => [x[0]]);
                                         }
                                     }}
-                                    className="px-2 bg-red-300"
+                                    className="px-2 bg-red-300 hover:bg-red-400"
                                 >
                                     <p className="text-sm">{cat}</p>
                                     <button className="px-2">X</button>
@@ -106,7 +80,7 @@ const SearchBar = () => {
                                                     sub,
                                                 ])
                                             }
-                                            className="px-2 border border-yellow-300 text-gray-300"
+                                            className="px-2 border bg-yellow-500 text-gray-800 hover:bg-yellow-600"
                                         >
                                             <p className="text-sm">{sub}</p>
                                         </PillButton>

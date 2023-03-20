@@ -14,6 +14,7 @@ import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import GeneratedHclModal from '../GeneratedHclModal/GeneratedHclModal';
 import { onCreateNotification } from '../NotificationSlice';
 import IResponse from '../../interfaces/IResponse';
+import SearchBar from '../ResourceList/components/SearchBar';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -133,10 +134,8 @@ const NavbarComponent = () => {
             {/* Bottom section */}
             <div className="flex min-h-0 flex-1 overflow-hidden">
                 {/* Narrow sidebar*/}
-                <nav
-                    aria-label="SidebarComponent"
-                    className="flex flex-col overflow-y-auto bg-gray-800 justify-between"
-                >
+                {/*<nav className="flex flex-col overflow-y-auto bg-gray-800 justify-between border-r border-gray-200">*/}
+                <nav className="flex flex-col overflow-y-auto bg-gray-800 justify-between">
                     <div className="flex w-20 flex-col space-y-3 p-3">
                         {sidebarNavigation.map((item) => (
                             <button
@@ -152,10 +151,6 @@ const NavbarComponent = () => {
                                     setCurrentProvider(item.name.toLowerCase())
                                 }
                             >
-                                {/*<item.icon*/}
-                                {/*    className="h-6 w-6"*/}
-                                {/*    aria-hidden="true"*/}
-                                {/*/>*/}
                                 {item.name}
                             </button>
                         ))}
@@ -195,9 +190,12 @@ const NavbarComponent = () => {
 
                     {/* Available resources */}
                     <aside>
-                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700 px-2">
+                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700">
                             {/*<h1>Available resource list here</h1>*/}
-                            <ResourceList filter={currentProvider} />
+                            <SearchBar />
+                            <div className="px-2">
+                                <ResourceList filter={currentProvider} />
+                            </div>
                         </div>
                     </aside>
                 </main>

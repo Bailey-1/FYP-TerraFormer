@@ -52,7 +52,7 @@ const ReactFlowComponent = () => {
     const nodes = useSelector((state: RootState) => state.flow.nodes);
     const [localNodes, setLocalNodes] = useState(nodes);
     const [nodeChanges, setNodeChanges] = useState<NodeChange[]>([]);
-    const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
+    // const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
 
     const edges = useSelector((state: RootState) => state.flow.edges);
 

@@ -390,6 +390,28 @@ const ResourceLookup: IResourceObject[] = [
                 required: true,
             },
             {
+                name: 'administrator_login',
+                display_name: 'Admin Username',
+                type: 'string',
+                value: '',
+                validation: (value: string): boolean => {
+                    return value.includes('a');
+                },
+                validation_message: 'Must include the letter a',
+                required: true,
+            },
+            {
+                name: 'administrator_login_password',
+                display_name: 'Admin Password',
+                type: 'string',
+                value: '',
+                validation: (value: string): boolean => {
+                    return value.includes('a');
+                },
+                validation_message: 'Must include the letter a',
+                required: true,
+            },
+            {
                 name: 'tags',
                 display_name: 'Tags',
                 type: 'block',
