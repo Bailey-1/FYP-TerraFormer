@@ -16,5 +16,6 @@ export default defineConfig({
         viewportWidth: 1920,
         viewportHeight: 1080,
         // scrollBehavior: false,
+        excludeSpecPattern: ['cypress/e2e/**/*.cy.js'],
     },
 });

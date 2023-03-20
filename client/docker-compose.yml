@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  client:
+    container_name: client
+    build:
+      context: .
+      target: prod
+    entrypoint: [ 'npm', 'run', 'start' ]
+  tests:
+    container_name: tests
+    build:
+      context: .
+      target: tests
+    depends_on:
+      - 'client'
+    entrypoint: ['npm', 'run', 'cypress:run']

@@ -1,10 +1,10 @@
 import '@4tw/cypress-drag-drop';
-import spok from 'cy-spok';
+import * as spok from 'cy-spok';
 
 describe('App', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000');
-        cy.wait(50); // Ensure react flow instance loads before
+        cy.wait(100); // Ensure react flow instance loads before
     });
 
     it('Add resource - Button', () => {
