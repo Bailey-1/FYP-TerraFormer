@@ -14,7 +14,7 @@ import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import GeneratedHclModal from '../GeneratedHclModal/GeneratedHclModal';
 import { onCreateNotification } from '../NotificationSlice';
 import IResponse from '../../interfaces/IResponse';
-import SearchBar from '../ResourceList/components/SearchBar';
+import ListOptions from '../ResourceList/components/ListOptions';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -58,8 +58,6 @@ const NavbarComponent = () => {
             };
         });
 
-        console.log('Resources:');
-
         const connections = edges.map((x) => {
             return {
                 id: x.id,
@@ -94,7 +92,9 @@ const NavbarComponent = () => {
                     onCreateNotification({
                         type: 'error',
                         title: 'Failed to Generate HCL',
-                        message: error.data.error,
+                        message: error.data?.error
+                            ? error.data.error
+                            : error.error,
                     }),
                 );
             });
@@ -103,7 +103,7 @@ const NavbarComponent = () => {
     return (
         <div className="flex h-full flex-col">
             {/* Top nav*/}
-            <header className="relative flex h-16 flex-shrink-0 items-center bg-terraform-purple justify-end">
+            <header className="relative flex h-16 flex-shrink-0 items-center bg-terraform-purple-500 justify-end">
                 {/* Logo area */}
                 <div className="absolute inset-y-0 left-0 static flex-shrink-0">
                     <a
@@ -192,7 +192,7 @@ const NavbarComponent = () => {
                     <aside>
                         <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700">
                             {/*<h1>Available resource list here</h1>*/}
-                            <SearchBar />
+                            <ListOptions />
                             <div className="px-2">
                                 <ResourceList filter={currentProvider} />
                             </div>

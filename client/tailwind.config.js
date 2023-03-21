@@ -4,11 +4,17 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                'terraform-purple': '#844fba',
-                'azure-blue': '#0078d4',
-                'aws-orange': '#ec7211',
-                'aws-yellow': '#ec912d',
-                'gcp-red': '#e34133',
+                // 'terraform-purple': '#844fba',
+                'terraform-purple': {
+                    default: 'hsl(270, 44%, 52%)',
+                    400: 'hsl(270 44% 52% / 40%)',
+                    500: 'hsl(270 44% 52%)',
+                    600: 'hsl(270 44% 52% / 110%)',
+                },
+                'azure-blue': 'hsl(206 100% 42% / 90%)',
+                'aws-yellow': 'hsl(31 83% 55% / 90%)',
+                'gcp-red': 'hsl(5 76% 55% / 90%)',
+                // 'aws-orange': 'hsl(27 87% 50% / 100%)',
             },
         },
     },

@@ -47,6 +47,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
+        tags: ['Resources'],
     },
     {
         name: 'azurerm_container_registry',
@@ -133,34 +134,56 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
+        tags: ['Registry'],
     },
-    // {
-    //     name: 'aws_test1',
-    //     display_name: 'AWS Test 1',
-    //     provider: k.providers.aws,
-    //     docs: 'todo add docs',
-    //     validation: () => true,
-    //     keys: [],
-    //     attributes: [],
-    // },
-    // {
-    //     name: 'aws_test2',
-    //     display_name: 'AWS Test 2',
-    //     provider: k.providers.aws,
-    //     docs: 'todo add docs',
-    //     validation: () => true,
-    //     keys: [],
-    //     attributes: [],
-    // },
-    // {
-    //     name: 'gcp_test',
-    //     display_name: 'GCP Test 1',
-    //     provider: k.providers.gcp,
-    //     docs: 'todo add docs',
-    //     validation: () => true,
-    //     keys: [],
-    //     attributes: [],
-    // },
+    {
+        name: 'aws_test1',
+        display_name: 'AWS Test 1',
+        provider: k.providers.aws,
+        docs: {
+            terraform: '',
+            provider: '',
+        },
+        validation: () => true,
+        keys: [],
+        attributes: [],
+        description: {
+            small: 'Small desc',
+        },
+        tags: [],
+    },
+    {
+        name: 'aws_test2',
+        display_name: 'AWS Test 2',
+        provider: k.providers.aws,
+        docs: {
+            terraform: '',
+            provider: '',
+        },
+        validation: () => true,
+        keys: [],
+        attributes: [],
+        description: {
+            small: 'Small desc',
+        },
+        tags: [],
+    },
+    {
+        name: 'gcp_test',
+        display_name: 'GCP Test 1',
+        provider: k.providers.gcp,
+        docs: {
+            terraform: '',
+            provider: '',
+        },
+        validation: () => true,
+        keys: [],
+        attributes: [],
+        description: {
+            small: 'Small desc',
+        },
+        tags: [],
+    },
     {
         name: 'azurerm_service_plan',
         display_name: 'Azure Service Plan',
@@ -264,6 +287,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id'],
+        tags: [],
     },
     {
         name: 'azurerm_linux_web_app',
@@ -327,6 +351,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
+        tags: [],
     },
     {
         name: 'azurerm_mssql_server',
@@ -424,6 +449,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
+        tags: [],
     },
     {
         name: 'azurerm_mssql_database',
@@ -488,6 +514,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
+        tags: [],
     },
 ];
 

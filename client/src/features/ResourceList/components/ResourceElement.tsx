@@ -73,7 +73,11 @@ const ResourceElement = ({
                                 !isCollapsed ? 'rotate-180' : ''
                             }`}
                         />
-                        <h3 className="text-xl text-gray-200">
+                        <h3
+                            className={`text-xl ${
+                                providerColours[resource.provider]?.foreground
+                            }`}
+                        >
                             {resource.display_name}
                         </h3>
                     </span>

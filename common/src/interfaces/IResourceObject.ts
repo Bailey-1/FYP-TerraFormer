@@ -64,4 +64,5 @@ export interface IResourceObject {
         small: string;
         // full: string;
     };
+    tags: string[];
 }

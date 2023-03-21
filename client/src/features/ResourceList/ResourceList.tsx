@@ -1,8 +1,18 @@
 import ResourceElement from './components/ResourceElement';
 import resourceLookup from '../../resources/ResourceLookup';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const ResourceList = ({ filter }: { filter: string | null }) => {
+    const searchTerm = useSelector(
+        (state: RootState) => state.resourceList.searchTerm,
+    );
+
+    const searchFilter = useSelector(
+        (state: RootState) => state.resourceList.searchFilter,
+    );
+
     const [resourcesCollapseState, setResourcesCollapseState] = useState<
         { name: string; isCollapsed: boolean }[]
     >(
@@ -44,9 +54,37 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
                     Collapse All
                 </button>
             </div>
-            {/*<SearchBar />*/}
+            {/*<ListOptions />*/}
             {resourceLookup
                 .filter((x) => filter === 'all' || filter === x.provider)
+                .filter((x) => {
+                    const searchArgs = searchTerm
+                        .toLowerCase()
+                        .trim()
+                        .split(' ');
+
+                    for (let i = 0; i < searchArgs.length; i++) {
+                        if (
+                            !x.description.small
+                                .toLowerCase()
+                                .includes(searchArgs[i]) &&
+                            !x.display_name
+                                ?.toLowerCase()
+                                .includes(searchArgs[i])
+                        ) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                })
+                // .filter((x) => {
+                //     if(searchFilter.length === 1){
+                //         return ;
+                //     } else {
+                //
+                //     }
+                // })
                 .map((x) => {
                     return (
                         <ResourceElement
