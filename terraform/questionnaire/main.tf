@@ -55,7 +55,8 @@ resource "azurerm_mssql_server" "example" {
 }
 
 resource "azurerm_mssql_database" "test" {
-  name           = "example-db"
+#  name           = "example-db"
+  name = azurerm_mssql_server.example.name
   server_id      = azurerm_mssql_server.example.id
 }
 

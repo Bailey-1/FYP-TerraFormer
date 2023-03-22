@@ -1,5 +1,5 @@
 import ResourceElement from './components/ResourceElement';
-import resourceLookup from '../../resources/ResourceLookup';
+import resourceLookup, { categories } from '../../resources/ResourceLookup';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
@@ -78,13 +78,20 @@ const ResourceList = ({ filter }: { filter: string | null }) => {
 
                     return true;
                 })
-                // .filter((x) => {
-                //     if(searchFilter.length === 1){
-                //         return ;
-                //     } else {
-                //
-                //     }
-                // })
+                .filter((x) => {
+                    // Allow all items if filter is not set
+                    if (!searchFilter.length) return true;
+
+                    // If filter only has one cat set, accept any resource with any subcat tags
+                    if (searchFilter.length === 1) {
+                        return x.tags.some((r) =>
+                            categories[searchFilter[0]].includes(r),
+                        );
+                        // Else check tags includes subcat.
+                    } else {
+                        return x.tags.includes(searchFilter[1]);
+                    }
+                })
                 .map((x) => {
                     return (
                         <ResourceElement

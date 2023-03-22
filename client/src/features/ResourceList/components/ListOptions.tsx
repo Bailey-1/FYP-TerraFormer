@@ -5,20 +5,13 @@ import SearchBar from './SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { onFilterUpdate } from '../../ResourceListSlice';
 import { RootState } from '../../../store/store';
+import { categories } from '../../../resources/ResourceLookup';
 
 const ListOptions = () => {
     const dispatch = useDispatch();
     const searchFilter = useSelector(
         (state: RootState) => state.resourceList.searchFilter,
     );
-
-    const categories: { [x: string]: string[] } = {
-        Compute: ['Virtual Machines', 'App Service'],
-        Databases: ['SQL', 'NoSQL', 'MSSQL', 'PostgreSQL'],
-        Storage: ['Account', 'Blob', 'File'],
-        Management: ['Resources', 'Vault'],
-        Containers: ['Kubernetes', 'Instance', 'Registry'],
-    };
 
     return (
         <div className="bg-gray-700 p-4">

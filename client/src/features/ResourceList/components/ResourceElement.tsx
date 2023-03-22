@@ -4,11 +4,13 @@ import {
     IResourceObject,
 } from '@bailey-1/terraformwebapp-common';
 import onDragStart from '../../../events/ResourceDragAndDrop';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addNode, addSubNode } from '../../FlowSlice';
 import getNestedBlockKeys from '../../../utility/GetNestedBlockKeys';
 import providerColours from '../../../resources/ProviderColours';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import { RootState } from '../../../store/store';
+import HighlightedText from '../../../components/HighlightedText';
 
 const ResourceElement = ({
     resource,
@@ -20,12 +22,15 @@ const ResourceElement = ({
     setIsCollapsed: (value: boolean) => void;
 }) => {
     const dispatch = useDispatch();
-    // const [isCollapsed, setIsCollapsed] = useState(isGlobalCollapse);
-    //
-    // useEffect(() => {
-    //     console.log('useEffect');
-    //     setIsCollapsed(isGlobalCollapse);
-    // }, [isGlobalCollapse]);
+    const searchTerm = useSelector(
+        (state: RootState) => state.resourceList.searchTerm,
+    );
+
+    const searchArgs = searchTerm
+        .toLowerCase()
+        .trim()
+        .split(' ')
+        .filter((x) => x);
 
     const addResource = () => {
         dispatch(
@@ -100,7 +105,11 @@ const ResourceElement = ({
                     {/*    {resource.docs.terraform}*/}
                     {/*</a>*/}
                     <p className="text-gray-300">
-                        {resource.description.small}
+                        {/*{resource.description.small}*/}
+                        <HighlightedText
+                            text={resource.description.small}
+                            searchArr={searchArgs}
+                        />
                     </p>
                     {allBlockKeys.map((sub: IResourceKeyBlock) => {
                         return (

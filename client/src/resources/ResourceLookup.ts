@@ -6,6 +6,33 @@ import {
     TagSubResource,
 } from './SubResourceLookup';
 
+export const categories: { [x: string]: string[] } = {
+    Compute: [
+        k.categories.Compute.VirtualMachines,
+        k.categories.Compute.AppService,
+    ],
+    Databases: [
+        k.categories.Databases.SQL,
+        k.categories.Databases.NoSQL,
+        k.categories.Databases.MSSQL,
+        k.categories.Databases.PostgreSQL,
+    ],
+    Storage: [
+        k.categories.Storage.Account,
+        k.categories.Storage.Blob,
+        k.categories.Storage.File,
+    ],
+    Management: [
+        k.categories.Management.Resources,
+        k.categories.Management.Vault,
+    ],
+    Containers: [
+        k.categories.Containers.Kubernetes,
+        k.categories.Containers.Instance,
+        k.categories.Containers.Registry,
+    ],
+};
+
 const ResourceLookup: IResourceObject[] = [
     {
         name: 'azurerm_resource_group',
@@ -17,7 +44,7 @@ const ResourceLookup: IResourceObject[] = [
             provider: 'https://site.com',
         },
         description: {
-            small: 'A resource group is a container that holds related resources for an Azure solution. All resources must be in a resource group.',
+            small: `A resource group is a container that holds related resources for an Azure solution. All resources must be in a resource group.`,
         },
         validation: function () {
             return !!this.docs;
@@ -47,7 +74,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
-        tags: ['Resources'],
+        tags: [k.categories.Management.Resources],
     },
     {
         name: 'azurerm_container_registry',
@@ -134,7 +161,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
-        tags: ['Registry'],
+        tags: [k.categories.Containers.Registry],
     },
     {
         name: 'aws_test1',
@@ -287,7 +314,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id'],
-        tags: [],
+        tags: [k.categories.Compute.AppService],
     },
     {
         name: 'azurerm_linux_web_app',
@@ -351,7 +378,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: [],
-        tags: [],
+        tags: [k.categories.Compute.AppService],
     },
     {
         name: 'azurerm_mssql_server',
@@ -449,7 +476,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
-        tags: [],
+        tags: [k.categories.Databases.MSSQL],
     },
     {
         name: 'azurerm_mssql_database',
@@ -514,7 +541,7 @@ const ResourceLookup: IResourceObject[] = [
             },
         ],
         attributes: ['id', 'name', 'location'],
-        tags: [],
+        tags: [k.categories.Databases.MSSQL],
     },
 ];
 
