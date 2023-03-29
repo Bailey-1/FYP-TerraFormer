@@ -7,7 +7,7 @@ on:
   push:
     paths:
       - 'server/**'
-      - '.github/workflows'
+      - '.github/workflows/**'
       
 jobs:
   Test_and_Coverage:
