@@ -21,6 +21,7 @@ import {
 } from '@bailey-1/terraformwebapp-common';
 import ResourceLookup from '../resources/ResourceLookup';
 import RandomID from '../utility/RandomID';
+import getNestedBlockKeys from '../utility/GetNestedBlockKeys';
 
 // Define a type for the slice state
 interface CounterState {
@@ -106,11 +107,13 @@ export const flowSlice = createSlice({
                 (y) => y.name === action.payload.parentResourceName,
             );
 
-            const sub = parent?.keys
-                .filter((x) => x.type === 'block')
-                .find(
-                    (x) => x.name === action.payload.name,
-                ) as IResourceKeyBlock;
+            if (!parent) return;
+
+            const allBlockKeys = getNestedBlockKeys(parent.keys);
+
+            const sub = allBlockKeys.find(
+                (x) => x.name === action.payload.name,
+            ) as IResourceKeyBlock;
 
             if (parent) {
                 const id = RandomID();
@@ -136,6 +139,10 @@ export const flowSlice = createSlice({
                                             name: key.name,
                                             value: '',
                                             valid: false,
+                                            type:
+                                                key.type === 'select'
+                                                    ? 'string'
+                                                    : key.type,
                                         };
                                     }) || [],
                         } as IBlockState,
@@ -258,7 +265,10 @@ export const flowSlice = createSlice({
                 // instance_name: '',
                 // resource_key: '',
                 // resource_type: '',
-                type: action.payload.keyType,
+                type:
+                    action.payload.keyType === 'select'
+                        ? 'string'
+                        : action.payload.keyType,
             };
 
             node?.data.resourceState.keys.push(ref);

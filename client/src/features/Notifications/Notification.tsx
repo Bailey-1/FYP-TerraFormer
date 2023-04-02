@@ -13,11 +13,13 @@ const Notification = ({
     title,
     message,
     onRemove,
+    disableHide,
 }: {
     type: 'success' | 'error' | 'warning' | 'info';
     title: string;
     message?: string;
     onRemove?: () => void;
+    disableHide?: boolean;
 }) => {
     const [show, setShow] = useState(false);
     const [finishedInitialLoad, setFinishedInitialLoad] = useState(false);
@@ -60,7 +62,9 @@ const Notification = ({
         } else if (show) {
             setShow(true);
             setTimeout(() => {
-                setShow(false);
+                if (!disableHide) {
+                    setShow(false);
+                }
             }, delayUntilRemoved);
         }
     }, [show]);
@@ -87,6 +91,7 @@ const Notification = ({
                     'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg border ' +
                     divClassname
                 }
+                data-cy="notification"
             >
                 <div className="p-4">
                     <div className="flex items-start">

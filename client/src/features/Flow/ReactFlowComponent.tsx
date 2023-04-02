@@ -52,7 +52,7 @@ const ReactFlowComponent = () => {
     const nodes = useSelector((state: RootState) => state.flow.nodes);
     const [localNodes, setLocalNodes] = useState(nodes);
     const [nodeChanges, setNodeChanges] = useState<NodeChange[]>([]);
-    const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
+    // const [localSelect, setLocalSelect] = useState<NodeChange[]>([]);
 
     const edges = useSelector((state: RootState) => state.flow.edges);
 
@@ -61,30 +61,20 @@ const ReactFlowComponent = () => {
     }, [nodes]);
 
     useEffect(() => {
-        // console.log('useeffect');
         const timer = setTimeout(() => {
-            // console.log('dispatch called');
             if (nodeChanges) {
-                // console.log(nodeChanges);
-                // dispatch(onNodesChange(localSelect));
                 dispatch(onNodesChange([...nodeChanges]));
             }
-        }, 1000);
+        }, 250);
 
         return () => {
-            // console.log('timer cleared');
             clearTimeout(timer);
         };
     }, [nodeChanges]);
 
     // TODO: Fix deleting resources quickly before redux updates issue
     const nodeChange = (changes: NodeChange[]) => {
-        // console.log('nodechange');
-        // console.log(changes[0].type);
-
         if (changes[0].type === 'position' && changes[0].dragging) {
-            // setNodeChanges((prevState) => changes);
-            // console.log('local changes ', changes[0]);
             setNodeChanges((prevState) => {
                 return [
                     ...prevState.filter(
@@ -253,6 +243,10 @@ const ReactFlowComponent = () => {
                         defaultViewport={defaultViewport}
                         onInit={setReactFlowInstance}
                         fitView
+                        fitViewOptions={{
+                            padding: 1.5,
+                            duration: 1000,
+                        }}
                         attributionPosition="bottom-left"
                         defaultEdgeOptions={{
                             style: { stroke: '#844fba', strokeWidth: '2px' },

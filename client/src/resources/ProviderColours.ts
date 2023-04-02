@@ -7,11 +7,13 @@ const ProviderColours = {
     },
     [k.providers.aws]: {
         background: 'bg-aws-yellow',
-        foreground: 'text-gray-200',
+        // foreground: 'text-gray-200',
+        foreground: 'text-gray-800',
     },
     [k.providers.gcp]: {
         background: 'bg-gcp-red',
-        foreground: 'text-gray-200',
+        // foreground: 'text-gray-200',
+        foreground: 'text-gray-800',
     },
 };
 

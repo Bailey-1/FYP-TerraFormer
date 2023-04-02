@@ -7,8 +7,13 @@ RUN npm-cli-login -u "bailey-1" -p "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" -e
 COPY package.json .
 COPY package-lock.json .
 
+FROM base as tests
+RUN npm ci
+COPY . .
+RUN npx cypress install
+CMD [ "npm", "run", "cypress:run" ]
+
 FROM base as prod
 RUN npm ci --production
 COPY . .
-
-CMD ["npm", "build"]
+CMD ["npm", "start"]

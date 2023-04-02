@@ -1,10 +1,10 @@
-name: Client Tests
+name: Client Component Tests
 
 on:
   push:
     paths:
       - 'client/**'
-      - '.github/workflows'
+      - '.github/workflows/**'
 
 jobs:
   cypress-run:
@@ -21,3 +21,4 @@ jobs:
           build: npm run build
           start: npm start
           working-directory: ./client
+          component: true

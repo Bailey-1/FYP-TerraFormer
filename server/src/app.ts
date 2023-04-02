@@ -6,7 +6,7 @@ import morgan from 'morgan';
 // @ts-ignore
 import hcl from 'js-hcl-parser';
 import IResourceBody from './interfaces/IResourceBody';
-import { IResourceKeyState, logger } from '@bailey-1/terraformwebapp-common';
+import { IResourceKeyState } from '@bailey-1/terraformwebapp-common';
 
 const app = express();
 
@@ -43,52 +43,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
         });
     }
 
-    console.log(body);
-
-    // const input = {
-    //     terraform: [
-    //         {
-    //             required_providers: [
-    //                 {
-    //                     azurerm: [
-    //                         {
-    //                             source: 'hashicorp/azurerm',
-    //                             version: '3.45.0',
-    //                         },
-    //                     ],
-    //                 },
-    //             ],
-    //         },
-    //     ],
-    //     resource: {
-    //         azurerm_resource_group: {
-    //             staging_rg: {
-    //                 name: 'Classrooms-Staging',
-    //                 location: 'UK South',
-    //                 number: 12,
-    //                 float: 1.5,
-    //                 bool: true,
-    //                 object: {
-    //                     prop1: 1,
-    //                     prop2: 1,
-    //                     prop3: 1,
-    //                 },
-    //             },
-    //         },
-    //         azurerm_container_registry: {
-    //             acr: {
-    //                 name: 'stg-classrooms-cr',
-    //                 resource_group_name:
-    //                     '$azurerm_resource_group.staging_rg.name', // Have to reference other variables using this
-    //                 location: '$azurerm_resource_group.staging_rg.location',
-    //                 sku: 'Basic',
-    //             },
-    //         },
-    //     },
-    // };
-
     interface IBlock {
-        [key: string]: string;
+        [key: string]: string | IBlock;
     }
 
     interface IInput {
@@ -222,6 +178,69 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                                     ] as IBlock;
                                     tagBlock[tagName.value] = tagValue.value;
                                 }
+                            } else {
+                                // Create a ref to the nested block
+                                const blockResource = resource[
+                                    key.name
+                                ] as IBlock;
+
+                                linkRes.resourceState.keys.forEach((x) => {
+                                    // console.log(JSON.stringify(x));
+                                    switch (x.type) {
+                                        // Just assign the value to the key
+                                        case 'string':
+                                            blockResource[x.name] = x.value;
+                                            break;
+
+                                        case 'block':
+                                            blockResource[x.name] = {};
+                                            // eslint-disable-next-line no-case-declarations
+                                            const nestedLinkedCon =
+                                                connections.filter(
+                                                    (z) =>
+                                                        z.target ===
+                                                            linkRes.id &&
+                                                        z.targetHandle === x.id,
+                                                );
+
+                                            nestedLinkedCon.forEach((link) => {
+                                                const nestedBlockResource =
+                                                    blockResource[
+                                                        x.name
+                                                    ] as IBlock;
+
+                                                const linkRes =
+                                                    blockResources.find(
+                                                        (x) =>
+                                                            x.id ===
+                                                            link.source,
+                                                    );
+
+                                                if (!linkRes) {
+                                                    return res
+                                                        .status(400)
+                                                        .send({
+                                                            status: 400,
+                                                            error: 'Resource referenced in block connection does not exist',
+                                                        });
+                                                }
+
+                                                linkRes.resourceState.keys.forEach(
+                                                    (x) => {
+                                                        console.log(x.type);
+                                                        switch (x.type) {
+                                                            // Just assign the value to the key
+                                                            case 'string':
+                                                                nestedBlockResource[
+                                                                    x.name
+                                                                ] = x.value;
+                                                                break;
+                                                        }
+                                                    },
+                                                );
+                                            });
+                                    }
+                                });
                             }
                         });
                     }
@@ -245,7 +264,7 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
     result = result.replace('terraform = {', 'terraform {');
     result = result.replace('required_providers = {', 'required_providers {');
 
-    logger.info('app.ts', result);
+    // logger.info('app.ts', result);
 
     // return res.send({
     //     status: 'success',

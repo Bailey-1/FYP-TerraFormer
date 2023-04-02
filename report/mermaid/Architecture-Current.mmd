@@ -1,0 +1,14 @@
+graph LR
+    client1[React Client]-. HTTPS Request .-> RestAPI[Service];
+
+    subgraph Azure[Microsoft Azure]
+        subgraph Backend[Application Backend]
+                RestAPI[REST API];
+        end
+        RestAPI --> ManagementAPI[Azure\nManagement API];
+    end
+
+    classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+    classDef cluster fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
+    class client1,client2,client3,client4 plain;
+    class cluster cluster;

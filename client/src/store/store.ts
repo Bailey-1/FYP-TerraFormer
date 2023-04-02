@@ -4,6 +4,7 @@ import sidebarSlice from '../features/SidebarSlice';
 import settingsSlice from '../features/SettingsSlice';
 import baseApi from '../services/Api';
 import { notificationsSlice } from '../features/NotificationSlice';
+import resourceListSlice from '../features/ResourceListSlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         sidebar: sidebarSlice.reducer,
         settings: settingsSlice.reducer,
         notifications: notificationsSlice.reducer,
+        resourceList: resourceListSlice.reducer,
         [baseApi.reducerPath]: baseApi.reducer,
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

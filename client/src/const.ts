@@ -67,6 +67,32 @@ const k = {
         ],
     },
     serverHost: 'https://terradesigner.azurewebsites.net',
+    categories: {
+        Compute: {
+            VirtualMachines: 'Virtual Machines',
+            AppService: 'App Service',
+        },
+        Databases: {
+            SQL: 'SQL',
+            NoSQL: 'NoSQL',
+            MSSQL: 'MSSQL',
+            PostgreSQL: 'PostgreSQL',
+        },
+        Storage: {
+            Account: 'Account',
+            Blob: 'Blob',
+            File: 'File',
+        },
+        Management: {
+            Resources: 'Resources',
+            Vault: 'Vault',
+        },
+        Containers: {
+            Kubernetes: 'Kubernetes',
+            Instance: 'Instance',
+            Registry: 'Registry',
+        },
+    },
 };
 
 if (window.location.hostname.includes('localhost')) {

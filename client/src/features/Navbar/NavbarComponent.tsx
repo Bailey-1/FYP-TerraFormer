@@ -14,6 +14,7 @@ import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import GeneratedHclModal from '../GeneratedHclModal/GeneratedHclModal';
 import { onCreateNotification } from '../NotificationSlice';
 import IResponse from '../../interfaces/IResponse';
+import ListOptions from '../ResourceList/components/ListOptions';
 
 const sidebarNavigation = [
     { name: 'All', icon: CloudIcon },
@@ -57,8 +58,6 @@ const NavbarComponent = () => {
             };
         });
 
-        console.log('Resources:');
-
         const connections = edges.map((x) => {
             return {
                 id: x.id,
@@ -76,8 +75,6 @@ const NavbarComponent = () => {
         createHcl({ resources, edges: connections })
             .unwrap()
             .then((payload) => {
-                console.log('fulfilled', payload);
-
                 setGeneratedHclResponse(payload.response);
 
                 dispatch(
@@ -95,7 +92,9 @@ const NavbarComponent = () => {
                     onCreateNotification({
                         type: 'error',
                         title: 'Failed to Generate HCL',
-                        message: error.data.error,
+                        message: error.data?.error
+                            ? error.data.error
+                            : error.error,
                     }),
                 );
             });
@@ -104,7 +103,7 @@ const NavbarComponent = () => {
     return (
         <div className="flex h-full flex-col">
             {/* Top nav*/}
-            <header className="relative flex h-16 flex-shrink-0 items-center bg-terraform-purple justify-end">
+            <header className="relative flex h-16 flex-shrink-0 items-center bg-terraform-purple-500 justify-end">
                 {/* Logo area */}
                 <div className="absolute inset-y-0 left-0 static flex-shrink-0">
                     <a
@@ -112,7 +111,7 @@ const NavbarComponent = () => {
                         className="flex h-16 items-center justify-center pl-4 text-white text-3xl"
                     >
                         {/*<FaceSmileIcon className="h-8 w-auto text-white" />*/}
-                        TerraDesigner
+                        TerraFormer
                     </a>
                 </div>
 
@@ -135,10 +134,8 @@ const NavbarComponent = () => {
             {/* Bottom section */}
             <div className="flex min-h-0 flex-1 overflow-hidden">
                 {/* Narrow sidebar*/}
-                <nav
-                    aria-label="SidebarComponent"
-                    className="flex flex-col overflow-y-auto bg-gray-800 justify-between"
-                >
+                {/*<nav className="flex flex-col overflow-y-auto bg-gray-800 justify-between border-r border-gray-200">*/}
+                <nav className="flex flex-col overflow-y-auto bg-gray-800 justify-between">
                     <div className="flex w-20 flex-col space-y-3 p-3">
                         {sidebarNavigation.map((item) => (
                             <button
@@ -154,10 +151,6 @@ const NavbarComponent = () => {
                                     setCurrentProvider(item.name.toLowerCase())
                                 }
                             >
-                                {/*<item.icon*/}
-                                {/*    className="h-6 w-6"*/}
-                                {/*    aria-hidden="true"*/}
-                                {/*/>*/}
                                 {item.name}
                             </button>
                         ))}
@@ -197,9 +190,12 @@ const NavbarComponent = () => {
 
                     {/* Available resources */}
                     <aside>
-                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700 px-2">
+                        <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-700">
                             {/*<h1>Available resource list here</h1>*/}
-                            <ResourceList filter={currentProvider} />
+                            <ListOptions />
+                            <div className="px-2">
+                                <ResourceList filter={currentProvider} />
+                            </div>
                         </div>
                     </aside>
                 </main>

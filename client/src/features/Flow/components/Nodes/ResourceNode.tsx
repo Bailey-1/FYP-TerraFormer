@@ -11,16 +11,8 @@ import {
     useNodeId,
     useUpdateNodeInternals,
 } from 'reactflow';
-import {
-    IResourceKeys,
-    IResourceState,
-} from '@bailey-1/terraformwebapp-common';
+import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    addNewNodeKey,
-    onNodesChange,
-    updateNodeKey,
-} from '../../../FlowSlice';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import ResourceKeyDecider from '../ResourceKeyDecider';
 import providerColours from '../../../../resources/ProviderColours';
@@ -29,6 +21,11 @@ import { RootState } from '../../../../store/store';
 import { Disclosure } from '@headlessui/react';
 import PillButton from '../../../../components/controls/PillBtn';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
+import {
+    addExtraKey,
+    removeNode,
+    updateKey,
+} from '../../utility/NodeUtilityFunctions';
 
 const ResourceNode = ({
     id,
@@ -51,42 +48,9 @@ const ResourceNode = ({
         (state: RootState) => state.settings.additionalDetails,
     );
 
-    const addExtraKey = (obj: IResourceKeys) => {
-        // setKeys((prevState) => [...prevState, val]);
-
-        if (nodeId) {
-            dispatch(
-                addNewNodeKey({
-                    nodeId: nodeId,
-                    keyName: obj.name,
-                    keyType: obj.type,
-                }),
-            );
-
-            updateNodeInternals(nodeId);
-        }
-    };
-
-    const updateKey = (name: string, value: string | string[]) => {
-        dispatch(
-            updateNodeKey({
-                nodeId: nodeId || '',
-                key: name,
-                value,
-            }),
-        );
-    };
-
-    const removeNode = () => {
-        dispatch(
-            onNodesChange([
-                {
-                    id: nodeId || '',
-                    type: 'remove',
-                },
-            ]),
-        );
-    };
+    if (!nodeId) {
+        return <p>Error: No nodeId</p>;
+    }
 
     const openSidebar = () => {
         dispatch(
@@ -112,7 +76,10 @@ const ResourceNode = ({
             return (
                 <PillButton
                     key={x.name}
-                    onClick={() => addExtraKey(x)}
+                    onClick={() => {
+                        addExtraKey(dispatch, nodeId, x);
+                        updateNodeInternals(nodeId);
+                    }}
                     className="bg-orange-300"
                 >
                     <p>{x.display_name}</p>
@@ -168,7 +135,7 @@ const ResourceNode = ({
                     <button className="h-7 nodrag">
                         <XMarkIcon
                             className="h-full text-red-700 hover:text-red-500 hover:bg-gray-700 rounded"
-                            onClick={() => removeNode()}
+                            onClick={() => removeNode(dispatch, nodeId)}
                         />
                     </button>
                 </div>
@@ -189,7 +156,9 @@ const ResourceNode = ({
                                 globalKey={globalResource.keys.find(
                                     (gk) => gk.name === x.name,
                                 )}
-                                onChange={updateKey}
+                                onChange={(name, value) =>
+                                    updateKey(dispatch, nodeId, name, value)
+                                }
                             />
                         </div>
                     );

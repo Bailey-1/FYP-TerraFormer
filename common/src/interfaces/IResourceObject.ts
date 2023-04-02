@@ -53,8 +53,16 @@ export interface IResourceObject {
     name: string;
     display_name: string | null;
     provider: string;
-    docs: string;
+    docs: {
+        terraform: string;
+        provider: string;
+    };
     validation?: () => boolean;
     keys: IResourceKeys[];
     attributes: string[];
+    description: {
+        small: string;
+        // full: string;
+    };
+    tags: string[];
 }
