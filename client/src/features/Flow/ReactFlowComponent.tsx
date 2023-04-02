@@ -243,6 +243,10 @@ const ReactFlowComponent = () => {
                         defaultViewport={defaultViewport}
                         onInit={setReactFlowInstance}
                         fitView
+                        fitViewOptions={{
+                            padding: 1.5,
+                            duration: 1000,
+                        }}
                         attributionPosition="bottom-left"
                         defaultEdgeOptions={{
                             style: { stroke: '#844fba', strokeWidth: '2px' },

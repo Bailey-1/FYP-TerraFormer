@@ -1,0 +1,24 @@
+graph LR
+    client1[Client]-. Requests .-> RestAPI[Service];
+
+    subgraph Azure
+        subgraph Backend[Application Backend]
+            RestAPI[Azure App Service\nRest API];
+            RestAPI -. CRUD Resource\n& Provider Data .-> Database[NoSQL Database];
+            RestAPI -. Store Pricing API Results .-> Cache[Redis Cache];
+            RestAPI -. Store Generated Files .-> Storage[Azure Storage Account];
+        end
+
+        RestAPI -. Fetch Pricing Details .-> ManagementAPI[Pricing Management API];
+    end
+
+    subgraph Auth0
+        Authentication[OAuth2 Authentication API];
+    end
+
+    client1 .-> Authentication[OAuth2 Authentication API];
+
+    classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+    classDef cluster fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
+    class client1,client2,client3,client4 plain;
+    class cluster cluster;

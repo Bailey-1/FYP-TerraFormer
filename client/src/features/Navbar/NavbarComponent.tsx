@@ -111,7 +111,7 @@ const NavbarComponent = () => {
                         className="flex h-16 items-center justify-center pl-4 text-white text-3xl"
                     >
                         {/*<FaceSmileIcon className="h-8 w-auto text-white" />*/}
-                        TerraDesigner
+                        TerraFormer
                     </a>
                 </div>
 
