@@ -15,6 +15,8 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+import { mount } from 'cypress/react18';
+import { XYPosition } from 'reactflow';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -23,19 +25,19 @@ import './commands';
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
-// declare global {
-//     namespace Cypress {
-//         interface Chainable {
-//             mount: typeof mount;
-//             drag: (
-//                 selector: string,
-//                 toPosition: XYPosition,
-//             ) => Cypress.Chainable<JQuery<HTMLElement>>;
-//         }
-//     }
-// }
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            mount: typeof mount;
+            drag: (
+                selector: string,
+                toPosition: XYPosition,
+            ) => Cypress.Chainable<JQuery<HTMLElement>>;
+        }
+    }
+}
 
-// Cypress.Commands.add('mount', mount);
+Cypress.Commands.add('mount', mount);
 
 // Example use:
 // cy.mount(<MyComponent />)
