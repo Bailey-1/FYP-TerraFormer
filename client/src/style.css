@@ -1862,6 +1862,10 @@ select {
   padding-top: 0px;
 }
 
+.last\:border-none:last-child {
+  border-style: none;
+}
+
 .hover\:border-gray-400:hover {
   --tw-border-opacity: 1;
   border-color: rgb(156 163 175 / var(--tw-border-opacity));

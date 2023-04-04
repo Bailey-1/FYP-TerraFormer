@@ -95,24 +95,6 @@ const ResourceNode = ({
             }`}
         >
             {/* Completed resource node */}
-            <Handle
-                type="source"
-                position={Position.Right}
-                id={globalResource.name}
-                style={{
-                    width: '15px',
-                    height: '15px',
-                    borderRadius: '10px',
-                    right: '-15px',
-                }}
-                isValidConnection={(connection: Connection) => {
-                    return (
-                        connection.targetHandle?.includes(
-                            globalResource.name,
-                        ) || false
-                    );
-                }}
-            />
             <div
                 className={`flex justify-between p-2 rounded-t-xl items-center ${
                     providerColours[globalResource.provider]?.background
@@ -148,47 +130,78 @@ const ResourceNode = ({
                 )}
                 {additionalDetails && <p>NodeID: {nodeId}</p>}
 
-                {data.resourceState.keys.map((x, i) => {
-                    return (
-                        <div className="border-b p-2 first:pt-0" key={x.id}>
-                            <ResourceKeyDecider
-                                keyState={x}
-                                globalKey={globalResource.keys.find(
-                                    (gk) => gk.name === x.name,
-                                )}
-                                onChange={(name, value) =>
-                                    updateKey(dispatch, nodeId, name, value)
-                                }
-                            />
-                        </div>
-                    );
-                })}
+                <div className="relative">
+                    <Handle
+                        className="source-handle"
+                        type="source"
+                        position={Position.Right}
+                        id={globalResource.name}
+                        style={{
+                            width: '20px',
+                            height: '50px',
+                            // borderRadius: '0px',
+                            borderRadius: '0px 10px 10px 0px',
+                            right: '-28px',
+                        }}
+                        isValidConnection={(connection: Connection) => {
+                            return (
+                                connection.targetHandle?.includes(
+                                    globalResource.name,
+                                ) || false
+                            );
+                        }}
+                    />
 
-                <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
-                    <Disclosure>
-                        {({ open }) => (
-                            <>
-                                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                    <span>Additional Keys</span>
-                                    <ChevronUpIcon
-                                        className={`${
-                                            open ? 'rotate-180 transform' : ''
-                                        } h-5 w-5 text-purple-500`}
-                                    />
-                                </Disclosure.Button>
-                                <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
-                                    {pillBtnsArr.length ? (
-                                        pillBtnsArr
-                                    ) : (
-                                        <p>
-                                            No additional arguments available.
-                                        </p>
+                    {data.resourceState.keys.map((x, i) => {
+                        return (
+                            <div
+                                className="border-b last:border-none p-2 first:pt-0"
+                                key={x.id}
+                            >
+                                <ResourceKeyDecider
+                                    keyState={x}
+                                    globalKey={globalResource.keys.find(
+                                        (gk) => gk.name === x.name,
                                     )}
-                                </Disclosure.Panel>
-                            </>
-                        )}
-                    </Disclosure>
+                                    onChange={(name, value) =>
+                                        updateKey(dispatch, nodeId, name, value)
+                                    }
+                                />
+                            </div>
+                        );
+                    })}
                 </div>
+
+                {!!pillBtnsArr.length && (
+                    <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
+                        <Disclosure>
+                            {({ open }) => (
+                                <>
+                                    <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                        <span>Additional Keys</span>
+                                        <ChevronUpIcon
+                                            className={`${
+                                                open
+                                                    ? 'rotate-180 transform'
+                                                    : ''
+                                            } h-5 w-5 text-purple-500`}
+                                        />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
+                                        {pillBtnsArr.length ? (
+                                            pillBtnsArr
+                                        ) : (
+                                            <p>
+                                                No additional arguments
+                                                available.
+                                            </p>
+                                        )}
+                                    </Disclosure.Panel>
+                                </>
+                            )}
+                        </Disclosure>
+                    </div>
+                )}
             </div>
         </div>
     );

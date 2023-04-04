@@ -1,9 +1,25 @@
-.react-flow__handle {
-    background: dodgerblue;
+.react-flow__handle.source-handle:not(.react-flow__handle-valid, .react-flow__handle-connecting) {
+    /*background: hsl(270, 44%, 52%);*/
+    background: #db2777;
+    /*border: 1px solid white;*/
+    border: none;
+}
+
+.react-flow__handle.source-handle:hover:not(.react-flow__handle-valid, .react-flow__handle-connecting) {
+    /*background: hsl(270 44% 52% / 50%);*/
+    background: #be185d;
+}
+
+.react-flow__handle.target-handle:not(.react-flow__handle-valid, .react-flow__handle-connecting) {
+    background: #14b8a6;
+}
+
+.react-flow__handle.target-handle:hover:not(.react-flow__handle-valid, .react-flow__handle-connecting) {
+    background: #0d9488;
 }
 
 .react-flow__handle-connecting {
-    background: darkred;
+    background: #dc2626;
 }
 
 .react-flow__handle-valid {

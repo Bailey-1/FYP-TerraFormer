@@ -46,10 +46,10 @@ const ResourceNodeKeyResource = ({
         <div className="relative">
             {/*<h2>{globalKey.name}</h2>*/}
             <Handle
+                className="target-handle"
                 type="target"
                 position={Position.Left}
                 id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
-                className="bg-blue-300"
                 style={{
                     width: '15px',
                     height: '15px',
