@@ -43,54 +43,60 @@ const ResourceNodeKeyResource = ({
     );
 
     return (
-        <div className="relative">
-            {/*<h2>{globalKey.name}</h2>*/}
-            <Handle
-                className="target-handle"
-                type="target"
-                position={Position.Left}
-                id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
-                style={{
-                    width: '15px',
-                    height: '15px',
-                    borderRadius: '10px',
-                    left: '-15px',
-                }}
-                isValidConnection={(connection: Connection) => {
-                    return (
-                        connection.sourceHandle?.includes(
-                            globalKey.resource_type,
-                        ) || false
-                    );
-                }}
-            />
-            <div className="flex">
-                <p className="text-gray-400">{globalKey.display_name}:</p>
-                <p className="text-gray-300 pl-2">
-                    {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
-                </p>
-                <p
-                    className="pl-2"
-                    title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
-                >
-                    {edgeData?.data?.value === globalKey.resource_property
-                        ? '✅'
-                        : '⚠️'}
-                </p>
-            </div>
-            {additionalDetails && (
+        <div>
+            <div className="relative">
+                {/*<h2>{globalKey.name}</h2>*/}
+                <Handle
+                    className="target-handle"
+                    type="target"
+                    position={Position.Left}
+                    id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
+                    style={{
+                        width: '15px',
+                        height: '15px',
+                        borderRadius: '10px',
+                        left: '-15px',
+                    }}
+                    isValidConnection={(connection: Connection) => {
+                        return (
+                            connection.sourceHandle?.includes(
+                                globalKey.resource_type,
+                            ) || false
+                        );
+                    }}
+                />
                 <div className="flex">
-                    <p className="text-gray-400">Ref:</p>
+                    <p className="text-gray-400">{globalKey.display_name}:</p>
+                    <p className="text-gray-300 pl-2">
+                        {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
+                    </p>
                     <p
-                        className="text-gray-300 pl-2"
-                        title="Actual link used in the Terraform file."
+                        className="pl-2"
+                        title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
                     >
-                        {`@${sourceNode?.data.resourceState.type}`}.
-                        {sourceNode?.data.resourceState.id}.{sourceKey?.name}
+                        {edgeData?.data?.value === globalKey.resource_property
+                            ? '✅'
+                            : '⚠️'}
                     </p>
                 </div>
+            </div>
+            {additionalDetails && (
+                <div className="grid grid-cols-3 bg-gray-700 rounded p-2">
+                    <div>
+                        <h3>Debug</h3>
+                    </div>
+                    <div className="col-span-2">
+                        <p>
+                            <b>KeyID:</b> {keyState.id}
+                        </p>
+                        <p title="Actual link used in the Terraform file.">
+                            {`@${sourceNode?.data.resourceState.type}`}.
+                            {sourceNode?.data.resourceState.id}.
+                            {sourceKey?.name}
+                        </p>
+                    </div>
+                </div>
             )}
-            {/*<p>{JSON.stringify(sourceNode)}</p>*/}
         </div>
     );
 };

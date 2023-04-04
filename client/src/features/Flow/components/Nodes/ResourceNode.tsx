@@ -124,11 +124,20 @@ const ResourceNode = ({
             </div>
             <div className="p-2 bg-gray-800/75 rounded-b">
                 {additionalDetails && (
-                    <h2 className="text-base text-gray-500">
-                        {data.resourceState.type}
-                    </h2>
+                    <div className="grid grid-cols-3 bg-gray-700 rounded p-2">
+                        <div>
+                            <h3>Debug</h3>
+                        </div>
+                        <div className="col-span-2">
+                            <p>
+                                <b>NodeID:</b> {nodeId}
+                            </p>
+                            <p>
+                                <b>Type:</b> {data.resourceState.type}
+                            </p>
+                        </div>
+                    </div>
                 )}
-                {additionalDetails && <p>NodeID: {nodeId}</p>}
 
                 <div className="relative">
                     <Handle

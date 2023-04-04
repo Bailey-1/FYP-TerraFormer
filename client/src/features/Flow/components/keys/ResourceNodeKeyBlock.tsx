@@ -20,6 +20,10 @@ const ResourceNodeKeyBlock = ({
 }) => {
     const nodeId = useNodeId();
 
+    const additionalDetails = useSelector(
+        (state: RootState) => state.settings.additionalDetails,
+    );
+
     const dispatch = useDispatch();
 
     // Find any edges which link to this input
@@ -45,26 +49,43 @@ const ResourceNodeKeyBlock = ({
     };
 
     return (
-        <div className="relative flex justify-between">
-            <h2>{globalKey.display_name}</h2>
-            <Handle
-                type="target"
-                position={Position.Left}
-                id={keyState.id}
-                className="bg-blue-300"
-                style={{
-                    width: '15px',
-                    height: '15px',
-                    borderRadius: '10px',
-                    left: '-15px',
-                }}
-                data-cy={`target-handle-${globalKey.name}`}
-            />
-            <p className="pl-2">{!!edgeData.length ? '✅' : '❌'}</p>
-            <p>{JSON.stringify(connectedBlockIds)}</p>
-            <PillButton className="" onClick={() => removeKey()}>
-                Remove
-            </PillButton>
+        <div>
+            <div className="relative flex justify-between">
+                <h2>{globalKey.display_name}</h2>
+                <Handle
+                    type="target"
+                    position={Position.Left}
+                    id={keyState.id}
+                    className="bg-blue-300"
+                    style={{
+                        width: '15px',
+                        height: '15px',
+                        borderRadius: '10px',
+                        left: '-15px',
+                    }}
+                    data-cy={`target-handle-${globalKey.name}`}
+                />
+                <p className="pl-2">{!!edgeData.length ? '✅' : '❌'}</p>
+                <PillButton className="" onClick={() => removeKey()}>
+                    Remove
+                </PillButton>
+            </div>
+            {additionalDetails && (
+                <div className="grid grid-cols-3 bg-gray-700 rounded p-2">
+                    <div>
+                        <h3>Debug</h3>
+                    </div>
+                    <div className="col-span-2">
+                        <p>
+                            <b>KeyID:</b> {keyState.id}
+                        </p>
+                        <p>
+                            <b>Connected:</b>
+                            {JSON.stringify(connectedBlockIds)}
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

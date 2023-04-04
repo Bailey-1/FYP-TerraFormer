@@ -294,7 +294,7 @@ export const flowSlice = createSlice({
 
             state.edges = state.edges.filter(
                 (x) =>
-                    x.target !== action.payload.nodeId &&
+                    x.target !== action.payload.nodeId ||
                     x.targetHandle !== action.payload.keyId,
             );
         },
