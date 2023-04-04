@@ -56,6 +56,19 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                 }[];
             }[];
         }[];
+        provider: {
+            azurerm: {
+                features: [
+                    {
+                        // resource_group: [
+                        //     {
+                        //         prevent_deletion_if_contains_resources: true;
+                        //     },
+                        // ];
+                    },
+                ];
+            };
+        };
         resource: {
             [key: string]: {
                 [instance_name: string]: {
@@ -80,6 +93,19 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                 ],
             },
         ],
+        provider: {
+            azurerm: {
+                features: [
+                    {
+                        // resource_group: [
+                        //     {
+                        //         prevent_deletion_if_contains_resources: true,
+                        //     },
+                        // ],
+                    },
+                ],
+            },
+        },
         resource: {},
     };
 
@@ -263,6 +289,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
     // You have to define a block not assign a value -> generate doesn't do this
     result = result.replace('terraform = {', 'terraform {');
     result = result.replace('required_providers = {', 'required_providers {');
+    result = result.replace('"provider"', 'provider');
+    result = result.replace('features =', 'features');
 
     // logger.info('app.ts', result);
 
