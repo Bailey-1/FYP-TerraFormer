@@ -160,7 +160,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                     const linkedBlocksArr = connections.filter(
                         (x) =>
                             x.target === primary.id &&
-                            x.targetHandle === key.id,
+                            x.targetHandle ===
+                                `key-block-${key.name}-${key.id}`,
                     );
 
                     if (linkedBlocksArr.length) {
@@ -218,7 +219,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                                                     (z) =>
                                                         z.target ===
                                                             linkRes.id &&
-                                                        z.targetHandle === x.id,
+                                                        z.targetHandle ===
+                                                            `key-block-${x.name}-${x.id}`,
                                                 );
 
                                             nestedLinkedCon.forEach((link) => {

@@ -2,7 +2,7 @@ import {
     IResourceKeyBlock,
     IResourceKeyBlockState,
 } from '@bailey-1/terraformwebapp-common';
-import { Handle, Position, useNodeId } from 'reactflow';
+import { Connection, Handle, Position, useNodeId } from 'reactflow';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
@@ -29,7 +29,9 @@ const ResourceNodeKeyBlock = ({
     // Find any edges which link to this input
     const edgeData = useSelector((state: RootState) =>
         state.flow.edges.filter(
-            (x) => x.target === nodeId && x.targetHandle === keyState.id,
+            (x) =>
+                x.target === nodeId &&
+                x.targetHandle === `key-block-${globalKey.name}-${keyState.id}`,
         ),
     );
 
@@ -55,7 +57,8 @@ const ResourceNodeKeyBlock = ({
                 <Handle
                     type="target"
                     position={Position.Left}
-                    id={keyState.id}
+                    // id={keyState.id}
+                    id={`key-block-${globalKey.name}-${keyState.id}`}
                     className="bg-blue-300"
                     style={{
                         width: '15px',
@@ -64,6 +67,14 @@ const ResourceNodeKeyBlock = ({
                         left: '-15px',
                     }}
                     data-cy={`target-handle-${globalKey.name}`}
+                    isValidConnection={(connection: Connection) => {
+                        console.log(JSON.stringify(connection));
+                        return (
+                            connection.targetHandle?.includes(
+                                `key-${connection.sourceHandle}`,
+                            ) || false
+                        );
+                    }}
                 />
                 <p className="pl-2">{!!edgeData.length ? '✅' : '❌'}</p>
                 <PillButton className="" onClick={() => removeKey()}>

@@ -12,16 +12,16 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  features {}
-}
-
-provider "aws" {}
-
-resource "azurerm_resource_group" "example" {
-  name     = "example-resources"
-  location = "West Europe"
-}
+#provider "azurerm" {
+#  features {}
+#}
+#
+#provider "aws" {}
+#
+#resource "azurerm_resource_group" "example" {
+#  name     = "example-resources"
+#  location = "West Europe"
+#}
 
 #resource "azurerm_virtual_network" "example" {
 #  name                = "example-network"
@@ -77,40 +77,65 @@ resource "azurerm_resource_group" "example" {
 #  }
 #}
 
-resource "azurerm_mssql_server" "example" {
-  name                         = "example-sqlserver8621386238682"
-  resource_group_name          = azurerm_resource_group.example.name
-  location                     = azurerm_resource_group.example.location
-  version                      = "12.0"
+#resource "azurerm_mssql_server" "example" {
+#  name                         = "example-sqlserver8621386238682"
+#  resource_group_name          = azurerm_resource_group.example.name
+#  location                     = azurerm_resource_group.example.location
+#  version                      = "12.0"
+#}
+#
+#resource "azurerm_mssql_database" "test" {
+#  name           = "acctest-db-d"
+#  server_id      = azurerm_mssql_server.example.id
+##  sku_name       = "S0"
+#}
+#
+#resource "azurerm_service_plan" "example" {
+#  name                = "linux_service_plan"
+#  resource_group_name = azurerm_resource_group.example.name
+#  location            = azurerm_resource_group.example.location
+#  os_type             = "Linux"
+#  sku_name            = "P1v2"
+#}
+#
+#resource "azurerm_linux_web_app" "example" {
+#  name                = "example_linux_web_app"
+#  resource_group_name = azurerm_resource_group.example.name
+#  location            = azurerm_service_plan.example.location
+#  service_plan_id     = azurerm_service_plan.example.id
+#
+#  site_config {}
+#
+#  tags = {
+#    environment: "staging"
+#  }
+#}
+#
+#output "webpage_location" {
+#  value = azurerm_linux_web_app.example.default_hostname
+#}
+
+provider "aws" {
+  region  = "us-west-2"
 }
 
-resource "azurerm_mssql_database" "test" {
-  name           = "acctest-db-d"
-  server_id      = azurerm_mssql_server.example.id
-#  sku_name       = "S0"
+resource "aws_instance" "aws_vm" {
+  ami           = "ami-830c94e3"
+  instance_type = "t2.micro"
 }
 
-resource "azurerm_service_plan" "example" {
-  name                = "linux_service_plan"
+resource "azurerm_linux_virtual_machine" "azure_vm" {
+  name                = "example-machine"
   resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
-  os_type             = "Linux"
-  sku_name            = "P1v2"
-}
+  size                = "Standard_F2"
+  admin_username      = "adminuser"
+  network_interface_ids = [
+    azurerm_network_interface.example.id,
+  ]
 
-resource "azurerm_linux_web_app" "example" {
-  name                = "example_linux_web_app"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_service_plan.example.location
-  service_plan_id     = azurerm_service_plan.example.id
-
-  site_config {}
-
-  tags = {
-    environment: "staging"
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
-}
-
-output "webpage_location" {
-  value = azurerm_linux_web_app.example.default_hostname
 }
