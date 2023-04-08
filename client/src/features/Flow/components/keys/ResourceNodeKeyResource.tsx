@@ -43,42 +43,41 @@ const ResourceNodeKeyResource = ({
     );
 
     return (
-        <div>
-            <div className="relative">
-                {/*<h2>{globalKey.name}</h2>*/}
-                <Handle
-                    className="target-handle"
-                    type="target"
-                    position={Position.Left}
-                    id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
-                    style={{
-                        width: '15px',
-                        height: '15px',
-                        borderRadius: '10px',
-                        left: '-15px',
-                    }}
-                    isValidConnection={(connection: Connection) => {
-                        return (
-                            connection.sourceHandle?.includes(
-                                globalKey.resource_type,
-                            ) || false
-                        );
-                    }}
-                />
-                <div className="flex">
-                    <p className="text-gray-400">{globalKey.display_name}:</p>
-                    <p className="text-gray-300 pl-2">
-                        {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
-                    </p>
-                    <p
-                        className="pl-2"
-                        title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
-                    >
-                        {edgeData?.data?.value === globalKey.resource_property
-                            ? '✅'
-                            : '⚠️'}
-                    </p>
-                </div>
+        <div className="relative">
+            {/*<h2>{globalKey.name}</h2>*/}
+            <Handle
+                className="target-handle"
+                type="target"
+                position={Position.Left}
+                id={`${globalKey.resource_type}---${globalKey.resource_property}---${keyState.id}`}
+                style={{
+                    width: '15px',
+                    height: '15px',
+                    borderRadius: '10px',
+                    left: '-22px',
+                    bottom: 0,
+                }}
+                isValidConnection={(connection: Connection) => {
+                    return (
+                        connection.sourceHandle?.includes(
+                            globalKey.resource_type,
+                        ) || false
+                    );
+                }}
+            />
+            <div className="flex">
+                <p className="text-gray-400">{globalKey.display_name}:</p>
+                <p className="text-gray-300 pl-2">
+                    {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
+                </p>
+                <p
+                    className="pl-2"
+                    title="Checks if the linked property from another resource matches the expected name. This might be fine depending on what you are doing."
+                >
+                    {edgeData?.data?.value === globalKey.resource_property
+                        ? '✅'
+                        : '⚠️'}
+                </p>
             </div>
             {additionalDetails && (
                 <div className="grid grid-cols-3 bg-gray-700 rounded p-2">

@@ -76,7 +76,7 @@ export const flowSlice = createSlice({
                                         return {
                                             id: RandomID(),
                                             name: key.name,
-                                            value: '',
+                                            value: key.options.sort()[0],
                                             valid: false,
                                             type: 'string',
                                         };

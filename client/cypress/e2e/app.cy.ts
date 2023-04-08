@@ -131,7 +131,7 @@ describe('App', () => {
     it('Input accepts text', () => {
         cy.get('[data-cy="add-azurerm_resource_group"]').click();
 
-        cy.get('input.nodrag').type('hello world', { scrollBehavior: false });
+        cy.get('input.nodrag').type('hello world');
     });
 
     it('Close deletes the node', () => {
