@@ -77,7 +77,7 @@ export const flowSlice = createSlice({
                                             id: RandomID(),
                                             name: key.name,
                                             value: key.options.sort()[0],
-                                            valid: false,
+                                            valid: true,
                                             type: 'string',
                                         };
                                     } else {
@@ -207,12 +207,27 @@ export const flowSlice = createSlice({
 
             if (existingEl) {
                 existingEl.value = action.payload.value;
+                existingEl.valid = !!action.payload.value.length;
+
+                const resource = ResourceLookup.find(
+                    (y) => y.name === node.data.resourceState.type,
+                );
+
+                if (resource && !Array.isArray(action.payload.value)) {
+                    const key = resource.keys.find(
+                        (x) => x.name === action.payload.key,
+                    );
+
+                    if (resource && key?.validation) {
+                        existingEl.valid = key.validation(action.payload.value);
+                    }
+                }
             } else {
                 node.data.resourceState.keys.push({
                     id: RandomID(),
                     name: action.payload.key,
                     value: action.payload.value,
-                    valid: true,
+                    valid: false,
                 });
             }
         },

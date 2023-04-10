@@ -53,7 +53,9 @@ const ResourceNodeKeyBlock = ({
     return (
         <div>
             <div className="relative flex justify-between">
-                <h2>{globalKey.display_name}</h2>
+                <div className="text-gray-300 ml-1">
+                    <p>{globalKey.display_name}:</p>
+                </div>
                 <Handle
                     type="target"
                     position={Position.Left}

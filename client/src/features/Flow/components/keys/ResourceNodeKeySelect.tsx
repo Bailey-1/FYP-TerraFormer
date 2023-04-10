@@ -27,7 +27,7 @@ const ResourceNodeKeySelect = ({
                 </div>
                 <div className="col-span-2">
                     <select
-                        className="nodrag w-full p-0 text-gray-800"
+                        className="nodrag w-full p-1 text-gray-800"
                         onChange={(e) =>
                             onChange(keyState.name, e.target.value)
                         }

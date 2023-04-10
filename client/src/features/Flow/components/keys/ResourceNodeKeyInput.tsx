@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     IResourceKey,
     IResourceKeyState,
@@ -6,6 +6,10 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import { Handle, Position } from 'reactflow';
+import {
+    CheckCircleIcon,
+    ExclamationCircleIcon,
+} from '@heroicons/react/20/solid';
 
 const ResourceNodeKeyInput = ({
     keyState,
@@ -16,7 +20,10 @@ const ResourceNodeKeyInput = ({
     onChange: (name: string, value: string) => void;
     globalKey: IResourceKey;
 }) => {
-    const [value, setValue] = React.useState(keyState.value);
+    const [value, setValue] = useState(keyState.value);
+
+    const [touched, setTouched] = useState(false);
+
     const additionalDetails = useSelector(
         (state: RootState) => state.settings.additionalDetails,
     );
@@ -24,7 +31,7 @@ const ResourceNodeKeyInput = ({
     useEffect(() => {
         const getData = setTimeout(() => {
             onChange(keyState.name, value);
-        }, 1000);
+        }, 500);
 
         return () => clearTimeout(getData);
     }, [value]);
@@ -45,22 +52,41 @@ const ResourceNodeKeyInput = ({
                 }}
             />
             <div className="p-1 grid grid-cols-3">
-                <div className="col-span-1 text-gray-400">
+                <div className="col-span-1 text-gray-300">
                     <p>{globalKey.display_name}:</p>
                 </div>
                 <div className="col-span-2">
-                    <input
-                        type="text"
-                        className="nodrag p-0 text-gray-800 border border-red-400 bg-red-100"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                    />
-                    <p
-                        className="text-sm text-red-400"
-                        style={{ maxWidth: '200px' }}
-                    >
-                        Name can only contain a-z, A-Z, 0-9, 0-9, 0-9, 0-9, 0-9,
-                    </p>
+                    <div className="relative w-full">
+                        <input
+                            type="text"
+                            className={
+                                touched && !keyState.valid
+                                    ? 'w-full nodrag p-1 text-gray-800 border border-red-400 bg-red-100'
+                                    : 'w-full nodrag p-1 text-gray-800 border'
+                            }
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                        />
+                        {touched && (
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                {keyState.valid ? (
+                                    <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                                ) : (
+                                    <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {touched && !keyState.valid && (
+                        <p
+                            className="text-sm text-red-400"
+                            style={{ maxWidth: '200px' }}
+                        >
+                            {globalKey.validation_message}
+                        </p>
+                    )}
                 </div>
             </div>
             {additionalDetails && (

@@ -66,7 +66,7 @@ const ResourceNodeKeyResource = ({
                 }}
             />
             <div className="flex">
-                <p className="text-gray-400">{globalKey.display_name}:</p>
+                <p className="text-gray-300 ml-1">{globalKey.display_name}:</p>
                 <p className="text-gray-300 pl-2">
                     {!!sourceKey ? sourceKey?.value : '*COMPUTED*'}
                 </p>

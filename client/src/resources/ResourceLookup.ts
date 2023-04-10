@@ -56,9 +56,13 @@ const ResourceLookup: IResourceObject[] = [
                 type: 'string',
                 value: '',
                 validation: (value: string): boolean => {
-                    return value.includes('a');
+                    // return value.includes('a');
+                    return /^[a-zA-Z0-9.()\-_]*[^.]$/gm.test(value);
                 },
-                validation_message: 'Must include the letter a',
+                // TODO: Add custom validation message which changes based on validation issue.
+                // E.g. too short, too long, cannot end with a period, cannot contain "["
+                validation_message:
+                    'Valid Characters: Underscores, hyphens, periods, parentheses, and letters or digits. Cannot end with a period.',
                 required: true,
             },
             {
