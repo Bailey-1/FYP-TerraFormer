@@ -23,11 +23,11 @@ const ResourceNodeKeySelect = ({
         <div>
             <div className="p-1 relative grid grid-cols-3">
                 <div className="col-span-1 text-gray-300">
-                    <p>{globalKey.display_name}</p>
+                    <p>{globalKey.display_name}:</p>
                 </div>
                 <div className="col-span-2">
                     <select
-                        className="nodrag w-full p-1 text-gray-800"
+                        className="nodrag w-full p-1 text-gray-300 bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500"
                         onChange={(e) =>
                             onChange(keyState.name, e.target.value)
                         }

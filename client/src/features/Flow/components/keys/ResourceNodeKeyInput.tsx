@@ -61,8 +61,8 @@ const ResourceNodeKeyInput = ({
                             type="text"
                             className={
                                 touched && !keyState.valid
-                                    ? 'w-full nodrag p-1 text-gray-800 border border-red-400 bg-red-100'
-                                    : 'w-full nodrag p-1 text-gray-800 border'
+                                    ? 'w-full nodrag p-1 text-gray-300 border border-red-400 bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500'
+                                    : 'w-full nodrag p-1 text-gray-300 border bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500'
                             }
                             value={value}
                             onChange={(e) => setValue(e.target.value)}

@@ -79,7 +79,10 @@ const ResourceNodeKeyBlock = ({
                     }}
                 />
                 <p className="pl-2">{!!edgeData.length ? '✅' : '❌'}</p>
-                <PillButton className="" onClick={() => removeKey()}>
+                <PillButton
+                    className="outline outline-1 outline-red-400 hover:bg-red-500"
+                    onClick={() => removeKey()}
+                >
                     Remove
                 </PillButton>
             </div>

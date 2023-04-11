@@ -13,7 +13,7 @@ const SwitchComponent = () => {
         <Switch.Group>
             <div className="flex items-center">
                 <Switch.Label className="mr-4 text-gray-200">
-                    Additional Detail
+                    Additional Detail:
                 </Switch.Label>
                 <Switch
                     checked={enabled}
@@ -25,7 +25,7 @@ const SwitchComponent = () => {
                         )
                     }
                     className={`${
-                        enabled ? 'bg-blue-600' : 'bg-gray-200'
+                        enabled ? 'bg-blue-600' : 'bg-gray-600'
                     } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}
                 >
                     <span

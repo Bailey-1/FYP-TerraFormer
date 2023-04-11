@@ -17,7 +17,7 @@ const SearchBar = () => {
                 <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
             </div>
             <input
-                className="w-full rounded-md py-1.5 pl-10 text-gray-900 placeholder:text-gray-400 text-base"
+                className="w-full py-1.5 pl-10 text-gray-300 placeholder:text-gray-400 text-base border bg-gray-600 rounded outline-none focus:border-terraform-purple-500"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => {
