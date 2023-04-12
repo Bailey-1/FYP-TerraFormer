@@ -18,12 +18,14 @@ export const updateKey = (
     nodeId: string,
     name: string,
     value: string | string[],
+    type?: string,
 ) => {
     dispatch(
         updateNodeKey({
             nodeId: nodeId,
             key: name,
             value,
+            type,
         }),
     );
 };

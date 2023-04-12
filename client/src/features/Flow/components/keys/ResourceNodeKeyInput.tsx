@@ -5,11 +5,12 @@ import {
 } from '@bailey-1/terraformwebapp-common';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useNodeId } from 'reactflow';
 import {
     CheckCircleIcon,
     ExclamationCircleIcon,
 } from '@heroicons/react/20/solid';
+import resourceLookup from '../../../../resources/ResourceLookup';
 
 const ResourceNodeKeyInput = ({
     keyState,
@@ -17,12 +18,13 @@ const ResourceNodeKeyInput = ({
     globalKey,
 }: {
     keyState: IResourceKeyState;
-    onChange: (name: string, value: string) => void;
+    onChange: (name: string, value: string, type?: string) => void;
     globalKey: IResourceKey;
 }) => {
     const [value, setValue] = useState(keyState.value);
 
     const [touched, setTouched] = useState(false);
+    const nodeId = useNodeId();
 
     const additionalDetails = useSelector(
         (state: RootState) => state.settings.additionalDetails,
@@ -36,13 +38,38 @@ const ResourceNodeKeyInput = ({
         return () => clearTimeout(getData);
     }, [value]);
 
+    // Find any edges which link to this input
+    const edgeData = useSelector((state: RootState) =>
+        state.flow.edges.find(
+            (x) =>
+                x.target === nodeId &&
+                x.targetHandle ===
+                    `${nodeId}---${globalKey.name}---${keyState.id}`,
+        ),
+    );
+
+    // Find the value of the key linked to this input
+    const sourceNode = useSelector((state: RootState) =>
+        state.flow.nodes.find((x) => x.id === edgeData?.source),
+    );
+
+    const sourceKey = sourceNode?.data.resourceState.keys.find(
+        (x: IResourceKeyState) => x.name === edgeData?.data?.value,
+    );
+
+    const resourceNode = resourceLookup.find(
+        (x) => x.name === sourceNode?.data.resourceState.type,
+    );
+
+    const resourceAttributes = resourceNode?.attributes || [];
+
     return (
         <div className="relative">
             <Handle
                 className="target-handle"
                 type="target"
                 position={Position.Left}
-                id={`test`}
+                id={`${nodeId}---${globalKey.name}---${keyState.id}`}
                 style={{
                     width: '15px',
                     height: '15px',
@@ -56,28 +83,55 @@ const ResourceNodeKeyInput = ({
                     <p>{globalKey.display_name}:</p>
                 </div>
                 <div className="col-span-2">
-                    <div className="relative w-full">
-                        <input
-                            type="text"
-                            className={
-                                touched && !keyState.valid
-                                    ? 'w-full nodrag p-1 text-gray-300 border border-red-400 bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500'
-                                    : 'w-full nodrag p-1 text-gray-300 border bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500'
-                            }
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            onBlur={() => setTouched(true)}
-                        />
-                        {touched && (
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                {keyState.valid ? (
-                                    <CheckCircleIcon className="h-5 w-5 text-green-600" />
-                                ) : (
-                                    <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-                                )}
-                            </div>
-                        )}
-                    </div>
+                    {!!sourceNode ? (
+                        <span className="flex rounded-md shadow-sm">
+                            <p className="items-center rounded-l-md border border-gray-300 p-1">
+                                {sourceNode.data.resourceState.type}
+                            </p>
+                            <p className="items-center border border-gray-300 p-1 -ml-px">
+                                {sourceNode.data.resourceState.id}
+                            </p>
+                            <select
+                                className="nodrag -ml-px block w-full rounded-l-none rounded-r-md border-1 border-white p-1 pr-10 text-gray-300 bg-gray-600 rounded focus:ring-0"
+                                onChange={(e) =>
+                                    onChange(
+                                        globalKey.name,
+                                        `$${sourceNode.data.resourceState.type}.${sourceNode.data.resourceState.id}.${e.target.value}`,
+                                        'resource',
+                                    )
+                                }
+                            >
+                                {resourceAttributes.map((x) => (
+                                    <option key={x} value={x}>
+                                        {x}
+                                    </option>
+                                ))}
+                            </select>
+                        </span>
+                    ) : (
+                        <div className="relative w-full">
+                            <input
+                                type="text"
+                                className={
+                                    touched && !keyState.valid
+                                        ? 'w-full nodrag p-1 text-gray-300 border border-red-400 bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500'
+                                        : 'w-full nodrag p-1 text-gray-300 border bg-gray-600 rounded focus:ring-0 focus:border-terraform-purple-500'
+                                }
+                                value={value}
+                                onChange={(e) => setValue(e.target.value)}
+                                onBlur={() => setTouched(true)}
+                            />
+                            {touched && (
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                    {keyState.valid ? (
+                                        <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                                    ) : (
+                                        <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {touched && !keyState.valid && (
                         <p

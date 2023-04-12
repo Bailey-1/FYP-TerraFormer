@@ -139,19 +139,7 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
 
                 // Find the linked resource and use it as a variable
                 case 'resource':
-                    // eslint-disable-next-line no-case-declarations
-                    const linkedBlocks = connections.find(
-                        (x) =>
-                            x.target === primary.id &&
-                            x.targetHandle.includes(key.id),
-                    );
-
-                    if (linkedBlocks) {
-                        resource[
-                            key.name
-                        ] = `$${linkedBlocks.sourceHandle}.${linkedBlocks.source}.${linkedBlocks.data.value}`;
-                    }
-
+                    resource[key.name] = key.value;
                     break;
 
                 // Find the linked resources and add them as a nested block object

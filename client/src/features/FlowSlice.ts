@@ -171,13 +171,13 @@ export const flowSlice = createSlice({
                     (x) => x.id === action.payload.source,
                 );
 
-                const type =
-                    srcNode?.type === 'resourceNode' ? 'selectEdge' : 'default';
+                // const type =
+                //     srcNode?.type === 'resourceNode' ? 'selectEdge' : 'default';
 
                 state.edges = addEdge(
                     {
                         ...action.payload,
-                        type,
+                        type: 'default',
                         data: { connection: action.payload, value: '' },
                     },
                     state.edges,
@@ -190,6 +190,7 @@ export const flowSlice = createSlice({
                 nodeId: string;
                 key: string;
                 value: string | string[];
+                type?: string;
             }>,
         ) => {
             const node = state.nodes.find(
@@ -208,6 +209,10 @@ export const flowSlice = createSlice({
             if (existingEl) {
                 existingEl.value = action.payload.value;
                 existingEl.valid = !!action.payload.value.length;
+
+                if (action.payload.type) {
+                    existingEl.type = action.payload.type;
+                }
 
                 const resource = ResourceLookup.find(
                     (y) => y.name === node.data.resourceState.type,

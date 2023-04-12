@@ -4,13 +4,7 @@ import {
     InformationCircleIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline';
-import {
-    Connection,
-    Handle,
-    Position,
-    useNodeId,
-    useUpdateNodeInternals,
-} from 'reactflow';
+import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import { useDispatch, useSelector } from 'react-redux';
 import resourceLookup from '../../../../resources/ResourceLookup';
@@ -152,13 +146,13 @@ const ResourceNode = ({
                             borderRadius: '0px 10px 10px 0px',
                             right: '-28px',
                         }}
-                        isValidConnection={(connection: Connection) => {
-                            return (
-                                connection.targetHandle?.includes(
-                                    globalResource.name,
-                                ) || false
-                            );
-                        }}
+                        // isValidConnection={(connection: Connection) => {
+                        //     return (
+                        //         connection.targetHandle?.includes(
+                        //             globalResource.name,
+                        //         ) || false
+                        //     );
+                        // }}
                     />
 
                     {data.resourceState.keys.map((x, i) => {
@@ -172,8 +166,14 @@ const ResourceNode = ({
                                     globalKey={globalResource.keys.find(
                                         (gk) => gk.name === x.name,
                                     )}
-                                    onChange={(name, value) =>
-                                        updateKey(dispatch, nodeId, name, value)
+                                    onChange={(name, value, type?: string) =>
+                                        updateKey(
+                                            dispatch,
+                                            nodeId,
+                                            name,
+                                            value,
+                                            type,
+                                        )
                                     }
                                 />
                             </div>
