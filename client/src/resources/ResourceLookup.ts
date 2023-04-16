@@ -102,9 +102,10 @@ const ResourceLookup: IResourceObject[] = [
                 type: 'string',
                 value: '',
                 validation: (value: string): boolean => {
-                    return !!value.includes('b');
+                    return value.length > 4;
                 },
-                validation_message: 'Must include the letter b',
+                validation_message:
+                    'Name must have a minimum length of 5 characters',
                 required: true,
             },
             {

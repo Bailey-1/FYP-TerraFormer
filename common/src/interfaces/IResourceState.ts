@@ -17,11 +17,8 @@ export interface IResourceKeyResourceState {
     id: string;
     name: string; // For the key name e.g. resource_group_name
     type: 'resource';
-    resource_type: string;
-    resource_key: string;
-    instance_name: string;
+    value: string;
     valid: boolean;
-    // touched: boolean;
 }
 
 // Key state for a block key type

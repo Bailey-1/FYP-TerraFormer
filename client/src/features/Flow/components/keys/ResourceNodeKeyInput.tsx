@@ -60,15 +60,24 @@ const ResourceNodeKeyInput = ({
                 x.name === keyState.value.split('.').pop(), // lol this is bad
         );
 
-    useEffect(() => {
-        console.log('Key Changed');
-    }, [sourceKey?.value]);
-
     const resourceNode = resourceLookup.find(
         (x) => x.name === sourceNode?.data.resourceState.type,
     );
 
     const resourceAttributes = resourceNode?.attributes || [];
+
+    useEffect(() => {
+        if (sourceNode) {
+            console.log('Key Changed');
+            onChange(
+                globalKey.name,
+                `$${sourceNode.data.resourceState.type}.${
+                    sourceNode.data.resourceState.id
+                }.${resourceAttributes[0] || ''}`,
+                'resource',
+            );
+        }
+    }, [sourceNode]);
 
     return (
         <div className="relative">

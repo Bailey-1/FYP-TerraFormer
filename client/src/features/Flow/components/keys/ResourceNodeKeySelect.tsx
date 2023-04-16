@@ -103,7 +103,7 @@ const ResourceNodeKeySelect = ({
                                 onChange(
                                     keyState.name,
                                     e.target.value,
-                                    'select',
+                                    'string',
                                 )
                             }
                         >
