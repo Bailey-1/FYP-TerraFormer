@@ -204,6 +204,8 @@ const NavbarComponent = () => {
                 {generatedHclResponse && (
                     <GeneratedHclModal response={generatedHclResponse} />
                 )}
+
+                {/*<HelpModal />*/}
             </div>
         </div>
     );

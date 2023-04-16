@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     IResourceKey,
     IResourceKeyState,
+    IResourceKeyStateTypes,
 } from '@bailey-1/terraformwebapp-common';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
@@ -53,9 +54,15 @@ const ResourceNodeKeyInput = ({
         state.flow.nodes.find((x) => x.id === edgeData?.source),
     );
 
-    const sourceKey = sourceNode?.data.resourceState.keys.find(
-        (x: IResourceKeyState) => x.name === edgeData?.data?.value,
-    );
+    const sourceKey: IResourceKeyStateTypes | undefined =
+        sourceNode?.data.resourceState.keys.find(
+            (x: IResourceKeyState) =>
+                x.name === keyState.value.split('.').pop(), // lol this is bad
+        );
+
+    useEffect(() => {
+        console.log('Key Changed');
+    }, [sourceKey?.value]);
 
     const resourceNode = resourceLookup.find(
         (x) => x.name === sourceNode?.data.resourceState.type,
