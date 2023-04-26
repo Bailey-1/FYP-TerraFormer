@@ -1,6 +1,12 @@
 import React, { memo } from 'react';
 import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
+import {
+    Connection,
+    Handle,
+    Position,
+    useNodeId,
+    useUpdateNodeInternals,
+} from 'reactflow';
 import { useDispatch, useSelector } from 'react-redux';
 import resourceLookup from '../../../../resources/ResourceLookup';
 import { RootState } from '../../../../store/store';
@@ -96,7 +102,7 @@ const BlockNode = ({
             <Handle
                 type="source"
                 position={Position.Right}
-                id={globalBlock.name}
+                id={`block-${globalBlock.name}`}
                 style={{
                     width: '15px',
                     height: '15px',
@@ -104,6 +110,14 @@ const BlockNode = ({
                     right: '-15px',
                 }}
                 data-cy={`source-handle-${globalBlock.name}`}
+                isValidConnection={(connection: Connection) => {
+                    console.log(JSON.stringify(connection));
+                    return (
+                        connection.targetHandle?.includes(
+                            `key-${connection.sourceHandle}`,
+                        ) || false
+                    );
+                }}
             />
             <div className={`flex justify-between p-2 rounded-t-xl`}>
                 <h1 className={`text-xl text-gray-200`}>
@@ -145,31 +159,36 @@ const BlockNode = ({
                     );
                 })}
 
-                <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
-                    <Disclosure>
-                        {({ open }) => (
-                            <>
-                                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                    <span>Additional Keys</span>
-                                    <ChevronUpIcon
-                                        className={`${
-                                            open ? 'rotate-180 transform' : ''
-                                        } h-5 w-5 text-purple-500`}
-                                    />
-                                </Disclosure.Button>
-                                <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
-                                    {pillBtnsArr.length ? (
-                                        pillBtnsArr
-                                    ) : (
-                                        <p>
-                                            No additional arguments available.
-                                        </p>
-                                    )}
-                                </Disclosure.Panel>
-                            </>
-                        )}
-                    </Disclosure>
-                </div>
+                {!!pillBtnsArr.length && (
+                    <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
+                        <Disclosure>
+                            {({ open }) => (
+                                <>
+                                    <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                        <span>Additional Keys</span>
+                                        <ChevronUpIcon
+                                            className={`${
+                                                open
+                                                    ? 'rotate-180 transform'
+                                                    : ''
+                                            } h-5 w-5 text-purple-500`}
+                                        />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
+                                        {pillBtnsArr.length ? (
+                                            pillBtnsArr
+                                        ) : (
+                                            <p>
+                                                No additional arguments
+                                                available.
+                                            </p>
+                                        )}
+                                    </Disclosure.Panel>
+                                </>
+                            )}
+                        </Disclosure>
+                    </div>
+                )}
             </div>
         </div>
     );

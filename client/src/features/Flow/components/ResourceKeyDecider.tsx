@@ -17,7 +17,7 @@ const ResourceKeyDecider = ({
     globalKey,
 }: {
     keyState: IResourceKeyStateTypes;
-    onChange: (name: string, value: string | string[]) => void;
+    onChange: (name: string, value: string | string[], type?: string) => void;
     globalKey: IResourceKeys | undefined;
 }) => {
     if (globalKey) {

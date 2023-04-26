@@ -56,6 +56,11 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                 }[];
             }[];
         }[];
+        provider: {
+            azurerm: {
+                features: [object];
+            };
+        };
         resource: {
             [key: string]: {
                 [instance_name: string]: {
@@ -80,6 +85,19 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                 ],
             },
         ],
+        provider: {
+            azurerm: {
+                features: [
+                    {
+                        // resource_group: [
+                        //     {
+                        //         prevent_deletion_if_contains_resources: true,
+                        //     },
+                        // ],
+                    },
+                ],
+            },
+        },
         resource: {},
     };
 
@@ -121,19 +139,7 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
 
                 // Find the linked resource and use it as a variable
                 case 'resource':
-                    // eslint-disable-next-line no-case-declarations
-                    const linkedBlocks = connections.find(
-                        (x) =>
-                            x.target === primary.id &&
-                            x.targetHandle.includes(key.id),
-                    );
-
-                    if (linkedBlocks) {
-                        resource[
-                            key.name
-                        ] = `$${linkedBlocks.sourceHandle}.${linkedBlocks.source}.${linkedBlocks.data.value}`;
-                    }
-
+                    resource[key.name] = key.value;
                     break;
 
                 // Find the linked resources and add them as a nested block object
@@ -142,7 +148,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                     const linkedBlocksArr = connections.filter(
                         (x) =>
                             x.target === primary.id &&
-                            x.targetHandle === key.id,
+                            x.targetHandle ===
+                                `key-block-${key.name}-${key.id}`,
                     );
 
                     if (linkedBlocksArr.length) {
@@ -200,7 +207,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
                                                     (z) =>
                                                         z.target ===
                                                             linkRes.id &&
-                                                        z.targetHandle === x.id,
+                                                        z.targetHandle ===
+                                                            `key-block-${x.name}-${x.id}`,
                                                 );
 
                                             nestedLinkedCon.forEach((link) => {
@@ -263,6 +271,8 @@ app.post('/api/generateHcl', (req: Request, res: Response) => {
     // You have to define a block not assign a value -> generate doesn't do this
     result = result.replace('terraform = {', 'terraform {');
     result = result.replace('required_providers = {', 'required_providers {');
+    result = result.replace('"provider"', 'provider');
+    result = result.replace('features =', 'features');
 
     // logger.info('app.ts', result);
 

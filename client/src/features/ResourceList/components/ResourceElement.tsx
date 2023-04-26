@@ -32,7 +32,8 @@ const ResourceElement = ({
         .split(' ')
         .filter((x) => x);
 
-    const addResource = () => {
+    const addResource = (e: React.MouseEvent) => {
+        e.stopPropagation();
         dispatch(
             addNode({
                 name: resource.name,
@@ -88,7 +89,7 @@ const ResourceElement = ({
                     </span>
                     <button
                         className="bg-green-600 m-2 p-2 px-4 text-gray-200 rounded-lg hover:bg-green-700 text-2xl"
-                        onClick={addResource}
+                        onClick={(e) => addResource(e)}
                         data-cy={`add-${resource.name}`}
                         data-cy-type="primaryResourceAddButton"
                     >
@@ -132,7 +133,10 @@ const ResourceElement = ({
                                 </h3>
                                 <button
                                     className="bg-yellow-600 p-2 px-4 text-gray-200 rounded hover:bg-yellow-700"
-                                    onClick={() => addBlock(sub)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        addBlock(sub);
+                                    }}
                                     data-cy={`addBlock-${resource.name}-${sub.name}`}
                                     data-cy-type="blockAddButton"
                                 >

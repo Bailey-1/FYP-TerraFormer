@@ -76,8 +76,8 @@ export const flowSlice = createSlice({
                                         return {
                                             id: RandomID(),
                                             name: key.name,
-                                            value: '',
-                                            valid: false,
+                                            value: key.options.sort()[0],
+                                            valid: true,
                                             type: 'string',
                                         };
                                     } else {
@@ -171,13 +171,13 @@ export const flowSlice = createSlice({
                     (x) => x.id === action.payload.source,
                 );
 
-                const type =
-                    srcNode?.type === 'resourceNode' ? 'selectEdge' : 'default';
+                // const type =
+                //     srcNode?.type === 'resourceNode' ? 'selectEdge' : 'default';
 
                 state.edges = addEdge(
                     {
                         ...action.payload,
-                        type,
+                        type: 'default',
                         data: { connection: action.payload, value: '' },
                     },
                     state.edges,
@@ -190,6 +190,7 @@ export const flowSlice = createSlice({
                 nodeId: string;
                 key: string;
                 value: string | string[];
+                type?: string;
             }>,
         ) => {
             const node = state.nodes.find(
@@ -207,12 +208,31 @@ export const flowSlice = createSlice({
 
             if (existingEl) {
                 existingEl.value = action.payload.value;
+                existingEl.valid = !!action.payload.value.length;
+
+                if (action.payload.type) {
+                    existingEl.type = action.payload.type;
+                }
+
+                const resource = ResourceLookup.find(
+                    (y) => y.name === node.data.resourceState.type,
+                );
+
+                if (resource && !Array.isArray(action.payload.value)) {
+                    const key = resource.keys.find(
+                        (x) => x.name === action.payload.key,
+                    );
+
+                    if (resource && key?.validation) {
+                        existingEl.valid = key.validation(action.payload.value);
+                    }
+                }
             } else {
                 node.data.resourceState.keys.push({
                     id: RandomID(),
                     name: action.payload.key,
                     value: action.payload.value,
-                    valid: true,
+                    valid: false,
                 });
             }
         },
@@ -294,7 +314,7 @@ export const flowSlice = createSlice({
 
             state.edges = state.edges.filter(
                 (x) =>
-                    x.target !== action.payload.nodeId &&
+                    x.target !== action.payload.nodeId ||
                     x.targetHandle !== action.payload.keyId,
             );
         },

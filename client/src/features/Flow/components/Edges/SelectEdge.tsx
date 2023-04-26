@@ -37,7 +37,7 @@ const SelectEdge = ({
         );
     }, []);
 
-    const [edgePath, labelX, labelY] = getBezierPath({
+    const [edgePath, labelX, labelY, offsetX, offsetY] = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -72,20 +72,21 @@ const SelectEdge = ({
             <foreignObject
                 width={120}
                 height={40}
-                x={labelX - 100 / 2}
-                y={labelY - 40 / 2}
+                x={targetX - 120}
+                y={targetY - 40 / 2}
                 className="edgebutton-foreignobject"
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
-                <div>
-                    <select onChange={(e) => onChange(e, id)}>
-                        {resourceAttributes.map((x) => (
-                            <option key={x} value={x}>
-                                {x}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <select
+                    className="rounded-2xl"
+                    onChange={(e) => onChange(e, id)}
+                >
+                    {resourceAttributes.map((x) => (
+                        <option key={x} value={x}>
+                            {x}
+                        </option>
+                    ))}
+                </select>
             </foreignObject>
         </>
     );

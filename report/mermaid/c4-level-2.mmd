@@ -1,0 +1,22 @@
+C4Context
+    title Container Diagram for TerraFormer
+    Person(c, "TerraFormer Customer", "A customer using TerraFormer<br>to generate Terraform code.")
+
+    Boundary(tfBoundary, "TerraFormer System") {
+        Container(tfWebApplication, "Web Application", "Azure Static Web App", "Distributes the static files<br>to the web browser via a CDN.")
+        Container(tfClient, "Single-Page Application", "React App", "How the user interacts with the system<br>when the static files are executed.")
+        Container(tfBackend, "Rest API", "Generates Terraform code")
+        ContainerDb(tfDb, "Database", "Stores resource and pricing data")
+    }
+
+
+    System_Ext(SystemC, "Microsoft Azure Management API", "Public Azure account management API.")
+
+    Rel(c, tfWebApplication, "Uses")
+    Rel(tfWebApplication, tfClient, "Delivers")
+
+    Rel(tfClient, tfBackend, "Uses")
+    Rel(tfBackend, tfDb, "Reads & Writes to")
+    Rel(tfBackend, SystemC, "Fetch resource pricing data")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

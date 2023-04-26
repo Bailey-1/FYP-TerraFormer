@@ -15,7 +15,6 @@ root.render(
         <Provider store={store}>
             <App />
             <NotificationArea />
-            {/*<GeneratedHclModal />*/}
         </Provider>
     </StrictMode>,
 );

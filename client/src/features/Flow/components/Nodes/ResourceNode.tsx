@@ -4,13 +4,7 @@ import {
     InformationCircleIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline';
-import {
-    Connection,
-    Handle,
-    Position,
-    useNodeId,
-    useUpdateNodeInternals,
-} from 'reactflow';
+import { Handle, Position, useNodeId, useUpdateNodeInternals } from 'reactflow';
 import { IResourceState } from '@bailey-1/terraformwebapp-common';
 import { useDispatch, useSelector } from 'react-redux';
 import resourceLookup from '../../../../resources/ResourceLookup';
@@ -95,24 +89,6 @@ const ResourceNode = ({
             }`}
         >
             {/* Completed resource node */}
-            <Handle
-                type="source"
-                position={Position.Right}
-                id={globalResource.name}
-                style={{
-                    width: '15px',
-                    height: '15px',
-                    borderRadius: '10px',
-                    right: '-15px',
-                }}
-                isValidConnection={(connection: Connection) => {
-                    return (
-                        connection.targetHandle?.includes(
-                            globalResource.name,
-                        ) || false
-                    );
-                }}
-            />
             <div
                 className={`flex justify-between p-2 rounded-t-xl items-center ${
                     providerColours[globalResource.provider]?.background
@@ -142,53 +118,99 @@ const ResourceNode = ({
             </div>
             <div className="p-2 bg-gray-800/75 rounded-b">
                 {additionalDetails && (
-                    <h2 className="text-base text-gray-500">
-                        {data.resourceState.type}
-                    </h2>
-                )}
-                {additionalDetails && <p>NodeID: {nodeId}</p>}
-
-                {data.resourceState.keys.map((x, i) => {
-                    return (
-                        <div className="border-b p-2 first:pt-0" key={x.id}>
-                            <ResourceKeyDecider
-                                keyState={x}
-                                globalKey={globalResource.keys.find(
-                                    (gk) => gk.name === x.name,
-                                )}
-                                onChange={(name, value) =>
-                                    updateKey(dispatch, nodeId, name, value)
-                                }
-                            />
+                    <div className="grid grid-cols-3 bg-gray-700 rounded p-2">
+                        <div>
+                            <h3>Debug</h3>
                         </div>
-                    );
-                })}
+                        <div className="col-span-2">
+                            <p>
+                                <b>NodeID:</b> {nodeId}
+                            </p>
+                            <p>
+                                <b>Type:</b> {data.resourceState.type}
+                            </p>
+                        </div>
+                    </div>
+                )}
 
-                <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
-                    <Disclosure>
-                        {({ open }) => (
-                            <>
-                                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                    <span>Additional Keys</span>
-                                    <ChevronUpIcon
-                                        className={`${
-                                            open ? 'rotate-180 transform' : ''
-                                        } h-5 w-5 text-purple-500`}
-                                    />
-                                </Disclosure.Button>
-                                <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
-                                    {pillBtnsArr.length ? (
-                                        pillBtnsArr
-                                    ) : (
-                                        <p>
-                                            No additional arguments available.
-                                        </p>
+                <div className="relative">
+                    <Handle
+                        className="source-handle"
+                        type="source"
+                        position={Position.Right}
+                        id={globalResource.name}
+                        style={{
+                            width: '20px',
+                            height: '50px',
+                            // borderRadius: '0px',
+                            borderRadius: '0px 10px 10px 0px',
+                            right: '-28px',
+                        }}
+                        // isValidConnection={(connection: Connection) => {
+                        //     return (
+                        //         connection.targetHandle?.includes(
+                        //             globalResource.name,
+                        //         ) || false
+                        //     );
+                        // }}
+                    />
+
+                    {data.resourceState.keys.map((x, i) => {
+                        return (
+                            <div
+                                className="border-b last:border-none p-2 first:pt-0"
+                                key={x.id}
+                            >
+                                <ResourceKeyDecider
+                                    keyState={x}
+                                    globalKey={globalResource.keys.find(
+                                        (gk) => gk.name === x.name,
                                     )}
-                                </Disclosure.Panel>
-                            </>
-                        )}
-                    </Disclosure>
+                                    onChange={(name, value, type?: string) =>
+                                        updateKey(
+                                            dispatch,
+                                            nodeId,
+                                            name,
+                                            value,
+                                            type,
+                                        )
+                                    }
+                                />
+                            </div>
+                        );
+                    })}
                 </div>
+
+                {!!pillBtnsArr.length && (
+                    <div className="mx-auto w-full max-w-md rounded-2xl pt-2">
+                        <Disclosure>
+                            {({ open }) => (
+                                <>
+                                    <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-2 py-1 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                        <span>Additional Keys</span>
+                                        <ChevronUpIcon
+                                            className={`${
+                                                open
+                                                    ? 'rotate-180 transform'
+                                                    : ''
+                                            } h-5 w-5 text-purple-500`}
+                                        />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="p-2 text-sm text-gray-500 flex flex-wrap justify-center">
+                                        {pillBtnsArr.length ? (
+                                            pillBtnsArr
+                                        ) : (
+                                            <p>
+                                                No additional arguments
+                                                available.
+                                            </p>
+                                        )}
+                                    </Disclosure.Panel>
+                                </>
+                            )}
+                        </Disclosure>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -6,6 +6,8 @@ export default defineConfig({
             framework: 'create-react-app',
             bundler: 'webpack',
         },
+        video: false,
+        screenshotOnRunFailure: false,
     },
 
     e2e: {
@@ -25,6 +27,7 @@ export default defineConfig({
             });
         },
         video: false,
+        screenshotOnRunFailure: false,
         viewportWidth: 1920,
         viewportHeight: 1080,
         // scrollBehavior: false,

@@ -1,0 +1,13 @@
+C4Context
+    title System Context Diagram for TerraFormer
+    Person(c, "TerraFormer Customer", "A customer using TerraFormer<br>to generate Terraform code.")
+
+    System(tfSystem, "TerraFormer System", "Generates Terraform code through a GUI.")
+
+    System_Ext(SystemC, "Microsoft Azure Management API", "Public Azure account management API.")
+
+    Rel(c, tfSystem, "Uses")
+
+    Rel(tfSystem, SystemC, "Fetch resource pricing data")
+
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
