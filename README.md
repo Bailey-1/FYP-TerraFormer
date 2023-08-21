@@ -1,31 +1,24 @@
-# TerraFormer
+# FYP - TerraFormer
 
-A web app to aid in the development of Terraform configurations.
+A Typescript React + Redux web app to automatically generate valid Terraform files through a more visual and accessible interface to improve the usability of Terraform.
+
+Developed for my final year project which was graded at a 1st.
 
 ## Screenshots
+
+![Nodes](./assets/1.png)
+
+![Nodes](./assets/2.png)
+
+<details>
+<summary>Older Screenshots</summary>
 
 ![Nodes](./assets/nodes.png)
 
 ![Nodes](./assets/code.png)
 
-## Installation
+</details>
 
-### Client
+## Report
 
-```
-npm install -g npm-cli-login
-npm-cli-login -u "bailey-1" -p "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" -e "44928829+Bailey-1@users.noreply.github.com" -r "https://npm.pkg.github.com" -s "@bailey-1"
-npm ci --production
-
-npm start
-```
-
-### Backend
-
-```
-npm install -g npm-cli-login
-npm-cli-login -u "bailey-1" -p "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" -e "44928829+Bailey-1@users.noreply.github.com" -r "https://npm.pkg.github.com" -s "@bailey-1"
-npm ci
-
-npm start
-```
+The report for this can be found in `UP937683-FYP.pdf`.
